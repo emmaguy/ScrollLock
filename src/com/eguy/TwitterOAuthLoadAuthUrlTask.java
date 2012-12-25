@@ -7,37 +7,25 @@ import android.os.AsyncTask;
 import android.util.Log;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
-import oauth.signpost.basic.DefaultOAuthConsumer;
-import oauth.signpost.basic.DefaultOAuthProvider;
 import oauth.signpost.exception.OAuthCommunicationException;
 import oauth.signpost.exception.OAuthExpectationFailedException;
 import oauth.signpost.exception.OAuthMessageSignerException;
 import oauth.signpost.exception.OAuthNotAuthorizedException;
 
-public class TwitterOAuthLoadAuthUrlTask extends AsyncTask<Context, Void, Void>
+public class TwitterOAuthLoadAuthUrlTask extends AsyncTask<Object, Void, Void>
 {
-    OAuthProvider provider = new DefaultOAuthProvider(
-            "https://api.twitter.com/oauth/request_token",
-            "https://api.twitter.com/oauth/access_token",
-            "https://api.twitter.com/oauth/authorize");
-
-    OAuthConsumer consumer;
-    final String CALLBACK_URL = "ScrollLock://callback";
-
     @Override
-    protected Void doInBackground(Context... contexts)
+    protected Void doInBackground(Object... objects)
     {
-        Context context = contexts[0];
-
-        String key = context.getString(R.string.consumer_key);
-        String secret = context.getString(R.string.consumer_secret);
-
-        consumer = new DefaultOAuthConsumer(key, secret);
+        Context context = (Context)objects[0];
+        OAuthProvider provider = (OAuthProvider)objects[1];
+        OAuthConsumer consumer = (OAuthConsumer)objects[2];
+        String callbackUrl = (String)objects[3];
 
         String authUrl = null;
         try
         {
-            authUrl = provider.retrieveRequestToken(consumer, CALLBACK_URL);
+            authUrl = provider.retrieveRequestToken(consumer, callbackUrl);
         } catch (OAuthMessageSignerException e)
         {
             Log.e("blah", "OAuthMessageSignerException", e);

@@ -2,12 +2,12 @@ package com.eguy;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import oauth.signpost.OAuth;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 import oauth.signpost.basic.DefaultOAuthConsumer;
@@ -16,12 +16,18 @@ import oauth.signpost.exception.OAuthCommunicationException;
 import oauth.signpost.exception.OAuthExpectationFailedException;
 import oauth.signpost.exception.OAuthMessageSignerException;
 import oauth.signpost.exception.OAuthNotAuthorizedException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 public class AuthenticateActivity extends Activity
 {
-   @Override
+    OAuthProvider provider = new DefaultOAuthProvider(
+            "https://api.twitter.com/oauth/request_token",
+            "https://api.twitter.com/oauth/access_token",
+            "https://api.twitter.com/oauth/authorize");
+
+    OAuthConsumer consumer;
+    final String CALLBACK_URL = "scrolllock://callback";
+
+    @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -30,47 +36,54 @@ public class AuthenticateActivity extends Activity
         Button btnLogin = (Button) findViewById(R.id.btnLogin);
         final Context context = getApplicationContext();
 
+        String key = context.getString(R.string.consumer_key);
+        String secret = context.getString(R.string.consumer_secret);
+
+        consumer = new DefaultOAuthConsumer(key, secret);
+
         btnLogin.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                new TwitterOAuthLoadAuthUrlTask().execute(context);
+                new TwitterOAuthLoadAuthUrlTask().execute(context, provider, consumer, CALLBACK_URL);
             }
         });
     }
 
     @Override
-    protected void onNewIntent(Intent intent)
+    public void onResume()
     {
-        Log.d("infoo", "intent!");
-    }
+        super.onResume();
 
-//
-//    @Override
-//    public void onResume()
-//    {
-//        Uri uri = this.getIntent().getData();
-//        if (uri != null && uri.toString().startsWith(CALLBACK_URL))
-//        {
-//            String verifier = uri.getQueryParameter("oauth_verifier");
-//            // this will populate token and token_secret in consumer
-//            try
-//            {
-//                provider.retrieveAccessToken(consumer, verifier);
-//            } catch (OAuthMessageSignerException e)
-//            {
-//                Log.e("AuthenticateActivity", e.getMessage());
-//            } catch (OAuthNotAuthorizedException e)
-//            {
-//                Log.e("AuthenticateActivity", e.getMessage());
-//            } catch (OAuthExpectationFailedException e)
-//            {
-//                Log.e("AuthenticateActivity", e.getMessage());
-//            } catch (OAuthCommunicationException e)
-//            {
-//                Log.e("AuthenticateActivity", e.getMessage());
-//            }
-//        }
-//    }
+        Uri data = this.getIntent().getData();
+        if (data != null && data.toString().startsWith(CALLBACK_URL))
+        {
+            String token = data.getQueryParameter(OAuth.OAUTH_TOKEN);
+            String verifier = data.getQueryParameter(OAuth.OAUTH_VERIFIER);
+            try
+            {
+               // Assert.assertEquals(token, consumer.getToken());
+
+                provider.retrieveAccessToken(consumer, verifier);
+
+                //store consumer.getToken(), consumer.getConsumerSecret()
+            } catch (OAuthMessageSignerException e)
+            {
+                Log.e("blah", "OAuthMessageSignerException", e);
+
+            } catch (OAuthNotAuthorizedException e)
+            {
+                Log.e("blah", "OAuthNotAuthorizedException", e);
+
+            } catch (OAuthExpectationFailedException e)
+            {
+                Log.e("blah", "OAuthNotAuthorizedException", e);
+
+            } catch (OAuthCommunicationException e)
+            {
+                Log.e("blah", "OAuthCommunicationException", e);
+            }
+        }
+    }
 }
