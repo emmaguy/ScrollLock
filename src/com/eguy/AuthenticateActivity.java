@@ -3,7 +3,6 @@ package com.eguy;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,25 +12,15 @@ import junit.framework.Assert;
 import oauth.signpost.OAuth;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
-import oauth.signpost.basic.DefaultOAuthConsumer;
-import oauth.signpost.basic.DefaultOAuthProvider;
 import oauth.signpost.exception.OAuthCommunicationException;
 import oauth.signpost.exception.OAuthExpectationFailedException;
 import oauth.signpost.exception.OAuthMessageSignerException;
 import oauth.signpost.exception.OAuthNotAuthorizedException;
+import oauth.signpost.http.HttpParameters;
 
 public class AuthenticateActivity extends Activity
 {
-    SharedPreferences preferences;
-    OAuthProvider provider = new DefaultOAuthProvider(
-            "https://api.twitter.com/oauth/request_token",
-            "https://api.twitter.com/oauth/access_token",
-            "https://api.twitter.com/oauth/authorize");
-
-    OAuthConsumer consumer;
-    final String CALLBACK_URL = "scrolllock://callback";
-    private String USER_TOKEN = "userToken";
-    private String USER_SECRET = "userSecret";
+    private OAuthProviderAndConsumer oAuthProviderAndConsumer;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -39,22 +28,17 @@ public class AuthenticateActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        preferences = this.getSharedPreferences("Preferences", Context.MODE_PRIVATE);
-
         Button btnLogin = (Button) findViewById(R.id.btnLogin);
         final Context context = getApplicationContext();
 
-        String key = context.getString(R.string.consumer_key);
-        String secret = context.getString(R.string.consumer_secret);
-
-        consumer = new DefaultOAuthConsumer(key, secret);
+        oAuthProviderAndConsumer = new OAuthProviderAndConsumer(new AuthCredentialManager(this.getApplicationContext()));
 
         btnLogin.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                new TwitterOAuthLoadAuthUrlTask().execute(context, provider, consumer, CALLBACK_URL, preferences);
+                new TwitterOAuthLoadAuthUrlTask().execute(context, oAuthProviderAndConsumer);
             }
         });
     }
@@ -65,47 +49,52 @@ public class AuthenticateActivity extends Activity
         super.onResume();
 
         Uri uri = this.getIntent().getData();
-        if (uri != null && uri.toString().startsWith(CALLBACK_URL))
+        if (uri != null && uri.toString().startsWith(oAuthProviderAndConsumer.CALLBACK_URL))
         {
-            String token = preferences.getString(OAuth.OAUTH_TOKEN, null);
-            String secret = preferences.getString(OAuth.OAUTH_VERIFIER, null);
+            retrieveAccessTokenFromRequestToken(uri);
+        }
+    }
 
-            consumer.setTokenWithSecret(token, secret);
-            try
-            {
-                String otoken = uri.getQueryParameter(OAuth.OAUTH_TOKEN);
-                String verifier = uri.getQueryParameter(OAuth.OAUTH_VERIFIER);
+    private void retrieveAccessTokenFromRequestToken(Uri uri)
+    {
+        AuthCredentialManager credentialManager = new AuthCredentialManager(this.getApplicationContext());
+        String token = credentialManager.getToken();
+        String secret = credentialManager.getTokenSecret();
 
-                Assert.assertEquals(otoken, consumer.getToken());
+        OAuthConsumer consumer = oAuthProviderAndConsumer.getConsumer();
+        OAuthProvider provider = oAuthProviderAndConsumer.getProvider();
 
-                provider.retrieveAccessToken(consumer, verifier);
+        consumer.setTokenWithSecret(token, secret);
+        try
+        {
+            Assert.assertEquals(uri.getQueryParameter(OAuth.OAUTH_TOKEN), consumer.getToken());
 
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString(USER_TOKEN, consumer.getToken());
-                editor.putString(USER_SECRET, consumer.getTokenSecret());
-                editor.commit();
+            provider.retrieveAccessToken(consumer, uri.getQueryParameter(OAuth.OAUTH_VERIFIER));
+            credentialManager.saveUserTokenAndSecret(consumer.getToken(), consumer.getTokenSecret());
 
-                startActivity(new Intent(this, TimelineActivity.class));
-            }
-            catch (OAuthMessageSignerException e)
-            {
-                Log.e("blah", "OAuthMessageSignerException", e);
+            HttpParameters responseParameters = provider.getResponseParameters();
+            String userName = responseParameters.getFirst("screen_name");
+            String userId = responseParameters.getFirst("user_id");
 
-            }
-            catch (OAuthNotAuthorizedException e)
-            {
-                Log.e("blah", "OAuthNotAuthorizedException", e);
+            credentialManager.saveUsernameAndUserId(userName, userId);
 
-            }
-            catch (OAuthExpectationFailedException e)
-            {
-                Log.e("blah", "OAuthNotAuthorizedException", e);
-
-            }
-            catch (OAuthCommunicationException e)
-            {
-                Log.e("blah", "OAuthCommunicationException", e);
-            }
+            startActivity(new Intent(this, TimelineActivity.class));
+        }
+        catch (OAuthMessageSignerException e)
+        {
+            Log.e("blah", "OAuthMessageSignerException", e);
+        }
+        catch (OAuthNotAuthorizedException e)
+        {
+            Log.e("blah", "OAuthNotAuthorizedException", e);
+        }
+        catch (OAuthExpectationFailedException e)
+        {
+            Log.e("blah", "OAuthNotAuthorizedException", e);
+        }
+        catch (OAuthCommunicationException e)
+        {
+            Log.e("blah", "OAuthCommunicationException", e);
         }
     }
 }

@@ -19,4 +19,4 @@ local.properties
 .classpath
 .project
 
-res/values/priv.xml
+src/com/eguy/ConsumerInfo.java
