@@ -16,5 +16,6 @@
                 <data android:scheme="scrolllock" android:host="callback"/>
             </intent-filter>
         </activity>
+        <activity android:name=".TimelineActivity"/>
     </application>
 </manifest>
