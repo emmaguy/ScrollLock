@@ -7,12 +7,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
-import oauth.signpost.exception.OAuthCommunicationException;
-import oauth.signpost.exception.OAuthExpectationFailedException;
-import oauth.signpost.exception.OAuthMessageSignerException;
-import oauth.signpost.exception.OAuthNotAuthorizedException;
 
-public class TwitterOAuthLoadAuthUrlTask extends AsyncTask<Object, Void, Void>
+public class OAuthObtainRequestTokenAndRedirectToBrowser extends AsyncTask<Object, Void, Void>
 {
     @Override
     protected Void doInBackground(Object... objects)
@@ -45,21 +41,9 @@ public class TwitterOAuthLoadAuthUrlTask extends AsyncTask<Object, Void, Void>
 
             new AuthCredentialManager(context).saveTokenAndSecret(consumer.getToken(), consumer.getTokenSecret());
         }
-        catch (OAuthMessageSignerException e)
+        catch (Exception e)
         {
-            Log.e("blah", "OAuthMessageSignerException", e);
-        }
-        catch (OAuthNotAuthorizedException e)
-        {
-            Log.e("blah", "OAuthNotAuthorizedException", e);
-        }
-        catch (OAuthExpectationFailedException e)
-        {
-            Log.e("blah", "OAuthExpectationFailedException", e);
-        }
-        catch (OAuthCommunicationException e)
-        {
-            Log.e("blah", "OAuthCommunicationException", e);
+            Log.e("ScrollLock", e.getClass().toString(), e);
         }
         return authUrl;
     }

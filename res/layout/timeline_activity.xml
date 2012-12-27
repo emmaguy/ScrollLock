@@ -2,8 +2,18 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
-    <ListView android:id="@+id/lstView"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
+
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:id="@+id/refreshBar"
+            android:layout_gravity="center_horizontal|top"
+            android:background="#aa5abb"/>
+
+    <ListView android:id="@+id/lstTimeline"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"/>
+
 </LinearLayout>

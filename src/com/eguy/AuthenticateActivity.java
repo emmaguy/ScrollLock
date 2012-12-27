@@ -12,10 +12,6 @@ import junit.framework.Assert;
 import oauth.signpost.OAuth;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
-import oauth.signpost.exception.OAuthCommunicationException;
-import oauth.signpost.exception.OAuthExpectationFailedException;
-import oauth.signpost.exception.OAuthMessageSignerException;
-import oauth.signpost.exception.OAuthNotAuthorizedException;
 import oauth.signpost.http.HttpParameters;
 
 public class AuthenticateActivity extends Activity
@@ -28,17 +24,16 @@ public class AuthenticateActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        Button btnLogin = (Button) findViewById(R.id.btnLogin);
         final Context context = getApplicationContext();
-
         oAuthProviderAndConsumer = new OAuthProviderAndConsumer(new AuthCredentialManager(this.getApplicationContext()));
 
+        Button btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                new TwitterOAuthLoadAuthUrlTask().execute(context, oAuthProviderAndConsumer);
+                new OAuthObtainRequestTokenAndRedirectToBrowser().execute(context, oAuthProviderAndConsumer);
             }
         });
     }
@@ -80,21 +75,9 @@ public class AuthenticateActivity extends Activity
 
             startActivity(new Intent(this, TimelineActivity.class));
         }
-        catch (OAuthMessageSignerException e)
+        catch (Exception e)
         {
-            Log.e("blah", "OAuthMessageSignerException", e);
-        }
-        catch (OAuthNotAuthorizedException e)
-        {
-            Log.e("blah", "OAuthNotAuthorizedException", e);
-        }
-        catch (OAuthExpectationFailedException e)
-        {
-            Log.e("blah", "OAuthNotAuthorizedException", e);
-        }
-        catch (OAuthCommunicationException e)
-        {
-            Log.e("blah", "OAuthCommunicationException", e);
+            Log.e("ScrollLock", e.getClass().toString(), e);
         }
     }
 }
