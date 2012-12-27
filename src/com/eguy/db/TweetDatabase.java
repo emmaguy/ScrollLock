@@ -6,6 +6,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import com.eguy.Tweet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,9 @@ public class TweetDatabase extends SQLiteOpenHelper
     private static final String DATABASE_NAME = "TweetDictionaryDb";
     private static final int DATABASE_VERSION = 1;
 
-    private static final String TWEET_TABLE_NAME = "Tweet";
+    private static final String TWEET_TABLE_NAME = "JsonTweet";
 
-    // Tweet table columns
+    // JsonTweet table columns
     private static final String TWEET_ID = "TweetId";
     private static final String TWEET_TEXT = "Text";
     private static final String TWEET_USERID = "UserId";
@@ -26,6 +27,7 @@ public class TweetDatabase extends SQLiteOpenHelper
     // User table columns
     private static final String USER_TABLE_NAME = "User";
     private static final String USER_USERID = "UserId";
+    private static final String USER_USERNAME = "Username";
     private static final String USER_PROFILE_PIC = "ProfilePicture";
 
     public TweetDatabase(Context context)
@@ -33,23 +35,24 @@ public class TweetDatabase extends SQLiteOpenHelper
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public List<SavedTweet> getAllSavedTweets()
+    public List<Tweet> getTweets()
     {
-        List<SavedTweet> tweets = new ArrayList<SavedTweet>();
-        String[] columns = {TWEET_TEXT, TWEET_CREATED_AT, TWEET_USERID};
-
+        List<Tweet> tweets = new ArrayList<Tweet>();
         SQLiteDatabase database = null;
         Cursor cur = null;
+
         try
         {
             database = getReadableDatabase();
-            cur = database.query(TWEET_TABLE_NAME, columns, null, null, null, null, TWEET_CREATED_AT);
+            cur = database.rawQuery("SELECT " + TWEET_TEXT + "," + TWEET_CREATED_AT +  "," + USER_USERNAME + " FROM " + TWEET_TABLE_NAME +
+                    " t INNER JOIN " + USER_TABLE_NAME + " u ON u." + USER_USERID + " = t." + TWEET_USERID
+                    + " ORDER BY t." + TWEET_ID + " DESC ", null);
 
             if (cur.moveToFirst())
             {
                 do
                 {
-                    tweets.add(new SavedTweet(cur.getString(0), cur.getString(1), cur.getLong(2)));
+                    tweets.add(new Tweet(cur.getString(0), cur.getString(1), cur.getString(2)));
                 }
                 while (cur.moveToNext());
             }
@@ -68,6 +71,51 @@ public class TweetDatabase extends SQLiteOpenHelper
         return tweets;
     }
 
+    public void saveUsers(List<SavedUser> users)
+    {
+        if (users.size() <= 0)
+        {
+            Log.i("db", "No users to save, returning");
+            return;
+        }
+
+        SQLiteDatabase database = null;
+        try
+        {
+            database = getWritableDatabase();
+            DatabaseUtils.InsertHelper ih = new DatabaseUtils.InsertHelper(database, USER_TABLE_NAME);
+
+            final int userId = ih.getColumnIndex(USER_USERID);
+            final int username = ih.getColumnIndex(USER_USERNAME);
+            final int profilePicture = ih.getColumnIndex(USER_PROFILE_PIC);
+
+            try
+            {
+                for (SavedUser user : users)
+                {
+                    ih.prepareForInsert();
+
+                    ih.bind(userId, user.getUserId());
+                    ih.bind(username, user.getUsername());
+                    ih.bind(profilePicture, "NULL");
+
+                    ih.execute();
+                }
+            } finally
+            {
+                ih.close();
+            }
+        } catch (Exception e)
+        {
+            Log.e("ScrollLockDb", e.getClass().toString(), e);
+        }
+        finally
+        {
+            if(database != null)
+                database.close();
+        }
+    }
+
     public void saveTweets(List<SavedTweet> tweetsToSave)
     {
         if (tweetsToSave.size() <= 0)
@@ -84,6 +132,7 @@ public class TweetDatabase extends SQLiteOpenHelper
 
             final int text = ih.getColumnIndex(TWEET_TEXT);
             final int userId = ih.getColumnIndex(TWEET_USERID);
+            final int tweetId = ih.getColumnIndex(TWEET_ID);
             final int timestamp = ih.getColumnIndex(TWEET_CREATED_AT);
 
             try
@@ -92,6 +141,7 @@ public class TweetDatabase extends SQLiteOpenHelper
                 {
                     ih.prepareForInsert();
 
+                    ih.bind(tweetId, tweet.getTweetId());
                     ih.bind(userId, tweet.getTweetUserId());
                     ih.bind(text, tweet.getTweetText());
                     ih.bind(timestamp, tweet.getTweetCreatedAt());
@@ -119,13 +169,15 @@ public class TweetDatabase extends SQLiteOpenHelper
         try
         {
             db.execSQL("CREATE TABLE " + TWEET_TABLE_NAME +
-                    " (" + TWEET_USERID + "  BIGINT PRIMARY KEY NOT NULL," +
-                            TWEET_TEXT + " Definition VARCHAR(128) NOT NULL," +
-                            TWEET_CREATED_AT + " Definition VARCHAR(50) NOT NULL" +
-                            ");");
+                    " ("+ TWEET_ID + "  BIGINT PRIMARY KEY NOT NULL," +
+                    TWEET_USERID + "  BIGINT NOT NULL," +
+                    TWEET_TEXT + " VARCHAR(128) NOT NULL," +
+                    TWEET_CREATED_AT + " VARCHAR(50) NOT NULL" +
+                    ");");
             db.execSQL("CREATE TABLE " + USER_TABLE_NAME +
                     " (" + USER_USERID + "  BIGINT PRIMARY KEY NOT NULL," +
-                    USER_PROFILE_PIC + " BLOB NOT NULL" +
+                    USER_USERNAME + "  NVARCHAR(128) NOT NULL, " +
+                    USER_PROFILE_PIC + " BLOB" +
                     ");");
         }
         catch (Exception e)

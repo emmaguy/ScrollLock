@@ -16,13 +16,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class TimelineAdapater extends ArrayAdapter<SavedTweet>
+public class TimelineAdapater extends ArrayAdapter<Tweet>
 {
     private Context context;
     private int timelineLayoutId;
-    private List<SavedTweet> tweets;
+    private List<Tweet> tweets;
 
-    public TimelineAdapater(Context context, int timelineLayoutId, List<SavedTweet> tweets)
+    public TimelineAdapater(Context context, int timelineLayoutId, List<Tweet> tweets)
     {
         super(context, timelineLayoutId, tweets);
 
@@ -41,11 +41,10 @@ public class TimelineAdapater extends ArrayAdapter<SavedTweet>
         TextView tweetUser = (TextView) rowView.findViewById(R.id.username);
         TextView tweetCreatedAt = (TextView) rowView.findViewById(R.id.timestamp);
 
-        SavedTweet savedTweet = tweets.get(position);
+        Tweet savedTweet = tweets.get(position);
 
         tweetText.setText(savedTweet.getTweetText());
-        tweetUser.setText(String.valueOf(savedTweet.getTweetUserId()));
-
+        tweetUser.setText(String.valueOf(savedTweet.getPostedByUsername()));
         tweetCreatedAt.setText(getFormattedDateTime(savedTweet.getTweetCreatedAt()));
 
         return rowView;

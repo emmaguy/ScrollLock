@@ -25,6 +25,7 @@ public class TimelineActivity extends Activity
         setContentView(R.layout.timeline_activity);
 
         tweetDatabase = new TweetDatabase(getApplicationContext());
+tweetDatabase.refreshDb();
 
         AuthCredentialManager credentialManager = new AuthCredentialManager(this.getApplicationContext());
         if(!credentialManager.credentialsAvailable())
@@ -56,7 +57,7 @@ public class TimelineActivity extends Activity
 
     public void refreshListView()
     {
-        List<SavedTweet> tweets = tweetDatabase.getAllSavedTweets();
+        List<Tweet> tweets = tweetDatabase.getTweets();
 
         ListView lstTimeline = (ListView)findViewById(R.id.lstTimeline);
         lstTimeline.setAdapter(new TimelineAdapater(this, R.layout.tweet_timeline, tweets));

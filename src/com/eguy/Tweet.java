@@ -1,29 +1,30 @@
 package com.eguy;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class Tweet
 {
-    private JSONObject tweet;
+    private String tweetText;
+    private String createdAt;
+    private String postedByUsername;
 
-    public Tweet(JSONObject tweet)
+    public Tweet(String tweetText, String createdAt, String postedByUsername)
     {
-        this.tweet = tweet;
+        this.tweetText = tweetText;
+        this.createdAt = createdAt;
+        this.postedByUsername = postedByUsername;
     }
 
-    public String getTweetText() throws JSONException
+    public String getTweetText()
     {
-        return tweet.getString("text");
+        return tweetText;
     }
 
-    public String getTweetCreatedAt() throws JSONException
+    public String getPostedByUsername()
     {
-        return tweet.getString("created_at");
+        return postedByUsername;
     }
 
-    public long getTweetUserId() throws JSONException
+    public String getTweetCreatedAt()
     {
-        return tweet.getLong("id");
+        return createdAt;
     }
 }

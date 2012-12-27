@@ -3,7 +3,7 @@ package com.eguy;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import com.eguy.db.SavedTweet;
+import com.eguy.db.SavedUser;
 import com.eguy.db.TweetDatabase;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -13,21 +13,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
-public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
+public class LookupUsersAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 {
-    private final String USER_TIMELINE_URL = "https://api.twitter.com/1.1/statuses/home_timeline.json";
+    private final String USER_LOOKUP_URL = "https://api.twitter.com/1/users/lookup.json";
     HttpClient client;
+    private Iterable<Long> userIds;
     private OAuthProviderAndConsumer producerAndConsumer;
     private AuthCredentialManager credentialManager;
     private TweetDatabase tweetDatabase;
     private TimelineActivity timelineActivity;
 
-    public LoadTweetsAndUpdateDbTask(OAuthProviderAndConsumer producerAndConsumer, AuthCredentialManager credentialManager, TweetDatabase tweetDatabase, TimelineActivity timelineActivity)
+    public LookupUsersAndUpdateDbTask(Iterable<Long> userIds, OAuthProviderAndConsumer producerAndConsumer, AuthCredentialManager credentialManager, TweetDatabase tweetDatabase, TimelineActivity timelineActivity)
     {
+        this.userIds = userIds;
         this.producerAndConsumer = producerAndConsumer;
         this.credentialManager = credentialManager;
         this.tweetDatabase = tweetDatabase;
@@ -41,10 +41,19 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
     {
         try
         {
-            Uri sUri = Uri.parse(USER_TIMELINE_URL);
+            Uri sUri = Uri.parse(USER_LOOKUP_URL);
             Uri.Builder builder = sUri.buildUpon();
-            builder.appendQueryParameter("screen_name", credentialManager.getUsername());
-            builder.appendQueryParameter("count", "200");
+            StringBuilder usersToLooup = new StringBuilder();
+            for(Long l : userIds)
+            {
+                usersToLooup.append(l);
+                usersToLooup.append(",");
+            }
+
+            String ids = usersToLooup.toString();
+            String usersnamesWithoutTrailingComma = ids.substring(0, ids.length() - 1);
+            builder.appendQueryParameter("user_id", usersnamesWithoutTrailingComma);
+            builder.appendQueryParameter("include_entities", "0");
 
             String uri = builder.build().toString();
             HttpGet get = new HttpGet(uri);
@@ -68,19 +77,17 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
             return;
         try
         {
-            List<SavedTweet> tweets = new ArrayList<SavedTweet>();
-            Set<Long> userIds = new LinkedHashSet<Long>();
+            List<SavedUser> users = new ArrayList<SavedUser>();
             for(int i = 0; i < jsonArray.length(); ++i)
             {
                 JSONObject status = jsonArray.getJSONObject(i);
-                JsonTweet tweet = new JsonTweet(status);
-                SavedTweet savedTweet = new SavedTweet(tweet.getTweetId(), tweet.getTweetText(), tweet.getTweetCreatedAt(), tweet.getTweetUserId());
-                tweets.add(savedTweet);
-                userIds.add(tweet.getTweetUserId());
+                JsonUser user = new JsonUser(status);
+                SavedUser savedUser = new SavedUser(user.getUserId(), user.getUsername(), user.getProfilePicUrl());
+                users.add(savedUser);
             }
 
-            new LookupUsersAndUpdateDbTask(userIds, producerAndConsumer, credentialManager, tweetDatabase, timelineActivity).execute();
-            tweetDatabase.saveTweets(tweets);
+            tweetDatabase.saveUsers(users);
+            timelineActivity.refreshListView();
         }
         catch (JSONException e)
         {
