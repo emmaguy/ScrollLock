@@ -36,7 +36,7 @@ public class TweetDatabase extends SQLiteOpenHelper
     public List<SavedTweet> getAllSavedTweets()
     {
         List<SavedTweet> tweets = new ArrayList<SavedTweet>();
-        String[] columns = {TWEET_ID, TWEET_TEXT, TWEET_CREATED_AT};
+        String[] columns = {TWEET_TEXT, TWEET_CREATED_AT, TWEET_USERID};
 
         SQLiteDatabase database = null;
         Cursor cur = null;
@@ -49,7 +49,7 @@ public class TweetDatabase extends SQLiteOpenHelper
             {
                 do
                 {
-                    tweets.add(new SavedTweet(cur.getLong(0), cur.getString(1), cur.getString(2)));
+                    tweets.add(new SavedTweet(cur.getString(0), cur.getString(1), cur.getLong(2)));
                 }
                 while (cur.moveToNext());
             }
@@ -82,8 +82,9 @@ public class TweetDatabase extends SQLiteOpenHelper
             database = getWritableDatabase();
             DatabaseUtils.InsertHelper ih = new DatabaseUtils.InsertHelper(database, TWEET_TABLE_NAME);
 
-            final int id = ih.getColumnIndex(TWEET_ID);
             final int text = ih.getColumnIndex(TWEET_TEXT);
+            final int userId = ih.getColumnIndex(TWEET_USERID);
+            final int timestamp = ih.getColumnIndex(TWEET_CREATED_AT);
 
             try
             {
@@ -91,8 +92,9 @@ public class TweetDatabase extends SQLiteOpenHelper
                 {
                     ih.prepareForInsert();
 
-                    ih.bind(id, tweet.getId());
+                    ih.bind(userId, tweet.getTweetUserId());
                     ih.bind(text, tweet.getTweetText());
+                    ih.bind(timestamp, tweet.getTweetCreatedAt());
 
                     ih.execute();
                 }
@@ -117,14 +119,13 @@ public class TweetDatabase extends SQLiteOpenHelper
         try
         {
             db.execSQL("CREATE TABLE " + TWEET_TABLE_NAME +
-                    " (" + TWEET_ID + "  BIGINT PRIMARY KEY," +
-                            TWEET_TEXT + " Definition VARCHAR(128)," +
-                            TWEET_USERID + " Definition BIGINT," +
-                            TWEET_CREATED_AT + " Definition VARCHAR(50)" +
+                    " (" + TWEET_USERID + "  BIGINT PRIMARY KEY NOT NULL," +
+                            TWEET_TEXT + " Definition VARCHAR(128) NOT NULL," +
+                            TWEET_CREATED_AT + " Definition VARCHAR(50) NOT NULL" +
                             ");");
             db.execSQL("CREATE TABLE " + USER_TABLE_NAME +
-                    " (" + USER_USERID + "  BIGINT PRIMARY KEY," +
-                    USER_PROFILE_PIC + " BLOB" +
+                    " (" + USER_USERID + "  BIGINT PRIMARY KEY NOT NULL," +
+                    USER_PROFILE_PIC + " BLOB NOT NULL" +
                     ");");
         }
         catch (Exception e)

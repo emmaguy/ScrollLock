@@ -17,13 +17,13 @@ public class Tweet
         return tweet.getString("text");
     }
 
-    public long getTweetId() throws JSONException
-    {
-        return tweet.getLong("id");
-    }
-
     public String getTweetCreatedAt() throws JSONException
     {
         return tweet.getString("created_at");
+    }
+
+    public long getTweetUserId() throws JSONException
+    {
+        return tweet.getLong("id");
     }
 }

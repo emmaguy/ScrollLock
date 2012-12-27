@@ -25,7 +25,6 @@ public class TimelineActivity extends Activity
         setContentView(R.layout.timeline_activity);
 
         tweetDatabase = new TweetDatabase(getApplicationContext());
-        tweetDatabase.refreshDb();
 
         AuthCredentialManager credentialManager = new AuthCredentialManager(this.getApplicationContext());
         if(!credentialManager.credentialsAvailable())

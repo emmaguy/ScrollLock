@@ -21,36 +21,40 @@
             android:layout_toRightOf="@id/avatar">
 
         <LinearLayout
-                        android:id="@+id/usernameAndTimestampLayout"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:orientation="horizontal">
+                android:id="@+id/usernameAndTimestampLayout"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal">
 
-            <TextView android:id="@+id/username"
-                      android:gravity="left"
-                      android:textStyle="bold"
-                      android:textColor="#fbfbfb"
-                      android:layout_height="15dp"
-                      android:layout_width="fill_parent"
-                      android:layout_weight="1"
-                      android:paddingRight="1dp"/>
+            <TextView
+                    android:id="@+id/username"
+                    android:paddingLeft="1dp"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:textColor="#fbfbfb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
 
-            <TextView android:id="@+id/timestamp"
-                      android:gravity="right"
-                      android:textStyle="bold"
-                      android:textColor="#fbfbfb"
-                      android:layout_width="fill_parent"
-                      android:layout_height="15dp"
-                      android:layout_weight="1"/>
+            <TextView
+                    android:id="@+id/timestamp"
+                    android:paddingLeft="1dp"
+                    android:gravity="right"
+                    android:textStyle="bold"
+                    android:textColor="#fbfbfb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
         </LinearLayout>
 
-        <TextView android:id="@+id/tweetText"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:gravity="left"
-                  android:textStyle="bold"
-                  android:textColor="#66FF33"
-                  android:paddingLeft="3dp"/>
+        <TextView
+                android:id="@+id/tweetText"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:textColor="#66FF33"
+                android:paddingLeft="3dp"/>
 
     </LinearLayout>
 

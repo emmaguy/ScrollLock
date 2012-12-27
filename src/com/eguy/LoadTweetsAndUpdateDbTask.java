@@ -86,7 +86,7 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
             {
                 JSONObject status = jsonArray.getJSONObject(i);
                 Tweet tweet = new Tweet(status);
-                SavedTweet savedTweet = new SavedTweet(tweet.getTweetId(), tweet.getTweetText(), tweet.getTweetCreatedAt());
+                SavedTweet savedTweet = new SavedTweet(tweet.getTweetText(), tweet.getTweetCreatedAt(), tweet.getTweetUserId());
                 tweets.add(savedTweet);
             }
 
