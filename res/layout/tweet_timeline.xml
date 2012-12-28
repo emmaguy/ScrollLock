@@ -10,9 +10,7 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:id="@+id/avatar"
-            android:src="@drawable/scroll_lock"
-            android:layout_alignParentLeft="true"
-            android:contentDescription="avatar"/>
+            android:layout_centerVertical="true"/>
 
     <LinearLayout
             android:layout_height="wrap_content"
@@ -31,7 +29,7 @@
                     android:paddingLeft="1dp"
                     android:gravity="left"
                     android:textStyle="bold"
-                    android:textColor="#fbfbfb"
+                    android:textColor="#0e0e0e"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"/>
@@ -41,7 +39,7 @@
                     android:paddingLeft="1dp"
                     android:gravity="right"
                     android:textStyle="bold"
-                    android:textColor="#fbfbfb"
+                    android:textColor="#0e0e0e"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"/>
@@ -53,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:gravity="left"
                 android:textStyle="bold"
-                android:textColor="#66FF33"
+                android:textColor="#000000"
                 android:paddingLeft="3dp"/>
 
     </LinearLayout>

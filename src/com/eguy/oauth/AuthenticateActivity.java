@@ -1,4 +1,4 @@
-package com.eguy;
+package com.eguy.oauth;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import com.eguy.R;
+import com.eguy.oauth.AuthCredentialManager;
+import com.eguy.oauth.OAuthObtainRequestTokenAndRedirectToBrowser;
+import com.eguy.oauth.OAuthProviderAndConsumer;
+import com.eguy.ui.TimelineActivity;
 import junit.framework.Assert;
 import oauth.signpost.OAuth;
 import oauth.signpost.OAuthConsumer;

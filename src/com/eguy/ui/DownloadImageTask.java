@@ -1,4 +1,4 @@
-package com.eguy;
+package com.eguy.ui;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

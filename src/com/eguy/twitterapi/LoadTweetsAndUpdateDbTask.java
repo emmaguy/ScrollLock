@@ -1,10 +1,13 @@
-package com.eguy;
+package com.eguy.twitterapi;
 
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.eguy.db.SavedTweet;
 import com.eguy.db.TweetDatabase;
+import com.eguy.oauth.AuthCredentialManager;
+import com.eguy.oauth.OAuthProviderAndConsumer;
+import com.eguy.ui.TimelineActivity;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;

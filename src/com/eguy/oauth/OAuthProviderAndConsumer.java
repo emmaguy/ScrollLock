@@ -1,5 +1,6 @@
-package com.eguy;
+package com.eguy.oauth;
 
+import com.eguy.ConsumerInfo;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 import oauth.signpost.basic.DefaultOAuthProvider;

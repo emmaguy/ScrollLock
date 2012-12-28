@@ -1,4 +1,4 @@
-package com.eguy;
+package com.eguy.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,7 +7,12 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ListView;
+import com.eguy.oauth.AuthCredentialManager;
+import com.eguy.oauth.AuthenticateActivity;
+import com.eguy.R;
 import com.eguy.db.TweetDatabase;
+import com.eguy.oauth.OAuthProviderAndConsumer;
+import com.eguy.twitterapi.LoadTweetsAndUpdateDbTask;
 import oauth.signpost.OAuthConsumer;
 
 import java.util.List;
@@ -24,7 +29,7 @@ public class TimelineActivity extends Activity
         setContentView(R.layout.timeline_activity);
 
         tweetDatabase = new TweetDatabase(getApplicationContext());
-tweetDatabase.refreshDb();
+//tweetDatabase.refreshDb();
 
         AuthCredentialManager credentialManager = new AuthCredentialManager(this.getApplicationContext());
         if(!credentialManager.credentialsAvailable())

@@ -1,4 +1,4 @@
-package com.eguy;
+package com.eguy.twitterapi;
 
 import org.json.JSONException;
 import org.json.JSONObject;

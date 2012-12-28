@@ -1,4 +1,4 @@
-package com.eguy;
+package com.eguy.oauth;
 
 import android.content.Context;
 import android.content.SharedPreferences;

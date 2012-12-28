@@ -1,4 +1,4 @@
-package com.eguy;
+package com.eguy.ui;
 
 public class Tweet
 {

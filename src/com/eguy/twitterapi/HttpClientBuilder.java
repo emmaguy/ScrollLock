@@ -1,4 +1,4 @@
-package com.eguy;
+package com.eguy.twitterapi;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.scheme.PlainSocketFactory;
