@@ -22,4 +22,9 @@ public class SavedUser
     {
         return username;
     }
+
+    public String getProfilePictureUrl()
+    {
+        return profilePicUrl;
+    }
 }

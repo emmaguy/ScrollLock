@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ListView;
-import com.eguy.db.SavedTweet;
 import com.eguy.db.TweetDatabase;
 import oauth.signpost.OAuthConsumer;
 
@@ -60,6 +59,6 @@ tweetDatabase.refreshDb();
         List<Tweet> tweets = tweetDatabase.getTweets();
 
         ListView lstTimeline = (ListView)findViewById(R.id.lstTimeline);
-        lstTimeline.setAdapter(new TimelineAdapater(this, R.layout.tweet_timeline, tweets));
+        lstTimeline.setAdapter(new TimelineAdapter(this, R.layout.tweet_timeline, tweets));
     }
 }

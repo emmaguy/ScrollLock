@@ -16,13 +16,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class TimelineAdapater extends ArrayAdapter<Tweet>
+public class TimelineAdapter extends ArrayAdapter<Tweet>
 {
     private Context context;
     private int timelineLayoutId;
     private List<Tweet> tweets;
 
-    public TimelineAdapater(Context context, int timelineLayoutId, List<Tweet> tweets)
+    public TimelineAdapter(Context context, int timelineLayoutId, List<Tweet> tweets)
     {
         super(context, timelineLayoutId, tweets);
 
@@ -40,8 +40,11 @@ public class TimelineAdapater extends ArrayAdapter<Tweet>
         TextView tweetText = (TextView) rowView.findViewById(R.id.tweetText);
         TextView tweetUser = (TextView) rowView.findViewById(R.id.username);
         TextView tweetCreatedAt = (TextView) rowView.findViewById(R.id.timestamp);
+        ImageView profilePic = (ImageView) rowView.findViewById(R.id.avatar);
 
         Tweet savedTweet = tweets.get(position);
+
+        new DownloadImageTask(profilePic).execute(savedTweet.getProfilePictureUrl());
 
         tweetText.setText(savedTweet.getTweetText());
         tweetUser.setText(String.valueOf(savedTweet.getPostedByUsername()));

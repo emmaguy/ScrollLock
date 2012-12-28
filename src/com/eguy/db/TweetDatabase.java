@@ -28,7 +28,7 @@ public class TweetDatabase extends SQLiteOpenHelper
     private static final String USER_TABLE_NAME = "User";
     private static final String USER_USERID = "UserId";
     private static final String USER_USERNAME = "Username";
-    private static final String USER_PROFILE_PIC = "ProfilePicture";
+    private static final String USER_PROFILE_PIC_URL = "ProfilePicture";
 
     public TweetDatabase(Context context)
     {
@@ -44,7 +44,7 @@ public class TweetDatabase extends SQLiteOpenHelper
         try
         {
             database = getReadableDatabase();
-            cur = database.rawQuery("SELECT " + TWEET_TEXT + "," + TWEET_CREATED_AT +  "," + USER_USERNAME + " FROM " + TWEET_TABLE_NAME +
+            cur = database.rawQuery("SELECT " + TWEET_TEXT + "," + TWEET_CREATED_AT +  "," + USER_USERNAME + "," + USER_PROFILE_PIC_URL + " FROM " + TWEET_TABLE_NAME +
                     " t INNER JOIN " + USER_TABLE_NAME + " u ON u." + USER_USERID + " = t." + TWEET_USERID
                     + " ORDER BY t." + TWEET_ID + " DESC ", null);
 
@@ -52,7 +52,7 @@ public class TweetDatabase extends SQLiteOpenHelper
             {
                 do
                 {
-                    tweets.add(new Tweet(cur.getString(0), cur.getString(1), cur.getString(2)));
+                    tweets.add(new Tweet(cur.getString(0), cur.getString(1), cur.getString(2), cur.getString(3)));
                 }
                 while (cur.moveToNext());
             }
@@ -87,7 +87,7 @@ public class TweetDatabase extends SQLiteOpenHelper
 
             final int userId = ih.getColumnIndex(USER_USERID);
             final int username = ih.getColumnIndex(USER_USERNAME);
-            final int profilePicture = ih.getColumnIndex(USER_PROFILE_PIC);
+            final int profilePicture = ih.getColumnIndex(USER_PROFILE_PIC_URL);
 
             try
             {
@@ -97,7 +97,7 @@ public class TweetDatabase extends SQLiteOpenHelper
 
                     ih.bind(userId, user.getUserId());
                     ih.bind(username, user.getUsername());
-                    ih.bind(profilePicture, "NULL");
+                    ih.bind(profilePicture, user.getProfilePictureUrl());
 
                     ih.execute();
                 }
@@ -171,13 +171,13 @@ public class TweetDatabase extends SQLiteOpenHelper
             db.execSQL("CREATE TABLE " + TWEET_TABLE_NAME +
                     " ("+ TWEET_ID + "  BIGINT PRIMARY KEY NOT NULL," +
                     TWEET_USERID + "  BIGINT NOT NULL," +
-                    TWEET_TEXT + " VARCHAR(128) NOT NULL," +
-                    TWEET_CREATED_AT + " VARCHAR(50) NOT NULL" +
+                    TWEET_TEXT + " NVARCHAR(128) NOT NULL," +
+                    TWEET_CREATED_AT + " NVARCHAR(50) NOT NULL" +
                     ");");
             db.execSQL("CREATE TABLE " + USER_TABLE_NAME +
                     " (" + USER_USERID + "  BIGINT PRIMARY KEY NOT NULL," +
                     USER_USERNAME + "  NVARCHAR(128) NOT NULL, " +
-                    USER_PROFILE_PIC + " BLOB" +
+                    USER_PROFILE_PIC_URL + " NVARCHAR(1024)" +
                     ");");
         }
         catch (Exception e)
