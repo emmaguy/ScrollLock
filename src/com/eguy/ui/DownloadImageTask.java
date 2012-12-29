@@ -1,50 +1,63 @@
 package com.eguy.ui;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
-import com.eguy.db.TweetDatabase;
+import com.eguy.db.TweetProvider;
+import org.apache.http.util.ByteArrayBuffer;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
 
-public class DownloadImageTask extends AsyncTask<String, Void, Bitmap>
+public class DownloadImageTask extends AsyncTask<String, Void, byte[]>
 {
     private ImageView imageView;
     private long userId;
-    private TweetDatabase tweetDatabase;
-    private CursorAdapter cursorAdapter;
+    private Context context;
 
-    public DownloadImageTask(ImageView view, long userId, TweetDatabase tweetDatabase, CursorAdapter cursorAdapter)
+    public DownloadImageTask(ImageView view, long userId, Context context)
     {
         this.imageView = view;
         this.userId = userId;
-        this.tweetDatabase = tweetDatabase;
-        this.cursorAdapter = cursorAdapter;
+        this.context = context;
     }
 
-    protected Bitmap doInBackground(String... urls)
+    protected byte[] doInBackground(String... urls)
     {
         String imageUrl = urls[0];
         Bitmap bitmap = null;
         try
         {
             InputStream in = new URL(imageUrl).openStream();
-            bitmap = BitmapFactory.decodeStream(in);
+            BufferedInputStream bis = new BufferedInputStream(in);
+
+            ByteArrayBuffer baf = new ByteArrayBuffer(500);
+            int current = 0;
+            while ((current = bis.read()) != -1)
+            {
+                baf.append((byte) current);
+            }
+
+            return baf.toByteArray();
         } catch (Exception e)
         {
             Log.e("ScrollLock", e.getClass().toString(), e);
         }
-        return bitmap;
+        return null;
     }
 
-    protected void onPostExecute(Bitmap result)
+    protected void onPostExecute(byte[] bytes)
     {
-        imageView.setImageBitmap(result);
-        tweetDatabase.addUserProfilePicture(result, userId);
-        cursorAdapter.notifyDataSetChanged();
+        ContentValues values = new ContentValues();
+        values.put(TweetProvider.USER_USER_ID, userId);
+        values.put(TweetProvider.USER_PROFILE_PIC, bytes);
+        Log.i("ScrollLock","Insert profile image for user: " + userId);
+        context.getContentResolver().insert(TweetProvider.USER_URI, values);
     }
 }

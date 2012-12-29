@@ -1,24 +1,28 @@
 package com.eguy.ui;
 
 import android.app.Activity;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.*;
-import com.eguy.SettingsManager;
-import com.eguy.oauth.AuthenticateActivity;
 import com.eguy.R;
-import com.eguy.db.TweetDatabase;
+import com.eguy.SettingsManager;
+import com.eguy.db.TweetProvider;
+import com.eguy.oauth.AuthenticateActivity;
 import com.eguy.oauth.OAuthProviderAndConsumer;
 import com.eguy.twitterapi.LoadTweetsAndUpdateDbTask;
 import oauth.signpost.OAuthConsumer;
 
-public class TimelineActivity extends Activity
+public class TimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>
 {
     private OAuthConsumer consumer;
-    private TweetDatabase tweetDatabase;
-    private CursorAdapter cursorAdapter;
+    private TweetProvider tweetProvider;
+    private CursorAdapter adapter;
 
     public void onCreate(Bundle savedInstanceState)
     {
@@ -27,18 +31,15 @@ public class TimelineActivity extends Activity
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.timeline_listview);
 
-        tweetDatabase = new TweetDatabase(getApplicationContext());
-        //tweetDatabase.refreshDb();
-
-        cursorAdapter = new TimelineAdapter(this, tweetDatabase.getTweetsCursor(), tweetDatabase);
-        ((ListView)findViewById(R.id.lstTimeline)).setAdapter(cursorAdapter);
+        getLoaderManager().initLoader(0, null, this);
+        adapter = new TimelineAdapter(this, null);
+        ((ListView) findViewById(R.id.lstTimeline)).setAdapter(adapter);
 
         SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
-        if(!settingsManager.credentialsAvailable())
+        if (!settingsManager.credentialsAvailable())
         {
             startActivity(new Intent(this, AuthenticateActivity.class));
-        }
-        else
+        } else
         {
             getLatestTweets();
         }
@@ -64,6 +65,25 @@ public class TimelineActivity extends Activity
     {
         SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
         OAuthProviderAndConsumer producerAndConsumer = new OAuthProviderAndConsumer(settingsManager);
-        new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, tweetDatabase).execute();
+        new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, this.getApplicationContext()).execute();
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
+    {
+        String[] projection = { TweetProvider.TWEET_TEXT };
+        return new CursorLoader(this, TweetProvider.TWEET_URI, projection, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
+    {
+        adapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader)
+    {
+        adapter.swapCursor(null);
     }
 }

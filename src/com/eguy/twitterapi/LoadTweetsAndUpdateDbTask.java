@@ -1,12 +1,12 @@
 package com.eguy.twitterapi;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.SimpleCursorAdapter;
 import com.eguy.SettingsManager;
-import com.eguy.db.ProcessedTweet;
-import com.eguy.db.TweetDatabase;
+import com.eguy.db.TweetProvider;
 import com.eguy.oauth.OAuthProviderAndConsumer;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -15,22 +15,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
 public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 {
     private final String HOME_TIMELINE_URL = "https://api.twitter.com/1.1/statuses/home_timeline.json";
     private OAuthProviderAndConsumer producerAndConsumer;
     private SettingsManager settingsManager;
-    private TweetDatabase tweetDatabase;
+    private Context context;
     private HttpClient client;
 
-    public LoadTweetsAndUpdateDbTask(OAuthProviderAndConsumer producerAndConsumer, SettingsManager settingsManager, TweetDatabase tweetDatabase)
+    public LoadTweetsAndUpdateDbTask(OAuthProviderAndConsumer producerAndConsumer, SettingsManager settingsManager, Context context)
     {
         this.producerAndConsumer = producerAndConsumer;
         this.settingsManager = settingsManager;
-        this.tweetDatabase = tweetDatabase;
+        this.context = context;
 
         client = new HttpClientBuilder().Builder();
     }
@@ -72,18 +71,23 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
             return;
         try
         {
-            List<ProcessedTweet> tweets = new ArrayList<ProcessedTweet>();
+            ContentValues[] tweets = new ContentValues[jsonArray.length()];
             for(int i = 0; i < jsonArray.length(); ++i)
             {
                 JSONObject status = jsonArray.getJSONObject(i);
                 JsonTweet tweet = new JsonTweet(status);
-                ProcessedTweet savedTweet = new ProcessedTweet(tweet.getTweetId(), tweet.getText(), tweet.getTweetCreatedAt(), tweet.getUserId(), tweet.getUsername(), tweet.getProfilePicUrl());
-                tweets.add(savedTweet);
-            }
-            settingsManager.setTweetSinceId(tweets.get(tweets.size() - 1).getTweetId());
-            tweetDatabase.saveTweets(tweets);
 
-            //Toast.makeText(, "done getting tweets", Toast.LENGTH_SHORT).show();
+                ContentValues tweetValue = new ContentValues();
+                tweetValue.put(TweetProvider.TWEET_ID, tweet.getTweetId());
+                tweetValue.put(TweetProvider.TWEET_TEXT, tweet.getText());
+                tweetValue.put(TweetProvider.TWEET_CREATED_AT, tweet.getTweetCreatedAt());
+                tweetValue.put(TweetProvider.TWEET_USER_ID, tweet.getUserId());
+                tweetValue.put(TweetProvider.TWEET_USERNAME, tweet.getUsername());
+                tweetValue.put(TweetProvider.TWEET_PROFILE_PIC_URL, tweet.getProfilePicUrl());
+                tweets[i] = tweetValue;
+            }
+
+            context.getContentResolver().bulkInsert(TweetProvider.TWEET_URI, tweets);
         }
         catch (JSONException e)
         {
