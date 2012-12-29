@@ -5,9 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.ListView;
-import com.eguy.oauth.AuthCredentialManager;
+import android.widget.*;
+import com.eguy.SettingsManager;
 import com.eguy.oauth.AuthenticateActivity;
 import com.eguy.R;
 import com.eguy.db.TweetDatabase;
@@ -15,24 +14,27 @@ import com.eguy.oauth.OAuthProviderAndConsumer;
 import com.eguy.twitterapi.LoadTweetsAndUpdateDbTask;
 import oauth.signpost.OAuthConsumer;
 
-import java.util.List;
-
 public class TimelineActivity extends Activity
 {
     private OAuthConsumer consumer;
     private TweetDatabase tweetDatabase;
+    private CursorAdapter cursorAdapter;
 
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.timeline_activity);
+        setContentView(R.layout.timeline_listview);
 
         tweetDatabase = new TweetDatabase(getApplicationContext());
-//tweetDatabase.refreshDb();
+        //tweetDatabase.refreshDb();
 
-        AuthCredentialManager credentialManager = new AuthCredentialManager(this.getApplicationContext());
-        if(!credentialManager.credentialsAvailable())
+        cursorAdapter = new TimelineAdapter(this, tweetDatabase.getTweetsCursor(), tweetDatabase);
+        ((ListView)findViewById(R.id.lstTimeline)).setAdapter(cursorAdapter);
+
+        SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
+        if(!settingsManager.credentialsAvailable())
         {
             startActivity(new Intent(this, AuthenticateActivity.class));
         }
@@ -41,12 +43,18 @@ public class TimelineActivity extends Activity
             getLatestTweets();
         }
 
+        initialiseRefreshBar();
+    }
+
+    private void initialiseRefreshBar()
+    {
         Button btnLogin = (Button) findViewById(R.id.refreshBar);
         btnLogin.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
+                Toast.makeText(getApplicationContext(), "refreshing...", Toast.LENGTH_SHORT).show();
                 getLatestTweets();
             }
         });
@@ -54,16 +62,8 @@ public class TimelineActivity extends Activity
 
     private void getLatestTweets()
     {
-        AuthCredentialManager credentialManager = new AuthCredentialManager(this.getApplicationContext());
-        OAuthProviderAndConsumer producerAndConsumer = new OAuthProviderAndConsumer(credentialManager);
-        new LoadTweetsAndUpdateDbTask(producerAndConsumer, credentialManager, tweetDatabase, this).execute();
-    }
-
-    public void refreshListView()
-    {
-        List<Tweet> tweets = tweetDatabase.getTweets();
-
-        ListView lstTimeline = (ListView)findViewById(R.id.lstTimeline);
-        lstTimeline.setAdapter(new TimelineAdapter(this, R.layout.tweet_timeline, tweets));
+        SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
+        OAuthProviderAndConsumer producerAndConsumer = new OAuthProviderAndConsumer(settingsManager);
+        new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, tweetDatabase).execute();
     }
 }

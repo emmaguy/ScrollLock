@@ -3,11 +3,11 @@ package com.eguy.twitterapi;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import com.eguy.db.SavedTweet;
+import android.widget.SimpleCursorAdapter;
+import com.eguy.SettingsManager;
+import com.eguy.db.ProcessedTweet;
 import com.eguy.db.TweetDatabase;
-import com.eguy.oauth.AuthCredentialManager;
 import com.eguy.oauth.OAuthProviderAndConsumer;
-import com.eguy.ui.TimelineActivity;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -16,25 +16,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 {
-    private final String USER_TIMELINE_URL = "https://api.twitter.com/1.1/statuses/home_timeline.json";
-    HttpClient client;
+    private final String HOME_TIMELINE_URL = "https://api.twitter.com/1.1/statuses/home_timeline.json";
     private OAuthProviderAndConsumer producerAndConsumer;
-    private AuthCredentialManager credentialManager;
+    private SettingsManager settingsManager;
     private TweetDatabase tweetDatabase;
-    private TimelineActivity timelineActivity;
+    private HttpClient client;
 
-    public LoadTweetsAndUpdateDbTask(OAuthProviderAndConsumer producerAndConsumer, AuthCredentialManager credentialManager, TweetDatabase tweetDatabase, TimelineActivity timelineActivity)
+    public LoadTweetsAndUpdateDbTask(OAuthProviderAndConsumer producerAndConsumer, SettingsManager settingsManager, TweetDatabase tweetDatabase)
     {
         this.producerAndConsumer = producerAndConsumer;
-        this.credentialManager = credentialManager;
+        this.settingsManager = settingsManager;
         this.tweetDatabase = tweetDatabase;
-        this.timelineActivity = timelineActivity;
 
         client = new HttpClientBuilder().Builder();
     }
@@ -44,10 +40,15 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
     {
         try
         {
-            Uri sUri = Uri.parse(USER_TIMELINE_URL);
+            Uri sUri = Uri.parse(HOME_TIMELINE_URL);
             Uri.Builder builder = sUri.buildUpon();
-            builder.appendQueryParameter("screen_name", credentialManager.getUsername());
+            builder.appendQueryParameter("screen_name", settingsManager.getUsername());
             builder.appendQueryParameter("count", "200");
+
+            if(settingsManager.getTweetSinceId() != 0)
+            {
+                builder.appendQueryParameter("since_id", String.valueOf(settingsManager.getTweetSinceId()));
+            }
 
             String uri = builder.build().toString();
             HttpGet get = new HttpGet(uri);
@@ -71,19 +72,18 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
             return;
         try
         {
-            List<SavedTweet> tweets = new ArrayList<SavedTweet>();
-            Set<Long> userIds = new LinkedHashSet<Long>();
+            List<ProcessedTweet> tweets = new ArrayList<ProcessedTweet>();
             for(int i = 0; i < jsonArray.length(); ++i)
             {
                 JSONObject status = jsonArray.getJSONObject(i);
                 JsonTweet tweet = new JsonTweet(status);
-                SavedTweet savedTweet = new SavedTweet(tweet.getTweetId(), tweet.getTweetText(), tweet.getTweetCreatedAt(), tweet.getTweetUserId());
+                ProcessedTweet savedTweet = new ProcessedTweet(tweet.getTweetId(), tweet.getText(), tweet.getTweetCreatedAt(), tweet.getUserId(), tweet.getUsername(), tweet.getProfilePicUrl());
                 tweets.add(savedTweet);
-                userIds.add(tweet.getTweetUserId());
             }
-
-            new LookupUsersAndUpdateDbTask(userIds, producerAndConsumer, credentialManager, tweetDatabase, timelineActivity).execute();
+            settingsManager.setTweetSinceId(tweets.get(tweets.size() - 1).getTweetId());
             tweetDatabase.saveTweets(tweets);
+
+            //Toast.makeText(, "done getting tweets", Toast.LENGTH_SHORT).show();
         }
         catch (JSONException e)
         {

@@ -6,13 +6,15 @@ import org.json.JSONObject;
 public class JsonTweet
 {
     private JSONObject tweet;
+    private JSONObject user;
 
-    public JsonTweet(JSONObject tweet)
+    public JsonTweet(JSONObject tweet) throws JSONException
     {
         this.tweet = tweet;
+        user = tweet.getJSONObject("user");
     }
 
-    public String getTweetText() throws JSONException
+    public String getText() throws JSONException
     {
         return tweet.getString("text");
     }
@@ -22,14 +24,23 @@ public class JsonTweet
         return tweet.getString("created_at");
     }
 
-    public long getTweetUserId() throws JSONException
-    {
-        JSONObject user = tweet.getJSONObject("user");
-        return user.getLong("id");
-    }
-
     public long getTweetId() throws JSONException
     {
         return tweet.getLong("id");
+    }
+
+    public long getUserId() throws JSONException
+    {
+        return user.getLong("id");
+    }
+
+    public String getUsername() throws JSONException
+    {
+        return user.getString("screen_name");
+    }
+
+    public String getProfilePicUrl() throws JSONException
+    {
+        return user.getString("profile_image_url");
     }
 }

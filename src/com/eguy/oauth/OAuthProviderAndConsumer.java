@@ -1,6 +1,7 @@
 package com.eguy.oauth;
 
 import com.eguy.ConsumerInfo;
+import com.eguy.SettingsManager;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 import oauth.signpost.basic.DefaultOAuthProvider;
@@ -10,19 +11,19 @@ public class OAuthProviderAndConsumer
 {
     public final String CALLBACK_URL = "scrolllock://callback";
 
-    OAuthProvider provider = new DefaultOAuthProvider(
-            "https://api.twitter.com/oauth/request_token",
-            "https://api.twitter.com/oauth/access_token",
-            "https://api.twitter.com/oauth/authorize");
+    private OAuthConsumer consumer;
+    private OAuthProvider provider = new DefaultOAuthProvider(
+                                        "https://api.twitter.com/oauth/request_token",
+                                        "https://api.twitter.com/oauth/access_token",
+                                        "https://api.twitter.com/oauth/authorize");
 
-    OAuthConsumer consumer;
 
-    public OAuthProviderAndConsumer(AuthCredentialManager credentialManager)
+    public OAuthProviderAndConsumer(SettingsManager settingsManager)
     {
         consumer = new CommonsHttpOAuthConsumer(ConsumerInfo.CONSUMER_KEY, ConsumerInfo.CONSUMER_SECRET);
 
-        String userToken = credentialManager.getUserToken();
-        String userTokenSecret = credentialManager.getUserTokenSecret();
+        String userToken = settingsManager.getUserToken();
+        String userTokenSecret = settingsManager.getUserTokenSecret();
 
         if(!userToken.isEmpty() && !userTokenSecret.isEmpty())
             consumer.setTokenWithSecret(userToken, userTokenSecret);

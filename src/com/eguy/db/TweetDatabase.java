@@ -5,118 +5,65 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.provider.BaseColumns;
 import android.util.Log;
-import com.eguy.ui.Tweet;
 
-import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
 import java.util.List;
 
 public class TweetDatabase extends SQLiteOpenHelper
 {
-    private static final String DATABASE_NAME = "TweetDictionaryDb";
     private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "TweetDictionaryDb";
 
-    private static final String TWEET_TABLE_NAME = "JsonTweet";
+    private static final String TWEET_TABLE_NAME = "Tweet";
 
-    // JsonTweet table columns
-    private static final String TWEET_ID = "TweetId";
-    private static final String TWEET_TEXT = "Text";
-    private static final String TWEET_USERID = "UserId";
-    private static final String TWEET_CREATED_AT = "CreatedAt";
+    private static final String TWEET_ID = BaseColumns._ID;
+    public static final String TWEET_USER_ID = "UserId";
 
-    // User table columns
+    public static final String TWEET_TEXT = "Text";
+    public static final String TWEET_CREATED_AT = "CreatedAt";
+    public static final String TWEET_USERNAME = "Username";
+    public static final String TWEET_PROFILE_PIC_URL = "ProfilePictureUrl";
+
     private static final String USER_TABLE_NAME = "User";
-    private static final String USER_USERID = "UserId";
-    private static final String USER_USERNAME = "Username";
-    private static final String USER_PROFILE_PIC_URL = "ProfilePicture";
+    private static final String USER_USER_ID = "UserId";
+    public static final String USER_PROFILE_PIC = "ProfilePicture";
 
     public TweetDatabase(Context context)
     {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public List<Tweet> getTweets()
+    public Cursor getTweetsCursor()
     {
-        List<Tweet> tweets = new ArrayList<Tweet>();
-        SQLiteDatabase database = null;
         Cursor cur = null;
 
         try
         {
-            database = getReadableDatabase();
-            cur = database.rawQuery("SELECT " + TWEET_TEXT + "," + TWEET_CREATED_AT +  "," + USER_USERNAME + "," + USER_PROFILE_PIC_URL + " FROM " + TWEET_TABLE_NAME +
-                    " t INNER JOIN " + USER_TABLE_NAME + " u ON u." + USER_USERID + " = t." + TWEET_USERID
-                    + " ORDER BY t." + TWEET_ID + " DESC ", null);
-
-            if (cur.moveToFirst())
-            {
-                do
-                {
-                    tweets.add(new Tweet(cur.getString(0), cur.getString(1), cur.getString(2), cur.getString(3)));
-                }
-                while (cur.moveToNext());
-            }
-        }
-        catch (Exception ex)
+            SQLiteDatabase database = getReadableDatabase();
+            cur = database.rawQuery("SELECT t."+
+                    TWEET_USER_ID + ","  +
+                    TWEET_ID + "," +
+                    TWEET_TEXT + "," +
+                    TWEET_CREATED_AT + "," +
+                    TWEET_USERNAME + "," +
+                    TWEET_PROFILE_PIC_URL + "," +
+                    USER_PROFILE_PIC +
+                    " FROM " + TWEET_TABLE_NAME +
+                    " t LEFT JOIN " + USER_TABLE_NAME + " u ON t." + TWEET_USER_ID + " = u." + USER_USER_ID +
+                    " ORDER BY t." + TWEET_ID + " DESC ", null);
+        } catch (Exception ex)
         {
             Log.e("db", ex.toString());
         }
-        finally
-        {
-            if (cur != null)
-                cur.close();
-            if (database != null)
-                database.close();
-        }
-        return tweets;
+        return cur;
     }
 
-    public void saveUsers(List<SavedUser> users)
-    {
-        if (users.size() <= 0)
-        {
-            Log.i("db", "No users to save, returning");
-            return;
-        }
-
-        SQLiteDatabase database = null;
-        try
-        {
-            database = getWritableDatabase();
-            DatabaseUtils.InsertHelper ih = new DatabaseUtils.InsertHelper(database, USER_TABLE_NAME);
-
-            final int userId = ih.getColumnIndex(USER_USERID);
-            final int username = ih.getColumnIndex(USER_USERNAME);
-            final int profilePicture = ih.getColumnIndex(USER_PROFILE_PIC_URL);
-
-            try
-            {
-                for (SavedUser user : users)
-                {
-                    ih.prepareForInsert();
-
-                    ih.bind(userId, user.getUserId());
-                    ih.bind(username, user.getUsername());
-                    ih.bind(profilePicture, user.getProfilePictureUrl());
-
-                    ih.execute();
-                }
-            } finally
-            {
-                ih.close();
-            }
-        } catch (Exception e)
-        {
-            Log.e("ScrollLockDb", e.getClass().toString(), e);
-        }
-        finally
-        {
-            if(database != null)
-                database.close();
-        }
-    }
-
-    public void saveTweets(List<SavedTweet> tweetsToSave)
+    public void saveTweets(List<ProcessedTweet> tweetsToSave)
     {
         if (tweetsToSave.size() <= 0)
         {
@@ -130,24 +77,22 @@ public class TweetDatabase extends SQLiteOpenHelper
             database = getWritableDatabase();
             DatabaseUtils.InsertHelper ih = new DatabaseUtils.InsertHelper(database, TWEET_TABLE_NAME);
 
-            final int text = ih.getColumnIndex(TWEET_TEXT);
-            final int userId = ih.getColumnIndex(TWEET_USERID);
-            final int tweetId = ih.getColumnIndex(TWEET_ID);
-            final int timestamp = ih.getColumnIndex(TWEET_CREATED_AT);
-
             try
             {
-                for (SavedTweet tweet : tweetsToSave)
+                database.beginTransaction();
+                for (ProcessedTweet tweet : tweetsToSave)
                 {
                     ih.prepareForInsert();
-
-                    ih.bind(tweetId, tweet.getTweetId());
-                    ih.bind(userId, tweet.getTweetUserId());
-                    ih.bind(text, tweet.getTweetText());
-                    ih.bind(timestamp, tweet.getTweetCreatedAt());
-
+                    ih.bind(ih.getColumnIndex(TWEET_ID), tweet.getTweetId());
+                    ih.bind(ih.getColumnIndex(TWEET_USER_ID), tweet.getTweetUserId());
+                    ih.bind(ih.getColumnIndex(TWEET_TEXT), tweet.getTweetText());
+                    ih.bind(ih.getColumnIndex(TWEET_CREATED_AT), tweet.getTweetCreatedAt());
+                    ih.bind(ih.getColumnIndex(TWEET_USERNAME), tweet.getUsername());
+                    ih.bind(ih.getColumnIndex(TWEET_PROFILE_PIC_URL), tweet.getProfilePictureUrl());
                     ih.execute();
                 }
+                database.setTransactionSuccessful();
+                database.endTransaction();
             } finally
             {
                 ih.close();
@@ -155,10 +100,9 @@ public class TweetDatabase extends SQLiteOpenHelper
         } catch (Exception e)
         {
             Log.e("ScrollLockDb", e.getClass().toString(), e);
-        }
-        finally
+        } finally
         {
-            if(database != null)
+            if (database != null)
                 database.close();
         }
     }
@@ -169,18 +113,20 @@ public class TweetDatabase extends SQLiteOpenHelper
         try
         {
             db.execSQL("CREATE TABLE " + TWEET_TABLE_NAME +
-                    " ("+ TWEET_ID + "  BIGINT PRIMARY KEY NOT NULL," +
-                    TWEET_USERID + "  BIGINT NOT NULL," +
+                    " (" +
+                    TWEET_ID + "  BIGINT CLUSTERED PRIMARY KEY NOT NULL," +
+                    TWEET_USER_ID + "  BIGINT NOT NULL," +
                     TWEET_TEXT + " NVARCHAR(128) NOT NULL," +
-                    TWEET_CREATED_AT + " NVARCHAR(50) NOT NULL" +
+                    TWEET_CREATED_AT + " NVARCHAR(50) NOT NULL," +
+                    TWEET_USERNAME + "  NVARCHAR(128) NOT NULL, " +
+                    TWEET_PROFILE_PIC_URL + " NVARCHAR(1024) NOT NULL" +
                     ");");
             db.execSQL("CREATE TABLE " + USER_TABLE_NAME +
-                    " (" + USER_USERID + "  BIGINT PRIMARY KEY NOT NULL," +
-                    USER_USERNAME + "  NVARCHAR(128) NOT NULL, " +
-                    USER_PROFILE_PIC_URL + " NVARCHAR(1024)" +
+                    " (" +
+                    USER_USER_ID + "  BIGINT PRIMARY KEY NOT NULL, " +
+                    USER_PROFILE_PIC + " BLOB NOT NULL" +
                     ");");
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             Log.e("ScrollLockDb", e.getClass().toString(), e);
         }
@@ -195,8 +141,7 @@ public class TweetDatabase extends SQLiteOpenHelper
                     + newVersion + ", which will destroy all old data");
             delete(db);
             onCreate(db);
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             Log.e("ScrollLockDb", e.getClass().toString(), e);
         }
@@ -215,10 +160,47 @@ public class TweetDatabase extends SQLiteOpenHelper
         {
             db.execSQL("DROP TABLE IF EXISTS " + TWEET_TABLE_NAME);
             db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_NAME);
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             Log.e("ScrollLockDb", e.getClass().toString(), e);
+        }
+    }
+
+    public void addUserProfilePicture(Bitmap profilePicture, long userId)
+    {
+        if(profilePicture == null)
+            return;
+
+        SQLiteDatabase database = null;
+        try
+        {
+            database = getWritableDatabase();
+            DatabaseUtils.InsertHelper ih = new DatabaseUtils.InsertHelper(database, USER_TABLE_NAME);
+
+            final int colUserId = ih.getColumnIndex(USER_USER_ID);
+            final int colProfilePic = ih.getColumnIndex(USER_PROFILE_PIC);
+
+            ByteBuffer byteBuffer = ByteBuffer.allocate(profilePicture.getByteCount());
+            profilePicture.copyPixelsToBuffer(byteBuffer);
+
+            try
+            {
+                ih.prepareForInsert();
+                ih.bind(colUserId, userId);
+                ih.bind(colProfilePic, byteBuffer.array());
+                ih.execute();
+            }
+            finally
+            {
+                ih.close();
+            }
+        } catch (Exception e)
+        {
+            Log.e("ScrollLockDb", e.getClass().toString(), e);
+        } finally
+        {
+            if (database != null)
+                database.close();
         }
     }
 }

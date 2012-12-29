@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import com.eguy.SettingsManager;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 
@@ -39,7 +40,7 @@ public class OAuthObtainRequestTokenAndRedirectToBrowser extends AsyncTask<Objec
 
             authUrl = provider.retrieveRequestToken(consumer, oAuthProviderAndConsumer.CALLBACK_URL);
 
-            new AuthCredentialManager(context).saveTokenAndSecret(consumer.getToken(), consumer.getTokenSecret());
+            new SettingsManager(context).saveTokenAndSecret(consumer.getToken(), consumer.getTokenSecret());
         }
         catch (Exception e)
         {

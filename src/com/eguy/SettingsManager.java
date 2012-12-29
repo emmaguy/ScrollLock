@@ -1,11 +1,11 @@
-package com.eguy.oauth;
+package com.eguy;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import oauth.signpost.OAuth;
 
-public class AuthCredentialManager
+public class SettingsManager
 {
     private SharedPreferences sharedPreferences;
     private String USER_TOKEN = "userToken";
@@ -14,9 +14,36 @@ public class AuthCredentialManager
     private String USERNAME = "username";
     private String USER_ID = "userId";
 
-    public AuthCredentialManager(Context context)
+    private String MAX_ID = "maxId";
+    private String SINCE_ID = "sinceId";
+
+    public SettingsManager(Context context)
     {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    public long getTweetSinceId()
+    {
+        return sharedPreferences.getLong(SINCE_ID, 0);
+    }
+
+    public void setTweetSinceId(long sinceId)
+    {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong(SINCE_ID, sinceId);
+        editor.commit();
+    }
+
+    public long getTweetMaxId()
+    {
+        return sharedPreferences.getLong(MAX_ID, 0);
+    }
+
+    public void setTweetMaxId(long maxId)
+    {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong(MAX_ID, maxId);
+        editor.commit();
     }
 
     private boolean IsNullOrEmpty(String s)
@@ -28,16 +55,6 @@ public class AuthCredentialManager
     {
         return !IsNullOrEmpty(getUserToken()) && !IsNullOrEmpty(getUserTokenSecret())
                 && !IsNullOrEmpty(getUsername()) && !IsNullOrEmpty(getUserId());
-    }
-
-    public void clearCredentials()
-    {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(USER_TOKEN, "");
-        editor.putString(USER_SECRET, "");
-        editor.putString(OAuth.OAUTH_TOKEN, "");
-        editor.putString(OAuth.OAUTH_VERIFIER, "");
-        editor.commit();
     }
 
     public void saveTokenAndSecret(String token, String tokenSecret)

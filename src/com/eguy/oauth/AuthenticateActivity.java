@@ -9,9 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import com.eguy.R;
-import com.eguy.oauth.AuthCredentialManager;
-import com.eguy.oauth.OAuthObtainRequestTokenAndRedirectToBrowser;
-import com.eguy.oauth.OAuthProviderAndConsumer;
+import com.eguy.SettingsManager;
 import com.eguy.ui.TimelineActivity;
 import junit.framework.Assert;
 import oauth.signpost.OAuth;
@@ -30,7 +28,7 @@ public class AuthenticateActivity extends Activity
         setContentView(R.layout.main);
 
         final Context context = getApplicationContext();
-        oAuthProviderAndConsumer = new OAuthProviderAndConsumer(new AuthCredentialManager(this.getApplicationContext()));
+        oAuthProviderAndConsumer = new OAuthProviderAndConsumer(new SettingsManager(this.getApplicationContext()));
 
         Button btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener()
@@ -57,7 +55,7 @@ public class AuthenticateActivity extends Activity
 
     private void retrieveAccessTokenFromRequestToken(Uri uri)
     {
-        AuthCredentialManager credentialManager = new AuthCredentialManager(this.getApplicationContext());
+        SettingsManager credentialManager = new SettingsManager(this.getApplicationContext());
         String token = credentialManager.getToken();
         String secret = credentialManager.getTokenSecret();
 
