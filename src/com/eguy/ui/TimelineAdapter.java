@@ -35,6 +35,14 @@ public class TimelineAdapter extends CursorAdapter
         return inflater.inflate(R.layout.timeline_row, viewGroup, false);
     }
 
+    class ViewHolder
+    {
+        ImageView ProfilePicture;
+        TextView TweetText;
+        TextView Username;
+        TextView CreatedAt;
+    }
+
     @Override
     public void bindView(View view, Context context, Cursor cursor)
     {

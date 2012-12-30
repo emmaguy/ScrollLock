@@ -42,26 +42,12 @@ public class TweetProvider extends ContentProvider
     public static final String USER_PROFILE_PIC = "ProfilePicture";
 
     private static final UriMatcher uriMatcher;
-    private static final SparseArray<String> types;
 
     static
     {
         uriMatcher = new UriMatcher(0);
         uriMatcher.addURI(AUTHORITY, TWEET_TABLE_NAME, TWEET_TIMELINE_QUERY);
         uriMatcher.addURI(AUTHORITY, USER_TABLE_NAME, USER_QUERY);
-
-        types = new SparseArray<String>();
-        types.put(
-                TWEET_TIMELINE_QUERY,
-                "vnd.android.cursor.dir/vnd." +
-                        AUTHORITY + "." +
-                        TWEET_TEXT);
-
-        types.put(
-                USER_QUERY,
-                "vnd.android.cursor.item/vnd." +
-                        AUTHORITY + "." +
-                        USER_TABLE_NAME);
     }
 
     public static final String SCHEME = "content";
@@ -116,7 +102,7 @@ public class TweetProvider extends ContentProvider
     @Override
     public String getType(Uri uri)
     {
-        return types.get(uriMatcher.match(uri));
+        return TWEET_TABLE_NAME;
     }
 
     @Override

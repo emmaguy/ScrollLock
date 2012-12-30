@@ -3,6 +3,7 @@ package com.eguy.twitterapi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
+import com.eguy.SettingsManager;
 import com.eguy.db.TweetProvider;
 
 import java.util.Random;
@@ -10,11 +11,13 @@ import java.util.Random;
 public class FakeTweetInserterTask extends AsyncTask<Void, Void, Void>
 {
     private Context context;
+    private SettingsManager settingsManager;
     private static int counter = 0;
 
-    public FakeTweetInserterTask(Context context)
+    public FakeTweetInserterTask(Context context, SettingsManager settingsManager)
     {
         this.context = context;
+        this.settingsManager = settingsManager;
     }
 
     @Override
@@ -24,7 +27,7 @@ public class FakeTweetInserterTask extends AsyncTask<Void, Void, Void>
         for (int i = 0; i < 20; i++)
         {
             ContentValues tweetValue = new ContentValues();
-            tweetValue.put(TweetProvider.TWEET_ID, new Random().nextLong());
+            tweetValue.put(TweetProvider.TWEET_ID, settingsManager.getTweetSinceId() + 10000 + counter);
             tweetValue.put(TweetProvider.TWEET_TEXT, "Generated tweet: " + counter++);
             tweetValue.put(TweetProvider.TWEET_CREATED_AT, "Sun Dec 30 05:35:11 +0000 2012");
             tweetValue.put(TweetProvider.TWEET_USER_ID, "7762342");

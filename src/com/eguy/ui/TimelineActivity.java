@@ -8,12 +8,10 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.CursorAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.*;
 import com.eguy.R;
 import com.eguy.SettingsManager;
 import com.eguy.db.TweetProvider;
@@ -87,7 +85,7 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
             {
                 Toast.makeText(getApplicationContext(), "refreshing...", Toast.LENGTH_SHORT).show();
                 //getLatestTweets();
-                new FakeTweetInserterTask(context).execute();
+                new FakeTweetInserterTask(context, new SettingsManager(context)).execute();
             }
         });
     }
@@ -109,12 +107,12 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
     {
-        adapter.swapCursor(cursor);
+        adapter.changeCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader)
     {
-        adapter.swapCursor(null);
+        adapter.changeCursor(null);
     }
 }
