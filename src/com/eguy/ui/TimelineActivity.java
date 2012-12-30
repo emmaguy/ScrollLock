@@ -2,6 +2,7 @@ package com.eguy.ui;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -9,19 +10,20 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.CursorAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 import com.eguy.R;
 import com.eguy.SettingsManager;
 import com.eguy.db.TweetProvider;
 import com.eguy.oauth.AuthenticateActivity;
 import com.eguy.oauth.OAuthProviderAndConsumer;
+import com.eguy.twitterapi.FakeTweetInserterTask;
 import com.eguy.twitterapi.LoadTweetsAndUpdateDbTask;
-import oauth.signpost.OAuthConsumer;
 
 public class TimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>
 {
-    private OAuthConsumer consumer;
-    private TweetProvider tweetProvider;
     private CursorAdapter adapter;
 
     public void onCreate(Bundle savedInstanceState)
@@ -35,6 +37,34 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
         adapter = new TimelineAdapter(this, null);
         ((ListView) findViewById(R.id.lstTimeline)).setAdapter(adapter);
 
+        getLatestTweetsOrAuthenticate();
+        initialiseRefreshBar();
+        //initialiseLongClickToShare();
+    }
+
+    private void initialiseLongClickToShare()
+    {
+        final Context context = this;
+
+        ListView timeline = (ListView) findViewById(R.id.lstTimeline);
+        timeline.setOnLongClickListener(new View.OnLongClickListener()
+        {
+            @Override
+            public boolean onLongClick(View view)
+            {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+                sendIntent.setType("text/plain");
+                context.startActivity(Intent.createChooser(sendIntent, "Share"));
+                return true;
+            }
+        });
+
+    }
+
+    private void getLatestTweetsOrAuthenticate()
+    {
         SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
         if (!settingsManager.credentialsAvailable())
         {
@@ -43,12 +73,12 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
         {
             getLatestTweets();
         }
-
-        initialiseRefreshBar();
     }
 
     private void initialiseRefreshBar()
     {
+        final Context context = this;
+
         Button btnLogin = (Button) findViewById(R.id.refreshBar);
         btnLogin.setOnClickListener(new View.OnClickListener()
         {
@@ -56,7 +86,8 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
             public void onClick(View view)
             {
                 Toast.makeText(getApplicationContext(), "refreshing...", Toast.LENGTH_SHORT).show();
-                getLatestTweets();
+                //getLatestTweets();
+                new FakeTweetInserterTask(context).execute();
             }
         });
     }

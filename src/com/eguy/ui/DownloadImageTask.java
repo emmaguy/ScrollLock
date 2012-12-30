@@ -57,7 +57,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, byte[]>
         ContentValues values = new ContentValues();
         values.put(TweetProvider.USER_USER_ID, userId);
         values.put(TweetProvider.USER_PROFILE_PIC, bytes);
-        Log.i("ScrollLock","Insert profile image for user: " + userId);
         context.getContentResolver().insert(TweetProvider.USER_URI, values);
     }
 }

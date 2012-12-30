@@ -74,6 +74,8 @@ public class TweetProvider extends ContentProvider
     public boolean onCreate()
     {
         tweetDatabase = new TweetDatabase(getContext());
+        SQLiteDatabase db = tweetDatabase.getWritableDatabase();
+        db.execSQL("DELETE FROM " + TWEET_TABLE_NAME + " WHERE " + TWEET_TEXT + " LIKE 'Generated Tweet:%'");
 
         return true;
     }
@@ -123,11 +125,9 @@ public class TweetProvider extends ContentProvider
         switch (uriMatcher.match(uri))
         {
             case USER_QUERY:
-                SQLiteDatabase localSQLiteDatabase = tweetDatabase.getWritableDatabase();
+                SQLiteDatabase writableDatabase = tweetDatabase.getWritableDatabase();
 
-                Log.i("ScrollLockdb", "trying to insert user id:" + contentValues.get(USER_USER_ID));
-
-                long id = localSQLiteDatabase.insert(USER_TABLE_NAME, null, contentValues);
+                long id = writableDatabase.insert(USER_TABLE_NAME, null, contentValues);
 
                 if (-1 != id)
                 {
@@ -140,8 +140,19 @@ public class TweetProvider extends ContentProvider
                     return uri;
                 }
             case TWEET_TIMELINE_QUERY:
-                Log.e("ScrollLockDb", "TWEET_TIMELINE_QUERY");
-                return uri;
+                SQLiteDatabase sqldb = tweetDatabase.getWritableDatabase();
+
+                long insertedId = sqldb.insert(TWEET_TABLE_NAME, null, contentValues);
+                if (-1 != insertedId)
+                {
+                    getContext().getContentResolver().notifyChange(TweetProvider.TWEET_URI, null);
+                    return Uri.withAppendedPath(uri, Long.toString(insertedId));
+                }
+                else
+                {
+                    Log.e("ScrollLockDb", "Insert error for single tweet");
+                    return uri;
+                }
         }
         throw new IllegalArgumentException("Bulk insert -- Invalid URI:" + uri);
     }
@@ -182,7 +193,6 @@ public class TweetProvider extends ContentProvider
 
                     for (ContentValues insertValue : insertValues)
                     {
-                        Log.i("ScrollLockdb", "trying to insert user id:" + insertValue.get(USER_USER_ID));
                         localSQLiteDatabase.insert(USER_TABLE_NAME, null, insertValue);
                     }
 

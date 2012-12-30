@@ -42,12 +42,16 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
             Uri sUri = Uri.parse(HOME_TIMELINE_URL);
             Uri.Builder builder = sUri.buildUpon();
             builder.appendQueryParameter("screen_name", settingsManager.getUsername());
-            builder.appendQueryParameter("count", "200");
+            builder.appendQueryParameter("count", "20");
 
-            if(settingsManager.getTweetSinceId() != 0)
-            {
-                builder.appendQueryParameter("since_id", String.valueOf(settingsManager.getTweetSinceId()));
-            }
+//            if(settingsManager.getTweetSinceId() != 0)
+//            {
+//                builder.appendQueryParameter("since_id", String.valueOf(settingsManager.getTweetSinceId()));
+//            }
+//            if(settingsManager.getTweetMaxId() != 0)
+//            {
+//                builder.appendQueryParameter("max_id", String.valueOf(settingsManager.getTweetMaxId()));
+//            }
 
             String uri = builder.build().toString();
             HttpGet get = new HttpGet(uri);
@@ -72,6 +76,7 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
         try
         {
             ContentValues[] tweets = new ContentValues[jsonArray.length()];
+            long lastTweetId = 0;
             for(int i = 0; i < jsonArray.length(); ++i)
             {
                 JSONObject status = jsonArray.getJSONObject(i);
@@ -85,8 +90,10 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
                 tweetValue.put(TweetProvider.TWEET_USERNAME, tweet.getUsername());
                 tweetValue.put(TweetProvider.TWEET_PROFILE_PIC_URL, tweet.getProfilePicUrl());
                 tweets[i] = tweetValue;
-            }
 
+                lastTweetId = tweet.getTweetId();
+            }
+            settingsManager.setTweetSinceId(lastTweetId);
             context.getContentResolver().bulkInsert(TweetProvider.TWEET_URI, tweets);
         }
         catch (JSONException e)
