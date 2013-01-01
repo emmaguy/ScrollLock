@@ -69,7 +69,7 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
             startActivity(new Intent(this, AuthenticateActivity.class));
         } else
         {
-            getLatestTweets();
+            //getLatestTweets();
         }
     }
 
@@ -107,7 +107,12 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
     {
+        ListView listview = (ListView) findViewById(R.id.lstTimeline);
+
+        int selection = listview.getFirstVisiblePosition();
         adapter.changeCursor(cursor);
+        if(selection != 0)
+            listview.setSelection(selection + 20);
     }
 
     @Override
