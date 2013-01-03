@@ -60,10 +60,13 @@ public class TimelineAdapter extends CursorAdapter
     public void bindView(View view, Context context, Cursor cursor)
     {
         ViewHolder holder = (ViewHolder) view.getTag();
+        String username = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_USERNAME));
 
         byte[] image = cursor.getBlob(cursor.getColumnIndex(TweetProvider.USER_PROFILE_PIC));
         if (image == null || image.length == 0)
         {
+            Log.d("ScrollLock", "No user image for user: "+ username + " starting async task");
+
             String url = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_PROFILE_PIC_URL));
             long userId = cursor.getLong(cursor.getColumnIndex(TweetProvider.TWEET_USER_ID));
             new DownloadImageTask(holder.ProfilePicture, userId, context).execute(url);
@@ -75,7 +78,6 @@ public class TimelineAdapter extends CursorAdapter
 
         String text = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_TEXT));
         String createdAt = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_CREATED_AT));
-        String username = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_USERNAME));
 
         holder.TweetText.setText(text);
         holder.Username.setText(username);

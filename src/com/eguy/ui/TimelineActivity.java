@@ -23,6 +23,7 @@ import com.eguy.twitterapi.LoadTweetsAndUpdateDbTask;
 public class TimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>
 {
     private CursorAdapter adapter;
+    private int previousNumberOfItemsInList = 0;
 
     public void onCreate(Bundle savedInstanceState)
     {
@@ -67,9 +68,10 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
         if (!settingsManager.credentialsAvailable())
         {
             startActivity(new Intent(this, AuthenticateActivity.class));
-        } else
+        }
+        else
         {
-            //getLatestTweets();
+            getLatestTweets();
         }
     }
 
@@ -94,7 +96,7 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
     {
         SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
         OAuthProviderAndConsumer producerAndConsumer = new OAuthProviderAndConsumer(settingsManager);
-        new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, this.getApplicationContext()).execute();
+        new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, this.getApplicationContext(), settingsManager.getTweetSinceId(), 0, 200).execute();
     }
 
     @Override
@@ -111,8 +113,11 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
 
         int selection = listview.getFirstVisiblePosition();
         adapter.changeCursor(cursor);
-        if(selection != 0)
-            listview.setSelection(selection + 20);
+        if(previousNumberOfItemsInList != 0)
+        {
+            listview.setSelection(selection + (cursor.getCount() - previousNumberOfItemsInList));
+        }
+        previousNumberOfItemsInList = cursor.getCount();
     }
 
     @Override

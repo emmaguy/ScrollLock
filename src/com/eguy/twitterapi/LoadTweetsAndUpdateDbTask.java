@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 import com.eguy.SettingsManager;
 import com.eguy.db.TweetProvider;
 import com.eguy.oauth.OAuthProviderAndConsumer;
@@ -15,23 +16,45 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Random;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 {
     private final String HOME_TIMELINE_URL = "https://api.twitter.com/1.1/statuses/home_timeline.json";
+    private final int MAX_NUMBER_OF_REQUESTS_PER_WINDOW = 5;
+    private final int WINDOW_LENGTH = 15;
+
     private OAuthProviderAndConsumer producerAndConsumer;
     private SettingsManager settingsManager;
-    private Context context;
-    private HttpClient client;
 
-    public LoadTweetsAndUpdateDbTask(OAuthProviderAndConsumer producerAndConsumer, SettingsManager settingsManager, Context context)
+    private HttpClient client;
+    private Context context;
+
+    private long sinceId;
+    private long maxId;
+    private int numberOfTweetsToRequest;
+
+    private static List<DateFormat> dateTimesTwitterRequestsMade;
+
+    static
+    {
+        dateTimesTwitterRequestsMade = new ArrayList<DateFormat>();
+    }
+
+    public LoadTweetsAndUpdateDbTask(OAuthProviderAndConsumer producerAndConsumer, SettingsManager settingsManager, Context context, long sinceId, long maxId, int numberOfTweetsToRequest)
     {
         this.producerAndConsumer = producerAndConsumer;
         this.settingsManager = settingsManager;
         this.context = context;
+        this.sinceId = sinceId;
+        this.maxId = maxId;
+        this.numberOfTweetsToRequest = numberOfTweetsToRequest;
 
-        client = new HttpClientBuilder().Builder();
+        client = new HttpClientBuilder().Build();
     }
 
     @Override
@@ -39,19 +62,27 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
     {
         try
         {
+            if(dateTimesTwitterRequestsMade.size() >= MAX_NUMBER_OF_REQUESTS_PER_WINDOW)
+            {
+                Log.d("ScrollLock", "Not performing request to twitter as it may exceed the rate limit");
+                return null;
+            }
+
             Uri sUri = Uri.parse(HOME_TIMELINE_URL);
             Uri.Builder builder = sUri.buildUpon();
             builder.appendQueryParameter("screen_name", settingsManager.getUsername());
-            builder.appendQueryParameter("count", "20");
+            builder.appendQueryParameter("count", String.valueOf(numberOfTweetsToRequest));
 
-//            if(settingsManager.getTweetSinceId() != 0)
-//            {
-//                builder.appendQueryParameter("since_id", String.valueOf(settingsManager.getTweetSinceId()));
-//            }
-//            if(settingsManager.getTweetMaxId() != 0)
-//            {
-//                builder.appendQueryParameter("max_id", String.valueOf(settingsManager.getTweetMaxId()));
-//            }
+            if(sinceId != 0)
+            {
+                builder.appendQueryParameter("since_id", String.valueOf(sinceId));
+                Log.d("ScrollLock", "Requesting since_id: " + sinceId);
+            }
+            if(maxId != 0)
+            {
+                builder.appendQueryParameter("max_id", String.valueOf(maxId));
+                Log.d("ScrollLock", "Requesting max_id: " + maxId);
+            }
 
             String uri = builder.build().toString();
             HttpGet get = new HttpGet(uri);
@@ -59,7 +90,16 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 
             String response = client.execute(get, new BasicResponseHandler());
 
+            dateTimesTwitterRequestsMade.add(DateFormat.getDateTimeInstance());
+
             return new JSONArray(response);
+        }
+        catch (org.apache.http.client.HttpResponseException ex)
+        {
+            if(ex.getMessage().contains("Too Many Requests"))
+            {
+                Log.e("ScrollLock", "Exceeded twitter rate limit!", ex);
+            }
         }
         catch (Exception e)
         {
@@ -75,8 +115,8 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
             return;
         try
         {
-            ContentValues[] tweets = new ContentValues[jsonArray.length()];
             long lastTweetId = 0;
+            ContentValues[] tweets = new ContentValues[jsonArray.length()];
             for(int i = 0; i < jsonArray.length(); ++i)
             {
                 JSONObject status = jsonArray.getJSONObject(i);
@@ -92,8 +132,21 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
                 tweets[i] = tweetValue;
 
                 lastTweetId = tweet.getTweetId();
+                Log.d("ScrollLock", "Parsing tweet: " + tweet.getText());
             }
-            settingsManager.setTweetSinceId(lastTweetId);
+            Log.d("ScrollLock", "Parsed: " + tweets.length + " tweets");
+
+            // if it was the first ever request to twitter
+            if(sinceId == 0 && maxId == 0)
+            {
+                settingsManager.setTweetSinceId(lastTweetId);
+                settingsManager.setTweetMaxId(lastTweetId - 1);
+            }
+            else
+            {
+                new EnsureThereAreNoGapsInTimelineTask(lastTweetId - 1, settingsManager, producerAndConsumer, context).execute();
+            }
+
             context.getContentResolver().bulkInsert(TweetProvider.TWEET_URI, tweets);
         }
         catch (JSONException e)
