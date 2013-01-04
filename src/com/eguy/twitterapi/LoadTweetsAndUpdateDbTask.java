@@ -151,7 +151,7 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
             }
 
             // if we have processed a newer tweet than what we already have, store its id
-            if(newestTweetId > settingsManager.getTweetSinceId() && newestTweetId != 0)
+            if(newestTweetId > settingsManager.getTweetSinceId() && newestTweetId > 0)
             {
                 Log.d("ScrollLock", "Setting since_id to: " + newestTweetId);
                 settingsManager.setTweetSinceId(newestTweetId);

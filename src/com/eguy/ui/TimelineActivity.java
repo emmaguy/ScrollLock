@@ -2,10 +2,7 @@ package com.eguy.ui;
 
 import android.app.Activity;
 import android.app.LoaderManager;
-import android.content.Context;
-import android.content.CursorLoader;
-import android.content.Intent;
-import android.content.Loader;
+import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -44,6 +41,27 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
         getLatestTweetsOrAuthenticate();
         initialiseRefreshBar();
         initialiseLongClickToShare();
+        initialiseShortClickToOpenTweetViewer();
+    }
+
+    private void initialiseShortClickToOpenTweetViewer()
+    {
+        final Context context = this;
+
+        ListView timeline = (ListView) findViewById(R.id.lstTimeline);
+        timeline.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+            {
+                Cursor c = ((Cursor)adapterView.getAdapter().getItem(i));
+
+                Intent intent = new Intent(context, TweetViewerActivity.class);
+                intent.putExtra(TweetProvider.TWEET_TEXT, c.getString(c.getColumnIndex(TweetProvider.TWEET_TEXT)));
+                intent.putExtra(TweetProvider.USER_USER_ID, c.getString(c.getColumnIndex(TweetProvider.USER_USER_ID)));
+                startActivity(intent);
+            }
+        });
     }
 
     private void initialiseLongClickToShare()
