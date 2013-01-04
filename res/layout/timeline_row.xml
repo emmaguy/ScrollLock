@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/actionBarLayout"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="5dp">
-
-    <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:id="@+id/avatar"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/profilePicture"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/actionBarLayout"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              style="?timeline_row"
+              android:paddingBottom="4dp"
+              android:paddingLeft="4dp"
+              android:paddingRight="4dp">
 
     <LinearLayout
+            android:id="@+id/usernameAndTimestampLayout"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:orientation="vertical"
-            android:layout_toRightOf="@id/avatar">
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:padding="2dp">
 
-        <LinearLayout
-                android:id="@+id/usernameAndTimestampLayout"
+        <TextView
+                android:id="@+id/username"
+                android:gravity="left"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:paddingLeft="3dp"
+                style="?username"/>
 
-            <TextView
-                    android:id="@+id/username"
-                    android:paddingLeft="1dp"
-                    android:gravity="left"
-                    android:textStyle="bold"
-                    android:textColor="#ffeeff"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+        <TextView
+                android:id="@+id/timestamp"
+                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="3dp"
+                style="?timestamp"/>
+    </LinearLayout>
 
-            <TextView
-                    android:id="@+id/timestamp"
-                    android:paddingLeft="1dp"
-                    android:gravity="right"
-                    android:textStyle="bold"
-                    android:textColor="#eeffee"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-        </LinearLayout>
+    <RelativeLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            style="?tweetContents_row">
+
+        <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:id="@+id/avatar"
+                android:contentDescription="@string/profilePicture"
+                android:padding="1dp"
+                style="?avatar"/>
 
         <TextView
                 android:id="@+id/tweetText"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:gravity="left"
-                android:textStyle="bold"
-                android:textColor="#ffffff"
-                android:paddingLeft="3dp"/>
-
-    </LinearLayout>
-
-</RelativeLayout>
+                android:paddingLeft="3dp"
+                style="?tweetText"
+                android:layout_toRightOf="@id/avatar"/>
+    </RelativeLayout>
+</LinearLayout>

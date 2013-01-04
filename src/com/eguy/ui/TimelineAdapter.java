@@ -72,7 +72,7 @@ public class TimelineAdapter extends CursorAdapter
         String createdAt = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_CREATED_AT));
 
         holder.TweetText.setText(text);
-        holder.Username.setText(username);
+        holder.Username.setText("@" + username);
         holder.CreatedAt.setText(getFormattedDateTime(createdAt));
     }
 

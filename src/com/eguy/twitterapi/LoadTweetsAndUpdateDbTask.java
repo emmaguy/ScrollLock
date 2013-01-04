@@ -142,12 +142,20 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
             }
             Log.d("ScrollLock", "Parsed: " + tweets.length + " tweets");
 
+            long maxTweetId = oldestTweetId - 1;
+
+            // was a request to get latest tweets, we only use since_id for that
+            if(maxId == 0)
+            {
+                settingsManager.setLatestTweetId(newestTweetId);
+            }
+
             if (tweets.length == 0)
             {
+                settingsManager.setLatestTweetId(0);
                 return;
             }
 
-            long maxTweetId = oldestTweetId - 1;
             if(maxTweetId > settingsManager.getTweetMaxId())
             {
                 new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, context, settingsManager.getTweetMaxId(), maxTweetId, 200).execute();
@@ -155,8 +163,8 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
             else
             {
                 Log.d("ScrollLock", "Done, seting since_id to: " + newestTweetId + " and max_id to: " + maxTweetId);
-                settingsManager.setTweetSinceId(newestTweetId);
-                settingsManager.setTweetMaxId(maxTweetId);
+                settingsManager.setTweetSinceId(settingsManager.getLatestTweetId());
+                settingsManager.setTweetMaxId(settingsManager.getLatestTweetId());
             }
 
             context.getContentResolver().bulkInsert(TweetProvider.TWEET_URI, tweets);

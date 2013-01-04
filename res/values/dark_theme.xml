@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="darkTheme" parent="android:Theme">
+        <item name="timeline_row">@style/timeline_row_dark</item>
+        <item name="tweetContents_row">@style/tweetContents_row_dark</item>
+        <item name="avatar">@style/avatar_dark</item>
+        <item name="refreshBar">@style/refreshBar_dark</item>
+        <item name="username">@style/username_dark</item>
+        <item name="tweetText">@style/tweetText_dark</item>
+        <item name="timestamp">@style/timestamp_dark</item>
+    </style>
+
+    <style name="timeline_row_dark">
+        <item name="android:background">@drawable/timeline_row_drawable</item>
+    </style>
+
+    <style name="tweetContents_row_dark">
+        <item name="android:background">@drawable/timeline_tweet_contents_drawable</item>
+    </style>
+
+    <style name="avatar_dark">
+        <item name="android:background">@color/WhiteSmoke</item>
+    </style>
+
+    <style name="refreshBar_dark" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/Gray8</item>
+    </style>
+
+    <style name="username_dark" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/LightGrey</item>
+    </style>
+
+    <style name="tweetText_dark" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/DarkGray</item>
+    </style>
+
+    <style name="timestamp_dark" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/Gray25</item>
+    </style>
+
+</resources>

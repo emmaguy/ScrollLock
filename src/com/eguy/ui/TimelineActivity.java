@@ -73,7 +73,7 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
         SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
         if (settingsManager.credentialsAvailable())
         {
-            getLatestTweets();
+            //getLatestTweets();
         }
         else
         {
@@ -102,10 +102,9 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
     {
         SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
         OAuthProviderAndConsumer producerAndConsumer = new OAuthProviderAndConsumer(settingsManager);
-        //new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, this.getApplicationContext(), settingsManager.getTweetSinceId(), 0, 1).execute();
 
         Log.d("ScrollLock", "starting run");
-        new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, this.getApplicationContext(), 0, 0, 2).execute();
+        new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, this.getApplicationContext(), settingsManager.getTweetSinceId(), 0, 20).execute();
     }
 
     @Override

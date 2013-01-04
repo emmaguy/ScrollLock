@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="timeline_row" format="reference" />
+    <attr name="tweetContents_row" format="reference" />
+    <attr name="refreshBar" format="reference" />
+    <attr name="username" format="reference" />
+    <attr name="tweetText" format="reference" />
+    <attr name="timestamp" format="reference" />
+    <attr name="avatar" format="reference" />
+</resources>
