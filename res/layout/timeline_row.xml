@@ -54,8 +54,9 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:gravity="left"
+                android:layout_toRightOf="@id/avatar"
                 android:paddingLeft="3dp"
-                style="?tweetText"
-                android:layout_toRightOf="@id/avatar"/>
+                style="?tweetText"/>
+
     </RelativeLayout>
 </LinearLayout>

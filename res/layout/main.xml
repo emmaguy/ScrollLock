@@ -5,6 +5,6 @@
     android:layout_height="fill_parent">
 <Button     android:layout_width="100dp"
             android:layout_height="100dp"
-            android:text="Login"
+            android:text="@string/login"
             android:id="@+id/btnLogin"/>
 </LinearLayout>

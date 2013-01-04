@@ -11,19 +11,19 @@
     </style>
 
     <style name="timeline_row_dark">
-        <item name="android:background">@drawable/timeline_row_drawable</item>
+        <item name="android:background">@drawable/timeline_row_dark</item>
     </style>
 
     <style name="tweetContents_row_dark">
-        <item name="android:background">@drawable/timeline_tweet_contents_drawable</item>
+        <item name="android:background">@drawable/timeline_tweet_contents_dark</item>
     </style>
 
     <style name="avatar_dark">
         <item name="android:background">@color/WhiteSmoke</item>
     </style>
 
-    <style name="refreshBar_dark" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/Gray8</item>
+    <style name="refreshBar_dark">
+        <item name="android:background">@drawable/refresh_bar_dark</item>
     </style>
 
     <style name="username_dark" parent="@android:style/TextAppearance.Medium">

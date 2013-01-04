@@ -162,7 +162,7 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
             }
             else
             {
-                Log.d("ScrollLock", "Done, seting since_id to: " + newestTweetId + " and max_id to: " + maxTweetId);
+                Log.d("ScrollLock", "Done, setting since_id to: " + newestTweetId + " and max_id to: " + maxTweetId);
                 settingsManager.setTweetSinceId(settingsManager.getLatestTweetId());
                 settingsManager.setTweetMaxId(settingsManager.getLatestTweetId());
             }

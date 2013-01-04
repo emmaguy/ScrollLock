@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">ScrollLock</string>
     <string name="profilePicture">usersprofilepicture</string>
+    <string name="login">Login</string>
 </resources>

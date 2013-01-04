@@ -85,8 +85,8 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
     {
         final Context context = this;
 
-        Button btnLogin = (Button) findViewById(R.id.refreshBar);
-        btnLogin.setOnClickListener(new View.OnClickListener()
+        TextView refreshBar = (TextView) findViewById(R.id.refreshBar);
+        refreshBar.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)

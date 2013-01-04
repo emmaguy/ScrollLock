@@ -141,6 +141,11 @@
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
 
+    <color name="Blue1">#449def</color>
+    <color name="Blue2">#2f6699</color>
+    <color name="Blue3">#DFE2FF</color>
+    <color name="Blue4">#DFE4FF</color>
+
     <color name="Gray1">#080808 </color>
     <color name="Gray2">#101010 </color>
     <color name="Gray3">#181818 </color>
@@ -172,5 +177,4 @@
     <color name="Gray30">#E8E8E8 </color>
     <color name="Gray31">#F0F0F0 </color>
     <color name="Gray32">#F8F8F8 </color>
-    <color name="Gray33">#FFFFFF </color>
 </resources>
