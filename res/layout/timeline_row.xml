@@ -45,9 +45,7 @@
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:id="@+id/avatar"
-                android:contentDescription="@string/profilePicture"
-                android:padding="1dp"
-                style="?avatar"/>
+                android:contentDescription="@string/profilePicture"/>
 
         <TextView
                 android:id="@+id/tweetText"

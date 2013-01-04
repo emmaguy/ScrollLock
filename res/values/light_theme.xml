@@ -3,7 +3,6 @@
     <style name="lightTheme" parent="android:Theme">
         <item name="timeline_row">@style/timeline_row_light</item>
         <item name="tweetContents_row">@style/tweetContents_row_light</item>
-        <item name="avatar">@style/avatar_light</item>
         <item name="refreshBar">@style/refreshBar_light</item>
         <item name="username">@style/username_light</item>
         <item name="tweetText">@style/tweetText_light</item>
@@ -16,10 +15,6 @@
 
     <style name="tweetContents_row_light">
         <item name="android:background">@drawable/timeline_tweet_contents_light</item>
-    </style>
-
-    <style name="avatar_light">
-        <item name="android:background">@color/Gray3</item>
     </style>
 
     <style name="refreshBar_light">

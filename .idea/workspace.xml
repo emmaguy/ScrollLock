@@ -47,20 +47,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="821b8ac3-d966-40d2-b4e8-eb4729f15379" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/values/light_theme.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/refresh_bar_dark.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/refresh_bar_light.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/timeline_row_dark.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/timeline_tweet_contents_dark.xml" />
-      <change type="MOVED" beforePath="C:\Users\Emma\IdeaProjects\ScrollLock\res\drawable\timeline_row_drawable.xml" afterPath="$PROJECT_DIR$/res/drawable/timeline_row_light.xml" />
-      <change type="MOVED" beforePath="C:\Users\Emma\IdeaProjects\ScrollLock\res\drawable\timeline_tweet_contents_drawable.xml" afterPath="$PROJECT_DIR$/res/drawable/timeline_tweet_contents_light.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java" afterPath="$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java" afterPath="$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/colors.xml" afterPath="$PROJECT_DIR$/res/values/colors.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/attrs.xml" afterPath="$PROJECT_DIR$/res/values/attrs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/dark_theme.xml" afterPath="$PROJECT_DIR$/res/values/dark_theme.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/main.xml" afterPath="$PROJECT_DIR$/res/layout/main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/light_theme.xml" afterPath="$PROJECT_DIR$/res/values/light_theme.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/timeline_listview.xml" afterPath="$PROJECT_DIR$/res/layout/timeline_listview.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/timeline_row.xml" afterPath="$PROJECT_DIR$/res/layout/timeline_row.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -70,7 +60,7 @@
     <file path="/FakeTweetInserterTask.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356968352830" ignored="false" />
     <file path="/LeftSwipeGestureDetector.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356829652681" ignored="false" />
     <file path="/TimelineLoaderCallbacks.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356818182560" ignored="false" />
-    <file path="/AndroidManifest.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357303524842" ignored="false" />
+    <file path="/AndroidManifest.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357309484617" ignored="false" />
     <file path="/TweetLoader.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356797634090" ignored="false" />
     <file path="/TweetProvider.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357257058846" ignored="false" />
     <file path="/OAuthProviderAndConsumer.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356725378383" ignored="false" />
@@ -91,14 +81,14 @@
     <file path="/TweetDatabase.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356815046856" ignored="false" />
     <file path="/Tweet.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356652850651" ignored="false" />
     <file path="/TweetBuilder.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356623381592" ignored="false" />
-    <file path="/fragment.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357288425978" ignored="false" />
+    <file path="/fragment.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357305458634" ignored="false" />
     <file path="/TwitterOAuthLoadAuthUrlTask.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356624293150" ignored="false" />
     <file path="/TimelineActivity.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357302760908" ignored="false" />
     <file path="/OAuthProducerAndConsumer.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356622152112" ignored="false" />
     <file path="/LoadTweetsTask.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356624759774" ignored="false" />
     <file path="/Dummy.txt" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357295298580" ignored="false" />
     <file path="/TweetTimelineView.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356879780584" ignored="false" />
-    <file path="/timeline_listview.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357302748367" ignored="false" />
+    <file path="/timeline_listview.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357309447118" ignored="false" />
     <file path="/timeline_row.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357303487394" ignored="false" />
     <file path="/TimelineView.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356965941231" ignored="false" />
     <file path="/EnsureThereAreNoGapsInTimelineTask.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357244575351" ignored="false" />
@@ -111,11 +101,13 @@
     <file path="/timeline_row_drawable.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357296643712" ignored="false" />
     <file path="/timeline_tweet_contents_drawable.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357300530147" ignored="false" />
     <file path="/timeline_row_light.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357302213757" ignored="false" />
-    <file path="/light_theme.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357303185427" ignored="false" />
+    <file path="/light_theme.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357308289060" ignored="false" />
     <file path="/a.dummy" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357300878936" ignored="false" />
     <file path="/colors.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357301886051" ignored="false" />
     <file path="/timeline_tweet_contents_light.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357302063040" ignored="false" />
     <file path="/refresh_bar_light.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357303138964" ignored="false" />
+    <file path="/timeline_row_dark.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357307226121" ignored="false" />
+    <file path="/avatar_light.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357308337473" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -232,19 +224,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="refresh_bar_light.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/drawable/refresh_bar_light.xml">
+      <file leaf-file-name="light_theme.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/values/light_theme.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="48" selection-start="862" selection-end="862" vertical-scroll-proportion="0.0">
+            <state line="5" column="24" selection-start="272" selection-end="272" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DownloadImageTask.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/eguy/ui/DownloadImageTask.java">
+      <file leaf-file-name="attrs.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/values/attrs.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="13" selection-start="457" selection-end="457" vertical-scroll-proportion="0.0">
+            <state line="8" column="12" selection-start="368" selection-end="368" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="timeline_row.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/timeline_row.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="47" column="67" selection-start="1817" selection-end="1817" vertical-scroll-proportion="-8.48">
               <folding />
             </state>
           </provider>
@@ -253,25 +257,28 @@
       <file leaf-file-name="AndroidManifest.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="114" selection-start="459" selection-end="459" vertical-scroll-proportion="0.37724552">
+            <state line="7" column="118" selection-start="463" selection-end="463" vertical-scroll-proportion="0.1657754">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoadTweetsAndUpdateDbTask.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java">
+      <file leaf-file-name="timeline_listview.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/timeline_listview.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state line="158" column="0" selection-start="5566" selection-end="5566" vertical-scroll-proportion="0.0">
+            <state line="20" column="34" selection-start="763" selection-end="763" vertical-scroll-proportion="-14.4">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="light_theme.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/values/light_theme.xml">
+      <file leaf-file-name="dark_theme.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/values/dark_theme.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="51" selection-start="1246" selection-end="1246" vertical-scroll-proportion="0.0">
+            <state line="5" column="0" selection-start="245" selection-end="245" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -302,21 +309,21 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/values/attrs.xml" />
-        <option value="$PROJECT_DIR$/res/drawable/timeline_tweet_contents_drawable.xml" />
-        <option value="$PROJECT_DIR$/res/layout/main.xml" />
         <option value="$PROJECT_DIR$/res/drawable/timeline_tweet_contents_dark.xml" />
         <option value="$PROJECT_DIR$/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/res/drawable/timeline_row_light.xml" />
         <option value="$PROJECT_DIR$/res/drawable/timeline_tweet_contents_light.xml" />
-        <option value="$PROJECT_DIR$/res/layout/timeline_listview.xml" />
-        <option value="$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java" />
         <option value="$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java" />
-        <option value="$PROJECT_DIR$/res/values/dark_theme.xml" />
         <option value="$PROJECT_DIR$/res/drawable/refresh_bar_dark.xml" />
-        <option value="$PROJECT_DIR$/res/values/light_theme.xml" />
         <option value="$PROJECT_DIR$/res/drawable/refresh_bar_light.xml" />
+        <option value="$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java" />
+        <option value="$PROJECT_DIR$/res/drawable/timeline_row_dark.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/avatar_light.xml" />
+        <option value="$PROJECT_DIR$/res/values/dark_theme.xml" />
+        <option value="$PROJECT_DIR$/res/values/light_theme.xml" />
+        <option value="$PROJECT_DIR$/res/values/attrs.xml" />
         <option value="$PROJECT_DIR$/res/layout/timeline_row.xml" />
+        <option value="$PROJECT_DIR$/res/layout/timeline_listview.xml" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
       </list>
     </option>
@@ -823,7 +830,7 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270869" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24924242" sideWeight="0.6" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3867121" sideWeight="0.67350036" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3867121" sideWeight="0.67350036" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41396934" sideWeight="0.16742425" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270869" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -902,23 +909,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="37" selection-start="347" selection-end="347" vertical-scroll-proportion="0.23507462">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/timeline_row_dark.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="44" selection-start="226" selection-end="226" vertical-scroll-proportion="0.09625668">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/drawable/timeline_tweet_contents_dark.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="11" selection-start="628" selection-end="628" vertical-scroll-proportion="0.0">
@@ -940,44 +930,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/dark_theme.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="8" selection-start="974" selection-end="1039" vertical-scroll-proportion="0.80213904">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/refresh_bar_dark.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="87" column="27" selection-start="2791" selection-end="2791" vertical-scroll-proportion="0.34306568">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="179" column="12" selection-start="7663" selection-end="7663" vertical-scroll-proportion="0.80748665">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="158" column="0" selection-start="5566" selection-end="5566" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/light_theme.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="51" selection-start="1246" selection-end="1246" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -996,12 +951,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/timeline_listview.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="12" selection-start="694" selection-end="728" vertical-scroll-proportion="0.6380597">
+        <state line="37" column="48" selection-start="1180" selection-end="1180" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/refresh_bar_dark.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="156" column="40" selection-start="6726" selection-end="6726" vertical-scroll-proportion="0.069518715">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/timeline_row_dark.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="44" selection-start="226" selection-end="226" vertical-scroll-proportion="0.16167665">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/dark_theme.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="0" selection-start="245" selection-end="245" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/light_theme.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="24" selection-start="272" selection-end="272" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/attrs.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="12" selection-start="368" selection-end="368" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -1011,14 +1005,24 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="33" selection-start="1889" selection-end="1889" vertical-scroll-proportion="0.7669903">
+        <state line="47" column="67" selection-start="1817" selection-end="1817" vertical-scroll-proportion="-8.48">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/timeline_listview.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="34" selection-start="763" selection-end="763" vertical-scroll-proportion="-14.4">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="114" selection-start="459" selection-end="459" vertical-scroll-proportion="0.37724552">
+        <state line="7" column="118" selection-start="463" selection-end="463" vertical-scroll-proportion="0.1657754">
           <folding />
         </state>
       </provider>
