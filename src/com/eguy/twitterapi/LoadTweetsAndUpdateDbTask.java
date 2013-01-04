@@ -62,7 +62,7 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
     {
         try
         {
-            if(dateTimesTwitterRequestsMade.size() >= MAX_NUMBER_OF_REQUESTS_PER_WINDOW)
+            if (dateTimesTwitterRequestsMade.size() >= MAX_NUMBER_OF_REQUESTS_PER_WINDOW)
             {
                 Log.d("ScrollLock", "Not performing request to twitter as it may exceed the rate limit");
                 return null;
@@ -73,12 +73,12 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
             builder.appendQueryParameter("screen_name", settingsManager.getUsername());
             builder.appendQueryParameter("count", String.valueOf(numberOfTweetsToRequest));
 
-            if(sinceId != 0)
+            if (sinceId != 0)
             {
                 builder.appendQueryParameter("since_id", String.valueOf(sinceId));
                 Log.d("ScrollLock", "Requesting since_id: " + sinceId);
             }
-            if(maxId != 0)
+            if (maxId != 0)
             {
                 builder.appendQueryParameter("max_id", String.valueOf(maxId));
                 Log.d("ScrollLock", "Requesting max_id: " + maxId);
@@ -93,15 +93,13 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
             dateTimesTwitterRequestsMade.add(DateFormat.getDateTimeInstance());
 
             return new JSONArray(response);
-        }
-        catch (org.apache.http.client.HttpResponseException ex)
+        } catch (org.apache.http.client.HttpResponseException ex)
         {
-            if(ex.getMessage().contains("Too Many Requests"))
+            if (ex.getMessage().contains("Too Many Requests"))
             {
                 Log.e("ScrollLock", "Exceeded twitter rate limit!", ex);
             }
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             Log.e("ScrollLock", e.getClass().toString(), e);
         }
@@ -111,13 +109,15 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 
     protected void onPostExecute(JSONArray jsonArray)
     {
-        if(jsonArray == null)
+        if (jsonArray == null)
             return;
+
         try
         {
-            long lastTweetId = 0;
+            long newestTweetId = 0;
+            long oldestTweetId = Long.MAX_VALUE;
             ContentValues[] tweets = new ContentValues[jsonArray.length()];
-            for(int i = 0; i < jsonArray.length(); ++i)
+            for (int i = 0; i < jsonArray.length(); ++i)
             {
                 JSONObject status = jsonArray.getJSONObject(i);
                 JsonTweet tweet = new JsonTweet(status);
@@ -131,25 +131,36 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
                 tweetValue.put(TweetProvider.TWEET_PROFILE_PIC_URL, tweet.getProfilePicUrl());
                 tweets[i] = tweetValue;
 
-                lastTweetId = tweet.getTweetId();
-                Log.d("ScrollLock", "Parsing tweet: " + tweet.getText());
+                if (tweet.getTweetId() > newestTweetId)
+                {
+                    newestTweetId = tweet.getTweetId();
+                }
+                if (tweet.getTweetId() < oldestTweetId)
+                {
+                    oldestTweetId = tweet.getTweetId();
+                }
             }
             Log.d("ScrollLock", "Parsed: " + tweets.length + " tweets");
 
-            // if it was the first ever request to twitter
-            if(sinceId == 0 && maxId == 0)
+            if (tweets.length == 0)
             {
-                settingsManager.setTweetSinceId(lastTweetId);
-                settingsManager.setTweetMaxId(lastTweetId - 1);
+                return;
+            }
+
+            long maxTweetId = oldestTweetId - 1;
+            if(maxTweetId > settingsManager.getTweetMaxId())
+            {
+                new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, context, settingsManager.getTweetMaxId(), maxTweetId, 200).execute();
             }
             else
             {
-                new EnsureThereAreNoGapsInTimelineTask(lastTweetId - 1, settingsManager, producerAndConsumer, context).execute();
+                Log.d("ScrollLock", "Done, seting since_id to: " + newestTweetId + " and max_id to: " + maxTweetId);
+                settingsManager.setTweetSinceId(newestTweetId);
+                settingsManager.setTweetMaxId(maxTweetId);
             }
 
             context.getContentResolver().bulkInsert(TweetProvider.TWEET_URI, tweets);
-        }
-        catch (JSONException e)
+        } catch (JSONException e)
         {
             Log.e("ScrollLock", e.getClass().toString(), e);
         }

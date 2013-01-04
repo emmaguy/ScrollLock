@@ -17,6 +17,8 @@ public class SettingsManager
     private String MAX_ID = "maxId";
     private String SINCE_ID = "sinceId";
 
+    private String INTERMEDIATE_MAX_ID = "intermediateMax";
+
     public SettingsManager(Context context)
     {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);

@@ -48,14 +48,6 @@ public class TimelineAdapter extends CursorAdapter
         return view;
     }
 
-    class ViewHolder
-    {
-        ImageView ProfilePicture;
-        TextView TweetText;
-        TextView Username;
-        TextView CreatedAt;
-    }
-
     @Override
     public void bindView(View view, Context context, Cursor cursor)
     {
@@ -160,4 +152,12 @@ public class TimelineAdapter extends CursorAdapter
         return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
                 cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
     }
+}
+
+class ViewHolder
+{
+    ImageView ProfilePicture;
+    TextView TweetText;
+    TextView Username;
+    TextView CreatedAt;
 }

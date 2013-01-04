@@ -9,6 +9,8 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.widget.*;
@@ -19,6 +21,9 @@ import com.eguy.oauth.AuthenticateActivity;
 import com.eguy.oauth.OAuthProviderAndConsumer;
 import com.eguy.twitterapi.FakeTweetInserterTask;
 import com.eguy.twitterapi.LoadTweetsAndUpdateDbTask;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>
 {
@@ -38,7 +43,7 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
 
         getLatestTweetsOrAuthenticate();
         initialiseRefreshBar();
-        //initialiseLongClickToShare();
+        initialiseLongClickToShare();
     }
 
     private void initialiseLongClickToShare()
@@ -46,14 +51,15 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
         final Context context = this;
 
         ListView timeline = (ListView) findViewById(R.id.lstTimeline);
-        timeline.setOnLongClickListener(new View.OnLongClickListener()
+        timeline.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
         {
             @Override
-            public boolean onLongClick(View view)
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l)
             {
+                ViewHolder h = (ViewHolder)view.getTag();
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, h.TweetText.getText());
                 sendIntent.setType("text/plain");
                 context.startActivity(Intent.createChooser(sendIntent, "Share"));
                 return true;
@@ -65,13 +71,13 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
     private void getLatestTweetsOrAuthenticate()
     {
         SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
-        if (!settingsManager.credentialsAvailable())
+        if (settingsManager.credentialsAvailable())
         {
-            startActivity(new Intent(this, AuthenticateActivity.class));
+            getLatestTweets();
         }
         else
         {
-            getLatestTweets();
+            startActivity(new Intent(this, AuthenticateActivity.class));
         }
     }
 
@@ -86,8 +92,8 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
             public void onClick(View view)
             {
                 Toast.makeText(getApplicationContext(), "refreshing...", Toast.LENGTH_SHORT).show();
-                //getLatestTweets();
-                new FakeTweetInserterTask(context, new SettingsManager(context)).execute();
+                getLatestTweets();
+                //new FakeTweetInserterTask(context, new SettingsManager(context)).execute();
             }
         });
     }
@@ -96,7 +102,10 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
     {
         SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
         OAuthProviderAndConsumer producerAndConsumer = new OAuthProviderAndConsumer(settingsManager);
-        new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, this.getApplicationContext(), settingsManager.getTweetSinceId(), 0, 200).execute();
+        //new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, this.getApplicationContext(), settingsManager.getTweetSinceId(), 0, 1).execute();
+
+        Log.d("ScrollLock", "starting run");
+        new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, this.getApplicationContext(), 0, 0, 2).execute();
     }
 
     @Override
@@ -109,13 +118,13 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
     {
-        ListView listview = (ListView) findViewById(R.id.lstTimeline);
+        ListView timeline = (ListView) findViewById(R.id.lstTimeline);
 
-        int selection = listview.getFirstVisiblePosition();
+        int selection = timeline.getFirstVisiblePosition();
         adapter.changeCursor(cursor);
         if(previousNumberOfItemsInList != 0)
         {
-            listview.setSelection(selection + (cursor.getCount() - previousNumberOfItemsInList));
+            timeline.setSelection(selection + (cursor.getCount() - previousNumberOfItemsInList));
         }
         previousNumberOfItemsInList = cursor.getCount();
     }

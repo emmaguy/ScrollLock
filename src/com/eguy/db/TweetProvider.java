@@ -62,6 +62,7 @@ public class TweetProvider extends ContentProvider
         tweetDatabase = new TweetDatabase(getContext());
         SQLiteDatabase db = tweetDatabase.getWritableDatabase();
         db.execSQL("DELETE FROM " + TWEET_TABLE_NAME + " WHERE " + TWEET_TEXT + " LIKE 'Generated Tweet:%'");
+        db.execSQL("DELETE FROM " + TWEET_TABLE_NAME + " WHERE " + TWEET_ID + " IN (SELECT " + TWEET_ID + " FROM " + TWEET_TABLE_NAME + " ORDER BY " + TWEET_ID + " DESC LIMIT 10)");
 
         return true;
     }
@@ -94,7 +95,7 @@ public class TweetProvider extends ContentProvider
             cur.setNotificationUri(getContext().getContentResolver(), uri);
         } catch (Exception ex)
         {
-            Log.e("db", ex.toString());
+            Log.d("db", ex.toString());
         }
         return cur;
     }
@@ -122,7 +123,7 @@ public class TweetProvider extends ContentProvider
                 }
                 else
                 {
-                    Log.e("ScrollLockDb", "Insert error for userid/profile picture");
+                    Log.d("ScrollLockDb", "Insert error for userid/profile picture");
                     return uri;
                 }
             case TWEET_TIMELINE_QUERY:
@@ -136,7 +137,7 @@ public class TweetProvider extends ContentProvider
                 }
                 else
                 {
-                    Log.e("ScrollLockDb", "Insert error for single tweet");
+                    Log.d("ScrollLockDb", "Insert error for single tweet");
                     return uri;
                 }
         }
@@ -168,7 +169,7 @@ public class TweetProvider extends ContentProvider
                     return insertValues.length;
                 } catch (Exception e)
                 {
-                    Log.e("ScrollLockDb", e.getClass().toString(), e);
+                    Log.d("ScrollLockDb", e.getClass().toString(), e);
                 }
 
             case USER_QUERY:
@@ -190,7 +191,7 @@ public class TweetProvider extends ContentProvider
                     return insertValues.length;
                 } catch (Exception e)
                 {
-                    Log.e("ScrollLockDb", e.getClass().toString(), e);
+                    Log.d("ScrollLockDb", e.getClass().toString(), e);
                 }
 
             case INVALID_URI:
