@@ -17,8 +17,6 @@ public class SettingsManager
     private String MAX_ID = "maxId";
     private String SINCE_ID = "sinceId";
 
-    private String LATEST_TWEET_ID = "latestTweetId";
-
     public SettingsManager(Context context)
     {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -111,17 +109,5 @@ public class SettingsManager
     private String getUserId()
     {
         return sharedPreferences.getString(USER_ID, null);
-    }
-
-    public void setLatestTweetId(long newestTweetId)
-    {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong(LATEST_TWEET_ID, newestTweetId);
-        editor.commit();
-    }
-
-    public long getLatestTweetId()
-    {
-        return sharedPreferences.getLong(LATEST_TWEET_ID, 0);
     }
 }

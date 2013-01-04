@@ -56,11 +56,14 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l)
             {
+                Toast.makeText(context, "share", Toast.LENGTH_SHORT).show();
                 ViewHolder h = (ViewHolder)view.getTag();
+
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, h.TweetText.getText());
                 sendIntent.setType("text/plain");
+
                 context.startActivity(Intent.createChooser(sendIntent, "Share"));
                 return true;
             }
@@ -73,7 +76,7 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
         SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
         if (settingsManager.credentialsAvailable())
         {
-            //getLatestTweets();
+            getLatestTweets();
         }
         else
         {
@@ -104,7 +107,11 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
         OAuthProviderAndConsumer producerAndConsumer = new OAuthProviderAndConsumer(settingsManager);
 
         Log.d("ScrollLock", "starting run");
-        new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, this.getApplicationContext(), settingsManager.getTweetSinceId(), 0, 20).execute();
+        Log.d("ScrollLock", "since_id: " + settingsManager.getTweetSinceId());
+        Log.d("ScrollLock", "max_id: " + settingsManager.getTweetMaxId());
+
+        new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager,
+                this.getApplicationContext(), settingsManager.getTweetSinceId(), 0, 50).execute();
     }
 
     @Override
