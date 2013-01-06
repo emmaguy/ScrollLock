@@ -3,7 +3,7 @@
   <component name="AndroidConfiguredLogFilters">
     <filters>
       <filter>
-        <option name="logLevel" value="debug" />
+        <option name="logLevel" value="verbose" />
         <option name="logMessagePattern" value="" />
         <option name="logTagPattern" value="ScrollLock" />
         <option name="name" value="DebugSL" />
@@ -47,12 +47,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="821b8ac3-d966-40d2-b4e8-eb4729f15379" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/eguy/ui/TweetViewerActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/tweet_viewer.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java" afterPath="$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java" afterPath="$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/refresh_bar_dark.xml" afterPath="$PROJECT_DIR$/res/drawable/refresh_bar_dark.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/eguy/db/TweetProvider.java" afterPath="$PROJECT_DIR$/src/com/eguy/db/TweetProvider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/tweet_viewer.xml" afterPath="$PROJECT_DIR$/res/layout/tweet_viewer.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ScrollLock.iws" />
@@ -62,7 +60,7 @@
     <file path="/TimelineLoaderCallbacks.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356818182560" ignored="false" />
     <file path="/AndroidManifest.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357309484617" ignored="false" />
     <file path="/TweetLoader.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356797634090" ignored="false" />
-    <file path="/TweetProvider.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357257058846" ignored="false" />
+    <file path="/TweetProvider.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357476100012" ignored="false" />
     <file path="/OAuthProviderAndConsumer.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356725378383" ignored="false" />
     <file path="/SettingsManager.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357318731977" ignored="false" />
     <file path="/TimelineAdapter.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357253788161" ignored="false" />
@@ -76,17 +74,17 @@
     <file path="/timeline_activity.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356739943077" ignored="false" />
     <file path="/TimelineAdapater.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356647240220" ignored="false" />
     <file path="/tweet_timeline.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356731106646" ignored="false" />
-    <file path="/LoadTweetsAndUpdateDbTask.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357322499917" ignored="false" />
+    <file path="/LoadTweetsAndUpdateDbTask.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357474766002" ignored="false" />
     <file path="/SavedTweet.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356736747185" ignored="false" />
     <file path="/TweetDatabase.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356815046856" ignored="false" />
     <file path="/Tweet.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356652850651" ignored="false" />
     <file path="/TweetBuilder.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356623381592" ignored="false" />
-    <file path="/fragment.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357333453375" ignored="false" />
+    <file path="/fragment.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357474434321" ignored="false" />
     <file path="/TwitterOAuthLoadAuthUrlTask.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356624293150" ignored="false" />
-    <file path="/TimelineActivity.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357334466197" ignored="false" />
+    <file path="/TimelineActivity.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357471474956" ignored="false" />
     <file path="/OAuthProducerAndConsumer.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356622152112" ignored="false" />
     <file path="/LoadTweetsTask.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356624759774" ignored="false" />
-    <file path="/Dummy.txt" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357332871748" ignored="false" />
+    <file path="/Dummy.txt" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357472253597" ignored="false" />
     <file path="/TweetTimelineView.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356879780584" ignored="false" />
     <file path="/timeline_listview.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357309447118" ignored="false" />
     <file path="/timeline_row.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357303487394" ignored="false" />
@@ -126,7 +124,7 @@
   </component>
   <component name="DebuggerManager">
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/src/com/eguy/db/TweetProvider.java" line="198" class="com.eguy.db.TweetProvider" package="com.eguy.db">
+      <breakpoint url="file://$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java" line="172" class="com.eguy.twitterapi.LoadTweetsAndUpdateDbTask" package="com.eguy.twitterapi">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -140,21 +138,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/com/eguy/db/TweetProvider.java" line="192" class="com.eguy.db.TweetProvider" package="com.eguy.db">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java" line="167" class="com.eguy.twitterapi.LoadTweetsAndUpdateDbTask" package="com.eguy.twitterapi">
+      <breakpoint url="file://$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java" line="169" class="com.eguy.twitterapi.LoadTweetsAndUpdateDbTask" package="com.eguy.twitterapi">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -213,42 +197,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="TweetViewerActivity.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/eguy/ui/TweetViewerActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="58" column="61" selection-start="1892" selection-end="1892" vertical-scroll-proportion="0.5410765">
-              <folding>
-                <element signature="e#1148#1156#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LoadTweetsAndUpdateDbTask.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="LoadTweetsAndUpdateDbTask.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="167" column="0" selection-start="6448" selection-end="6448" vertical-scroll-proportion="0.0">
+            <state line="137" column="0" selection-start="5141" selection-end="5141" vertical-scroll-proportion="0.032846715">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <file leaf-file-name="TweetProvider.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/eguy/db/TweetProvider.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="67" selection-start="275" selection-end="275" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="timeline_row.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/timeline_row.xml">
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="0" selection-start="1443" selection-end="2182" vertical-scroll-proportion="-2.0">
+            <state line="165" column="0" selection-start="5797" selection-end="5797" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -257,7 +218,7 @@
       <file leaf-file-name="TimelineActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="8" selection-start="975" selection-end="1078" vertical-scroll-proportion="0.0">
+            <state line="131" column="85" selection-start="4722" selection-end="4722" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -288,7 +249,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/drawable/avatar_light.xml" />
         <option value="$PROJECT_DIR$/res/values/dark_theme.xml" />
         <option value="$PROJECT_DIR$/res/values/light_theme.xml" />
         <option value="$PROJECT_DIR$/res/values/attrs.xml" />
@@ -297,13 +257,14 @@
         <option value="$PROJECT_DIR$/src/com/eguy/SettingsManager.java" />
         <option value="$PROJECT_DIR$/src/com/eguy/twitterapi/RateCalculator.java" />
         <option value="$PROJECT_DIR$/res/drawable/refresh_bar_dark.xml" />
-        <option value="$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java" />
-        <option value="$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java" />
         <option value="$PROJECT_DIR$/src/com/eguy/ui/Browser.java" />
-        <option value="$PROJECT_DIR$/res/layout/tweet_viewer.xml" />
         <option value="$PROJECT_DIR$/src/com/eguy/ui/EmbeddedWebViewClient.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/src/com/eguy/ui/TweetViewerActivity.java" />
+        <option value="$PROJECT_DIR$/res/layout/tweet_viewer.xml" />
+        <option value="$PROJECT_DIR$/src/com/eguy/db/TweetProvider.java" />
+        <option value="$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java" />
+        <option value="$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java" />
       </list>
     </option>
   </component>
@@ -831,17 +792,17 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270869" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24924242" sideWeight="0.6" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3867121" sideWeight="0.67350036" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4241908" sideWeight="0.67350036" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41396934" sideWeight="0.16742425" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270869" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2504259" sideWeight="0.99848485" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.35434413" sideWeight="0.8272727" order="7" side_tool="false" content_ui="tabs" x="84" y="548" width="1109" height="243" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41396934" sideWeight="0.8272727" order="7" side_tool="false" content_ui="tabs" x="84" y="548" width="1109" height="243" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953683" sideWeight="0.60102737" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20378788" sideWeight="0.6456559" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20530303" sideWeight="0.58603066" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2640545" sideWeight="0.4939302" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -978,29 +939,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="8" selection-start="975" selection-end="1078" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/timeline_row.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="38" column="0" selection-start="1443" selection-end="2182" vertical-scroll-proportion="-2.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/tweet_viewer.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="17" selection-start="658" selection-end="658" vertical-scroll-proportion="0.0121951215">
           <folding />
         </state>
       </provider>
@@ -1012,19 +956,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java">
+    <entry file="file://$PROJECT_DIR$/res/layout/tweet_viewer.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="167" column="0" selection-start="6448" selection-end="6448" vertical-scroll-proportion="0.0">
+        <state line="9" column="47" selection-start="375" selection-end="375" vertical-scroll-proportion="-6.48">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/eguy/ui/TweetViewerActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="61" selection-start="1892" selection-end="1892" vertical-scroll-proportion="0.5410765">
+        <state line="57" column="56" selection-start="1801" selection-end="1823" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="e#1148#1156#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/eguy/db/TweetProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="165" column="0" selection-start="5797" selection-end="5797" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="131" column="85" selection-start="4722" selection-end="4722" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="137" column="0" selection-start="5141" selection-end="5141" vertical-scroll-proportion="0.032846715">
+          <folding />
         </state>
       </provider>
     </entry>

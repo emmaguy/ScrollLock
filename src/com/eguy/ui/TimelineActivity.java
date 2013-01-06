@@ -129,7 +129,7 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
         Log.d("ScrollLock", "max_id: " + settingsManager.getTweetMaxId());
 
         new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager,
-                this.getApplicationContext(), settingsManager.getTweetSinceId(), 0, 50).execute();
+                this.getApplicationContext(), settingsManager.getTweetSinceId(), 0, 1, true).execute();
     }
 
     @Override

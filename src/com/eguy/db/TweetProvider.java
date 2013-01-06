@@ -112,34 +112,50 @@ public class TweetProvider extends ContentProvider
         switch (uriMatcher.match(uri))
         {
             case USER_QUERY:
-                SQLiteDatabase writableDatabase = tweetDatabase.getWritableDatabase();
+            {
+                long id = -1;
 
-                long id = writableDatabase.insert(USER_TABLE_NAME, null, contentValues);
+                try
+                {
+                    SQLiteDatabase writableDatabase = tweetDatabase.getWritableDatabase();
+                    id = writableDatabase.insert(USER_TABLE_NAME, null, contentValues);
+                } catch (Exception e)
+                {
+                    Log.d("ScrollLockDb", e.getClass().toString(), e);
+                }
 
                 if (-1 != id)
                 {
                     getContext().getContentResolver().notifyChange(TweetProvider.TWEET_URI, null);
                     return Uri.withAppendedPath(uri, Long.toString(id));
-                }
-                else
+                } else
                 {
                     Log.d("ScrollLockDb", "Insert error for userid/profile picture");
                     return uri;
                 }
+            }
             case TWEET_TIMELINE_QUERY:
-                SQLiteDatabase sqldb = tweetDatabase.getWritableDatabase();
+            {
+                long insertedId = -1;
+                try
+                {
+                    SQLiteDatabase sqldb = tweetDatabase.getWritableDatabase();
+                    insertedId = sqldb.insert(TWEET_TABLE_NAME, null, contentValues);
+                } catch (Exception e)
+                {
+                    Log.d("ScrollLockDb", e.getClass().toString(), e);
+                }
 
-                long insertedId = sqldb.insert(TWEET_TABLE_NAME, null, contentValues);
                 if (-1 != insertedId)
                 {
                     getContext().getContentResolver().notifyChange(TweetProvider.TWEET_URI, null);
                     return Uri.withAppendedPath(uri, Long.toString(insertedId));
-                }
-                else
+                } else
                 {
                     Log.d("ScrollLockDb", "Insert error for single tweet");
                     return uri;
                 }
+            }
         }
         throw new IllegalArgumentException("Bulk insert -- Invalid URI:" + uri);
     }
@@ -147,35 +163,44 @@ public class TweetProvider extends ContentProvider
     @Override
     public int bulkInsert(Uri uri, ContentValues[] insertValues)
     {
+        int insertedValues = -1;
         switch (uriMatcher.match(uri))
         {
             case TWEET_TIMELINE_QUERY:
+            {
+                SQLiteDatabase writableDatabase = null;
 
                 try
                 {
-                    SQLiteDatabase localSQLiteDatabase = tweetDatabase.getWritableDatabase();
-                    localSQLiteDatabase.beginTransaction();
+                    writableDatabase = tweetDatabase.getWritableDatabase();
+                    writableDatabase.beginTransaction();
 
                     for (ContentValues insertValue : insertValues)
                     {
-                        localSQLiteDatabase.insert(TWEET_TABLE_NAME, null, insertValue);
+                        writableDatabase.insert(TWEET_TABLE_NAME, null, insertValue);
                     }
 
-                    localSQLiteDatabase.setTransactionSuccessful();
-                    localSQLiteDatabase.endTransaction();
-                    localSQLiteDatabase.close();
+                    writableDatabase.setTransactionSuccessful();
 
                     getContext().getContentResolver().notifyChange(uri, null);
-                    return insertValues.length;
+                    insertedValues = insertValues.length;
                 } catch (Exception e)
                 {
                     Log.d("ScrollLockDb", e.getClass().toString(), e);
+                } finally
+                {
+                    if (writableDatabase != null)
+                        writableDatabase.endTransaction();
                 }
-
+                break;
+            }
             case USER_QUERY:
+            {
+                SQLiteDatabase localSQLiteDatabase = null;
+
                 try
                 {
-                    SQLiteDatabase localSQLiteDatabase = tweetDatabase.getWritableDatabase();
+                    localSQLiteDatabase = tweetDatabase.getWritableDatabase();
                     localSQLiteDatabase.beginTransaction();
 
                     for (ContentValues insertValue : insertValues)
@@ -184,21 +209,25 @@ public class TweetProvider extends ContentProvider
                     }
 
                     localSQLiteDatabase.setTransactionSuccessful();
-                    localSQLiteDatabase.endTransaction();
-                    localSQLiteDatabase.close();
 
                     getContext().getContentResolver().notifyChange(TweetProvider.TWEET_URI, null);
-                    return insertValues.length;
+                    insertedValues = insertValues.length;
                 } catch (Exception e)
                 {
                     Log.d("ScrollLockDb", e.getClass().toString(), e);
+                } finally
+                {
+                    if (localSQLiteDatabase != null)
+                        localSQLiteDatabase.endTransaction();
                 }
-
+                break;
+            }
             case INVALID_URI:
+            {
                 throw new IllegalArgumentException("Bulk insert -- Invalid URI:" + uri);
-
+            }
         }
-        return -1;
+        return insertedValues;
     }
 
     @Override
