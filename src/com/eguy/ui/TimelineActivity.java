@@ -5,9 +5,7 @@ import android.app.LoaderManager;
 import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.widget.*;
@@ -16,11 +14,7 @@ import com.eguy.SettingsManager;
 import com.eguy.db.TweetProvider;
 import com.eguy.oauth.AuthenticateActivity;
 import com.eguy.oauth.OAuthProviderAndConsumer;
-import com.eguy.twitterapi.FakeTweetInserterTask;
 import com.eguy.twitterapi.LoadTweetsAndUpdateDbTask;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class TimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>
 {

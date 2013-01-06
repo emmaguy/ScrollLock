@@ -6,8 +6,6 @@ import android.os.AsyncTask;
 import com.eguy.SettingsManager;
 import com.eguy.db.TweetProvider;
 
-import java.util.Random;
-
 public class FakeTweetInserterTask extends AsyncTask<Void, Void, Void>
 {
     private Context context;

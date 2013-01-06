@@ -3,7 +3,6 @@ package com.eguy.ui;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
@@ -13,7 +12,6 @@ import org.apache.http.util.ByteArrayBuffer;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.ByteBuffer;
 
 public class DownloadImageTask extends AsyncTask<String, Void, byte[]>
 {

@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.eguy.R;
 import com.eguy.db.TweetProvider;
 
-import javax.security.auth.login.LoginException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
