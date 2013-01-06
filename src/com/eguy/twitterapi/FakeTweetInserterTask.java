@@ -9,13 +9,11 @@ import com.eguy.db.TweetProvider;
 public class FakeTweetInserterTask extends AsyncTask<Void, Void, Void>
 {
     private Context context;
-    private SettingsManager settingsManager;
     private static int counter = 0;
 
-    public FakeTweetInserterTask(Context context, SettingsManager settingsManager)
+    public FakeTweetInserterTask(Context context)
     {
         this.context = context;
-        this.settingsManager = settingsManager;
     }
 
     @Override
