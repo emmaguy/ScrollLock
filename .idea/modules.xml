@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ScrollLock.iml" filepath="$PROJECT_DIR$/ScrollLock.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ScrollLockTest/ScrollLockTest.iml" filepath="$PROJECT_DIR$/ScrollLockTest/ScrollLockTest.iml" />
     </modules>
   </component>
 </project>

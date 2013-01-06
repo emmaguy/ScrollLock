@@ -17,7 +17,6 @@ import org.json.JSONObject;
 
 public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 {
-    private final String HOME_TIMELINE_URL = "https://api.twitter.com/1.1/statuses/home_timeline.json";
     private static final int MAX_NUMBER_OF_REQUESTS_PER_WINDOW = 5;
     private static final int WINDOW_LENGTH = 15;
 
@@ -63,28 +62,13 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
                 return null;
             }
 
-            Uri sUri = Uri.parse(HOME_TIMELINE_URL);
-            Uri.Builder builder = sUri.buildUpon();
-            builder.appendQueryParameter("screen_name", settingsManager.getUsername());
-            builder.appendQueryParameter("count", String.valueOf(numberOfTweetsToRequest));
-
-            if (sinceId != 0)
-            {
-                builder.appendQueryParameter("since_id", String.valueOf(sinceId));
-                Log.d("ScrollLock", "Requesting since_id: " + sinceId);
-            }
-            if (!getLatestTweets && maxId != 0)
-            {
-                builder.appendQueryParameter("max_id", String.valueOf(maxId));
-                Log.d("ScrollLock", "Requesting max_id: " + maxId);
-            }
-
-            String uri = builder.build().toString();
+            String uri = new HomeTimelineUriBuilder(settingsManager.getUsername(), numberOfTweetsToRequest, sinceId, maxId, getLatestTweets).build();
             HttpGet get = new HttpGet(uri);
+
             producerAndConsumer.getConsumer().sign(get);
+            rateCalculator.requestMade();
 
             String response = client.execute(get, new BasicResponseHandler());
-            rateCalculator.requestMade();
 
             return new JSONArray(response);
         } catch (org.apache.http.client.HttpResponseException ex)

@@ -6,109 +6,43 @@
         <option name="logLevel" value="verbose" />
         <option name="logMessagePattern" value="" />
         <option name="logTagPattern" value="ScrollLock" />
-        <option name="name" value="DebugSL" />
-        <option name="pid" value="" />
-      </filter>
-      <filter>
-        <option name="logLevel" value="error" />
-        <option name="logMessagePattern" value="" />
-        <option name="logTagPattern" value="" />
-        <option name="name" value="Error" />
+        <option name="name" value="ScrollLock" />
         <option name="pid" value="" />
       </filter>
     </filters>
   </component>
-  <component name="AndroidDesignerProfile">
-    <option name="fullProfile">
-      <profile>
-        <option name="device" value="2.7in QVGA" />
-        <option name="deviceConfiguration" value="Portrait" />
-        <option name="targetHashString" value="android-16" />
-        <option name="theme" value="Theme" />
-      </profile>
-    </option>
-    <option name="selection" value="[Full]" />
-  </component>
-  <component name="AndroidLayoutPreviewToolWindow">
-    <option name="state">
-      <GlobalState>
-        <option name="device" value="2.7in QVGA" />
-        <option name="dockMode" value="" />
-        <option name="nightMode" value="notnight" />
-        <option name="targetHashString" value="android-16" />
-        <option name="theme" value="Theme" />
-        <option name="visible" value="false" />
-      </GlobalState>
-    </option>
-  </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="DEBUG" />
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="DebugSL" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="ScrollLock" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="821b8ac3-d966-40d2-b4e8-eb4729f15379" name="Default" comment="">
+    <list default="true" id="1ce61cd7-960d-4c38-b08f-51a1c9cb8b69" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ScrollLockTest/res/drawable-hdpi/ic_launcher.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ScrollLockTest/res/drawable-ldpi/ic_launcher.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ScrollLockTest/res/drawable-mdpi/ic_launcher.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ScrollLockTest/res/drawable-xhdpi/ic_launcher.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ScrollLockTest/AndroidManifest.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/eguy/twitterapi/HomeTimelineUriBuilder.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ScrollLockTest/src/com/eguy/test/HomeTimelineUriBuilderTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ScrollLockTest/ScrollLockTest.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ScrollLockTest/ant.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ScrollLockTest/build.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/dexedLibs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/libs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ScrollLockTest/proguard-project.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ScrollLockTest/project.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ScrollLockTest/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java" afterPath="$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java" afterPath="$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/eguy/db/TweetProvider.java" afterPath="$PROJECT_DIR$/src/com/eguy/db/TweetProvider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/tweet_viewer.xml" afterPath="$PROJECT_DIR$/res/layout/tweet_viewer.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ScrollLock.iml" afterPath="$PROJECT_DIR$/ScrollLock.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ScrollLock.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/FakeTweetInserterTask.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356968352830" ignored="false" />
-    <file path="/LeftSwipeGestureDetector.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356829652681" ignored="false" />
-    <file path="/TimelineLoaderCallbacks.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356818182560" ignored="false" />
-    <file path="/AndroidManifest.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357309484617" ignored="false" />
-    <file path="/TweetLoader.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356797634090" ignored="false" />
-    <file path="/TweetProvider.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357476100012" ignored="false" />
-    <file path="/OAuthProviderAndConsumer.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356725378383" ignored="false" />
-    <file path="/SettingsManager.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357318731977" ignored="false" />
-    <file path="/TimelineAdapter.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357253788161" ignored="false" />
-    <file path="/DownloadImageTask.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356825025238" ignored="false" />
-    <file path="/SavedUser.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356652717141" ignored="false" />
-    <file path="/JsonUser.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356649681843" ignored="false" />
-    <file path="/LookupUsersAndUpdateDbTask.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356725402754" ignored="false" />
-    <file path="/HttpClientBuilder.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356648497527" ignored="false" />
-    <file path="/LookupUsers.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356648186543" ignored="false" />
-    <file path="/JsonTweet.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356736528303" ignored="false" />
-    <file path="/timeline_activity.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356739943077" ignored="false" />
-    <file path="/TimelineAdapater.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356647240220" ignored="false" />
-    <file path="/tweet_timeline.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356731106646" ignored="false" />
-    <file path="/LoadTweetsAndUpdateDbTask.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357474766002" ignored="false" />
-    <file path="/SavedTweet.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356736747185" ignored="false" />
-    <file path="/TweetDatabase.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356815046856" ignored="false" />
-    <file path="/Tweet.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356652850651" ignored="false" />
-    <file path="/TweetBuilder.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356623381592" ignored="false" />
-    <file path="/fragment.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357474434321" ignored="false" />
-    <file path="/TwitterOAuthLoadAuthUrlTask.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356624293150" ignored="false" />
-    <file path="/TimelineActivity.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357471474956" ignored="false" />
-    <file path="/OAuthProducerAndConsumer.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356622152112" ignored="false" />
-    <file path="/LoadTweetsTask.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356624759774" ignored="false" />
-    <file path="/Dummy.txt" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357472253597" ignored="false" />
-    <file path="/TweetTimelineView.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356879780584" ignored="false" />
-    <file path="/timeline_listview.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357309447118" ignored="false" />
-    <file path="/timeline_row.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357303487394" ignored="false" />
-    <file path="/TimelineView.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1356965941231" ignored="false" />
-    <file path="/EnsureThereAreNoGapsInTimelineTask.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357244575351" ignored="false" />
-    <file path="/timeline_theme.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357292499767" ignored="false" />
-    <file path="/dark_theme.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357302956138" ignored="false" />
-    <file path="/timeline_layout.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357293667468" ignored="false" />
-    <file path="/attrs.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357299313987" ignored="false" />
-    <file path="/shapes.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357295217201" ignored="false" />
-    <file path="/timeline_row_drawabe.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357295820969" ignored="false" />
-    <file path="/timeline_row_drawable.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357296643712" ignored="false" />
-    <file path="/timeline_tweet_contents_drawable.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357300530147" ignored="false" />
-    <file path="/timeline_row_light.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357302213757" ignored="false" />
-    <file path="/light_theme.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357308289060" ignored="false" />
-    <file path="/a.dummy" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357300878936" ignored="false" />
-    <file path="/colors.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357301886051" ignored="false" />
-    <file path="/timeline_tweet_contents_light.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357302063040" ignored="false" />
-    <file path="/refresh_bar_light.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357303138964" ignored="false" />
-    <file path="/timeline_row_dark.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357307226121" ignored="false" />
-    <file path="/avatar_light.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357308337473" ignored="false" />
-    <file path="/RateCalculator.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357322228943" ignored="false" />
-    <file path="/tweet_viewer.xml" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357336011156" ignored="false" />
-    <file path="/TweetViewerActivity.java" changelist="821b8ac3-d966-40d2-b4e8-eb4729f15379" time="1357336138667" ignored="false" />
+    <file path="/Dummy.txt" changelist="1ce61cd7-960d-4c38-b08f-51a1c9cb8b69" time="1357494621827" ignored="false" />
+    <file path="/fragment.java" changelist="1ce61cd7-960d-4c38-b08f-51a1c9cb8b69" time="1357494599535" ignored="false" />
+    <file path="/HomeTimelineUriBuilderTest.java" changelist="1ce61cd7-960d-4c38-b08f-51a1c9cb8b69" time="1357494358479" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,36 +57,6 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java" line="172" class="com.eguy.twitterapi.LoadTweetsAndUpdateDbTask" package="com.eguy.twitterapi">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java" line="169" class="com.eguy.twitterapi.LoadTweetsAndUpdateDbTask" package="com.eguy.twitterapi">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </line_breakpoints>
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -164,7 +68,7 @@
         <option name="SUSPEND" value="true" />
         <option name="COUNT_FILTER_ENABLED" value="false" />
         <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CONDITION_ENABLED" value="true" />
         <option name="CLASS_FILTERS_ENABLED" value="false" />
         <option name="INSTANCE_FILTERS_ENABLED" value="false" />
         <option name="CONDITION" value="" />
@@ -180,7 +84,7 @@
         <option name="SUSPEND" value="true" />
         <option name="COUNT_FILTER_ENABLED" value="false" />
         <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CONDITION_ENABLED" value="true" />
         <option name="CLASS_FILTERS_ENABLED" value="false" />
         <option name="INSTANCE_FILTERS_ENABLED" value="false" />
         <option name="CONDITION" value="" />
@@ -197,28 +101,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="LoadTweetsAndUpdateDbTask.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java">
+      <file leaf-file-name="HomeTimelineUriBuilderTest.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ScrollLockTest/src/com/eguy/test/HomeTimelineUriBuilderTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="137" column="0" selection-start="5141" selection-end="5141" vertical-scroll-proportion="0.032846715">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TweetProvider.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/eguy/db/TweetProvider.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="165" column="0" selection-start="5797" selection-end="5797" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TimelineActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="131" column="85" selection-start="4722" selection-end="4722" vertical-scroll-proportion="0.0">
+            <state line="6" column="1" selection-start="179" selection-end="179" vertical-scroll-proportion="0.22535211">
               <folding />
             </state>
           </provider>
@@ -239,37 +125,12 @@
       <MyDateState />
     </option>
   </component>
-  <component name="GradleLocalSettings">
-    <option name="expandStates">
-      <map>
-        <entry key="ScrollLock" value="true" />
-      </map>
-    </option>
-  </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/values/dark_theme.xml" />
-        <option value="$PROJECT_DIR$/res/values/light_theme.xml" />
-        <option value="$PROJECT_DIR$/res/values/attrs.xml" />
-        <option value="$PROJECT_DIR$/res/layout/timeline_row.xml" />
-        <option value="$PROJECT_DIR$/res/layout/timeline_listview.xml" />
-        <option value="$PROJECT_DIR$/src/com/eguy/SettingsManager.java" />
-        <option value="$PROJECT_DIR$/src/com/eguy/twitterapi/RateCalculator.java" />
-        <option value="$PROJECT_DIR$/res/drawable/refresh_bar_dark.xml" />
-        <option value="$PROJECT_DIR$/src/com/eguy/ui/Browser.java" />
-        <option value="$PROJECT_DIR$/src/com/eguy/ui/EmbeddedWebViewClient.java" />
-        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/src/com/eguy/ui/TweetViewerActivity.java" />
-        <option value="$PROJECT_DIR$/res/layout/tweet_viewer.xml" />
-        <option value="$PROJECT_DIR$/src/com/eguy/db/TweetProvider.java" />
-        <option value="$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java" />
-        <option value="$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java" />
+        <option value="$PROJECT_DIR$/ScrollLockTest/src/com/eguy/test/HomeTimelineUriBuilderTest.java" />
       </list>
     </option>
-  </component>
-  <component name="MavenProjectNavigator">
-    <treeState />
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
@@ -277,14 +138,14 @@
     <option name="width" value="1382" />
     <option name="height" value="744" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
     <OptionsSetting value="true" id="Checkout" />
     <OptionsSetting value="true" id="Update" />
     <OptionsSetting value="true" id="Status" />
     <OptionsSetting value="true" id="Edit" />
-    <ConfirmationsSetting value="2" id="Add" />
+    <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
@@ -304,7 +165,6 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -333,11 +193,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="eguy" />
+              <option name="myItemId" value="ScrollLockTest" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -351,25 +207,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="eguy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
+              <option name="myItemId" value="ScrollLockTest" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -377,196 +215,26 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="eguy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TimelineAdapter.java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="eguy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="twitterapi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="eguy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="oauth" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="eguy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="db" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="values" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="layout" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScrollLock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="drawable" />
+              <option name="myItemId" value="test" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_directory_selection" value="$PROJECT_DIR$/src/com/eguy" />
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="OverrideImplement.combined" value="true" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="MemberChooser.sorted" value="false" />
-    <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="fileTemplates" />
-    <property name="AndroidLayoutSelectedEditor" value="text-editor" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="recentsLimit" value="5" />
+    <property name="MemberChooser.sorted" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
   </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Emma\IdeaProjects\ScrollLock\res\drawable" />
-      <recent name="C:\Users\Emma\IdeaProjects\ScrollLock\res\values" />
-      <recent name="C:\Users\Emma\IdeaProjects\ScrollLock\libs" />
-    </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="com.eguy.twitterapi" />
-      <recent name="com.eguy.ui" />
-      <recent name="com.eguy" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Emma\IdeaProjects\ScrollLock\res\values" />
-      <recent name="C:\Users\Emma\IdeaProjects\ScrollLock\res\styles" />
-    </key>
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="com.eguy" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Android Application.SGS">
+  <component name="RunManager" selected="Android Application.ScrollLock">
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
       <module name="" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m" />
@@ -598,19 +266,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -638,6 +293,19 @@
       <listeners />
       <method />
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" />
       <option name="VM_PARAMETERS" />
@@ -660,9 +328,9 @@
       <option name="MAIN_CLASS_NAME" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="TEST_SEARCH_SCOPE">
@@ -689,24 +357,7 @@
     </configuration>
     <configuration default="false" name="ScrollLock" type="AndroidRunConfigurationType" factoryName="Android Application">
       <module name="ScrollLock" />
-      <option name="ACTIVITY_CLASS" value="com.eguy.oauth.AuthenticateActivity" />
-      <option name="MODE" value="specific_activity" />
-      <option name="DEPLOY" value="true" />
-      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
-      <option name="PREFERRED_AVD" value="device" />
-      <option name="COMMAND_LINE" value="" />
-      <option name="WIPE_USER_DATA" value="false" />
-      <option name="DISABLE_BOOT_ANIMATION" value="false" />
-      <option name="NETWORK_SPEED" value="full" />
-      <option name="NETWORK_LATENCY" value="none" />
-      <option name="CLEAR_LOGCAT" value="false" />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="SGS" type="AndroidRunConfigurationType" factoryName="Android Application">
-      <module name="ScrollLock" />
-      <option name="ACTIVITY_CLASS" value="com.eguy.ui.TimelineActivity" />
+      <option name="ACTIVITY_CLASS" value="" />
       <option name="MODE" value="default_activity" />
       <option name="DEPLOY" value="true" />
       <option name="TARGET_SELECTION_MODE" value="USB_DEVICE" />
@@ -718,14 +369,31 @@
       <option name="NETWORK_LATENCY" value="none" />
       <option name="CLEAR_LOGCAT" value="false" />
       <RunnerSettings RunnerId="AndroidDebugRunner" />
-      <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="AndroidDebugRunner" />
-      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unnamed" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="ScrollLockTest" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="USB_DEVICE" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <RunnerSettings RunnerId="AndroidDebugRunner" />
+      <ConfigurationWrapper RunnerId="AndroidDebugRunner" />
       <method />
     </configuration>
     <list size="2">
       <item index="0" class="java.lang.String" itemvalue="Android Application.ScrollLock" />
-      <item index="1" class="java.lang.String" itemvalue="Android Application.SGS" />
+      <item index="1" class="java.lang.String" itemvalue="Android Tests.Unnamed" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -733,82 +401,39 @@
     </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
-  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false">
-    <option name="USER" value="" />
-    <option name="PASSWORD" value="" />
-    <option name="mySSHConnectionTimeout" value="30000" />
-    <option name="mySSHReadTimeout" value="30000" />
-    <option name="LAST_MERGED_REVISION" />
-    <option name="MERGE_DRY_RUN" value="false" />
-    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
-    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
-    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
-    <option name="DETECT_NESTED_COPIES" value="true" />
-    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
-    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
-    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
-    <option name="FORCE_UPDATE" value="false" />
-    <option name="IGNORE_EXTERNALS" value="false" />
-    <configuration useDefault="false">C:\Users\Emma\AppData\Roaming\Subversion</configuration>
-    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="821b8ac3-d966-40d2-b4e8-eb4729f15379" name="Default" comment="" />
-      <created>1356280473485</created>
-      <updated>1356280473485</updated>
+      <changelist id="1ce61cd7-960d-4c38-b08f-51a1c9cb8b69" name="Default" comment="" />
+      <created>1357494197407</created>
+      <updated>1357494197407</updated>
     </task>
     <servers />
-  </component>
-  <component name="TodoView" selected-index="0">
-    <todo-panel id="selected-file">
-      <are-packages-shown value="false" />
-      <are-modules-shown value="false" />
-      <flatten-packages value="false" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <are-modules-shown value="false" />
-      <flatten-packages value="false" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="default-changelist">
-      <are-packages-shown value="false" />
-      <are-modules-shown value="false" />
-      <flatten-packages value="false" />
-      <is-autoscroll-to-source value="false" />
-    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.084848486" sideWeight="0.6132879" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3378788" sideWeight="0.6132879" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32767403" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852808" sideWeight="0.8390411" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270869" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24924242" sideWeight="0.6" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4241908" sideWeight="0.67350036" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41396934" sideWeight="0.16742425" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270869" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2504259" sideWeight="0.99848485" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41396934" sideWeight="0.8272727" order="7" side_tool="false" content_ui="tabs" x="84" y="548" width="1109" height="243" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32879046" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953683" sideWeight="0.60102737" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20530303" sideWeight="0.58603066" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2640545" sideWeight="0.4939302" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24318182" sideWeight="0.6712095" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -871,217 +496,13 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/res/values/dark_theme.xml">
+    <entry file="file://$PROJECT_DIR$/ScrollLockTest/src/com/eguy/test/HomeTimelineUriBuilderTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="245" selection-end="245" vertical-scroll-proportion="0.0">
+        <state line="6" column="1" selection-start="179" selection-end="179" vertical-scroll-proportion="0.22535211">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/light_theme.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="24" selection-start="272" selection-end="272" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/attrs.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="12" selection-start="368" selection-end="368" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/timeline_listview.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="34" selection-start="763" selection-end="763" vertical-scroll-proportion="-14.4">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eguy/SettingsManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="113" column="0" selection-start="3027" selection-end="3027" vertical-scroll-proportion="0.80748665">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/refresh_bar_dark.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="19" selection-start="868" selection-end="868" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eguy/twitterapi/RateCalculator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="0" selection-start="1037" selection-end="1037" vertical-scroll-proportion="0.5508021">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eguy/oauth/AuthenticateActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="78" column="12" selection-start="2719" selection-end="2775" vertical-scroll-proportion="0.7112299">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eguy/ui/TimelineAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="87" selection-start="2505" selection-end="2570" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/timeline_row.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="0" selection-start="1443" selection-end="2182" vertical-scroll-proportion="-2.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="67" selection-start="275" selection-end="275" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/tweet_viewer.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="47" selection-start="375" selection-end="375" vertical-scroll-proportion="-6.48">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eguy/ui/TweetViewerActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="56" selection-start="1801" selection-end="1823" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#1148#1156#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eguy/db/TweetProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="165" column="0" selection-start="5797" selection-end="5797" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eguy/ui/TimelineActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="131" column="85" selection-start="4722" selection-end="4722" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eguy/twitterapi/LoadTweetsAndUpdateDbTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="137" column="0" selection-start="5141" selection-end="5141" vertical-scroll-proportion="0.032846715">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <last-edited>Android (ScrollLock)|Android</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="GlobalLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="JdkListConfigurable.UI">
-        <settings>
-          <last-edited>1.6</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <last-edited>ScrollLock</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectJDKs.UI">
-        <settings>
-          <last-edited>1.6</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
   </component>
 </project>
 
