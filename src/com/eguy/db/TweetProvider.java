@@ -53,7 +53,7 @@ public class TweetProvider extends ContentProvider
     public boolean onCreate()
     {
         tweetDatabase = new TweetDatabase(getContext());
-        SQLiteDatabase db = tweetDatabase.getWritableDatabase();
+        //SQLiteDatabase db = tweetDatabase.getWritableDatabase();
         //db.execSQL("DELETE FROM " + TWEET_TABLE_NAME + " WHERE " + TWEET_TEXT + " LIKE 'Generated Tweet:%'");
         //db.execSQL("DELETE FROM " + TWEET_TABLE_NAME + " WHERE " + TWEET_ID + " IN (SELECT " + TWEET_ID + " FROM " + TWEET_TABLE_NAME + " ORDER BY " + TWEET_ID + " DESC LIMIT 10)");
 

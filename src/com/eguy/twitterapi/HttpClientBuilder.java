@@ -16,7 +16,7 @@ public class HttpClientBuilder
     {
     }
 
-    public HttpClient Build()
+    public HttpClient build()
     {
         SchemeRegistry schemeRegistry = new SchemeRegistry();
         schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));

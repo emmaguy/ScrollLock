@@ -23,13 +23,12 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 	private SettingsManager settingsManager;
 	private static RateCalculator rateCalculator;
 
-	private HttpClient client;
 	private Context context;
-
 	private long sinceId;
 	private long maxId;
 	private int numberOfTweetsToRequest;
 	private boolean getLatestTweets;
+	private IRequestTweets requestTweets;
 
 	static
 	{
@@ -37,7 +36,8 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 	}
 
 	public LoadTweetsAndUpdateDbTask(OAuthProviderAndConsumer producerAndConsumer, SettingsManager settingsManager,
-			Context context, long sinceId, long maxId, int numberOfTweetsToRequest, boolean getLatestTweets)
+			Context context, long sinceId, long maxId, int numberOfTweetsToRequest, boolean getLatestTweets,
+			IRequestTweets requestTweets)
 	{
 		this.producerAndConsumer = producerAndConsumer;
 		this.settingsManager = settingsManager;
@@ -46,46 +46,23 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 		this.maxId = maxId;
 		this.numberOfTweetsToRequest = numberOfTweetsToRequest;
 		this.getLatestTweets = getLatestTweets;
-
-		client = new HttpClientBuilder().Build();
+		this.requestTweets = requestTweets;
 	}
 
 	@Override
 	protected JSONArray doInBackground(Void... arg0)
 	{
-		try
+		if (!rateCalculator.canMakeRequest())
 		{
-			if (!rateCalculator.canMakeRequest())
-			{
-				Log.d("ScrollLock", "Not performing request to twitter as it may exceed the rate limit");
-				settingsManager.setTweetMaxId(maxId);
-				return null;
-			}
-
-			String uri = new HomeTimelineUriBuilder(settingsManager.getUsername(), numberOfTweetsToRequest, sinceId, maxId,
-					getLatestTweets).build();
-			HttpGet get = new HttpGet(uri);
-
-			producerAndConsumer.getConsumer().sign(get);
-			rateCalculator.requestMade();
-
-			String response = client.execute(get, new BasicResponseHandler());
-
-			return new JSONArray(response);
-		}
-		catch (org.apache.http.client.HttpResponseException ex)
-		{
-			if (ex.getMessage().contains("Too Many Requests"))
-			{
-				Log.e("ScrollLock", "Exceeded twitter rate limit!", ex);
-			}
-		}
-		catch (Exception e)
-		{
-			Log.e("ScrollLock", e.getClass().toString(), e);
+			Log.d("ScrollLock", "Not performing request to twitter as it may exceed the rate limit");
+			return null;
 		}
 
-		return null;
+		String uri = new HomeTimelineUriBuilder(settingsManager.getUsername(), numberOfTweetsToRequest, sinceId, maxId,
+				getLatestTweets).build();
+		HttpClient client = new HttpClientBuilder().build();
+
+		return requestTweets.requestTweets(uri, producerAndConsumer, rateCalculator, client);
 	}
 
 	protected void onPostExecute(JSONArray jsonArray)
@@ -125,9 +102,8 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 			Log.d("ScrollLock", "No tweets found");
 			return;
 		}
-		
-		TimelineGapCalculator gapCalculator = new TimelineGapCalculator(oldestTweetId, newestTweetId, 
-				maxId, getLatestTweets, settingsManager.getTweetMaxId()).calculate();
+
+		TimelineAction gapCalculator = new TimelineGapCalculator(oldestTweetId, settingsManager.getTweetMaxId()).calculate();
 
 		// if we have processed a newer tweet than what we already have,
 		// store its id
@@ -146,12 +122,11 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 		if (gapCalculator.requestMoreTweest())
 		{
 			Log.d("ScrollLock", "Requesting more tweets");
-			new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, context,
-					gapCalculator.getTopOfGap(), gapCalculator.getBottomOfGap(), 1, false).execute();
+			new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, context, gapCalculator.getTopOfGap(),
+					gapCalculator.getBottomOfGap(), 1, false, requestTweets).execute();
 		}
 
 		context.getContentResolver().bulkInsert(TweetProvider.TWEET_URI, tweets);
 		Log.d("ScrollLock", "Leaving req tweets method");
-
 	}
 }

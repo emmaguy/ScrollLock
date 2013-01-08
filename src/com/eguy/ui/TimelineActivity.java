@@ -15,6 +15,7 @@ import com.eguy.db.TweetProvider;
 import com.eguy.oauth.AuthenticateActivity;
 import com.eguy.oauth.OAuthProviderAndConsumer;
 import com.eguy.twitterapi.LoadTweetsAndUpdateDbTask;
+import com.eguy.twitterapi.TweetRequester;
 
 public class TimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>
 {
@@ -98,8 +99,6 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
 
     private void initialiseRefreshBar()
     {
-        final Context context = this;
-
         TextView refreshBar = (TextView) findViewById(R.id.refreshBar);
         refreshBar.setOnClickListener(new View.OnClickListener()
         {
@@ -123,7 +122,7 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
         Log.d("ScrollLock", "max_id: " + settingsManager.getTweetMaxId());
 
         new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager,
-                this.getApplicationContext(), settingsManager.getTweetSinceId(), 0, 1, true).execute();
+                this.getApplicationContext(), settingsManager.getTweetSinceId(), 0, 1, true, new TweetRequester()).execute();
     }
 
     @Override

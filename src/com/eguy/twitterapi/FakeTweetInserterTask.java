@@ -3,7 +3,6 @@ package com.eguy.twitterapi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
-import com.eguy.SettingsManager;
 import com.eguy.db.TweetProvider;
 
 public class FakeTweetInserterTask extends AsyncTask<Void, Void, Void>
