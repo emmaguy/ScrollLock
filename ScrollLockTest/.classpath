@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="C:/Users/Emma/IdeaProjects/ScrollLock/ScrollLockTest/lib/json-20080701.jar"/>
+	<classpathentry kind="lib" path="lib/robolectric-1.2-20121214.235454-193-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Emma/Downloads/android-sdk_r06-windows/android-sdk-windows/platforms/android-8/android.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Emma/Downloads/android-sdk_r06-windows/android-sdk-windows/add-ons/addon_google_apis_google_inc_8/libs/maps.jar"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ScrollLock"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

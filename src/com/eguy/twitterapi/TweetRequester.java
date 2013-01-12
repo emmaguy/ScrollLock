@@ -9,8 +9,6 @@ import org.json.JSONArray;
 
 import android.util.Log;
 
-import com.eguy.oauth.OAuthProviderAndConsumer;
-
 public class TweetRequester implements IRequestTweets
 {
 	private OAuthConsumer oAuthConsumer;

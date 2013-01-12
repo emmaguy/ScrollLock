@@ -37,6 +37,7 @@ public class RequestTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArra
 	@Override
 	protected JSONArray doInBackground(Void... arg0)
 	{
+		Log.d("ScrollLock", "Making req...");
 		if (!rateCalculator.canMakeRequest())
 		{
 			Log.d("ScrollLock", "Not performing request to twitter as it may exceed the rate limit");
@@ -44,11 +45,13 @@ public class RequestTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArra
 		}
 
 		rateCalculator.requestMade();
+		Log.d("ScrollLock", "Totally about to make req...");
 		return requestTweets.requestTweets();
 	}
 
 	protected void onPostExecute(JSONArray jsonArray)
 	{
+		Log.d("ScrollLock", "In post exe");
 		if (jsonArray == null)
 			return;
 
