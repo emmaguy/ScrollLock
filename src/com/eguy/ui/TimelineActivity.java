@@ -1,5 +1,7 @@
 package com.eguy.ui;
 
+import oauth.signpost.OAuthConsumer;
+
 import org.apache.http.client.HttpClient;
 
 import android.app.Activity;
@@ -14,6 +16,7 @@ import android.widget.*;
 import com.eguy.R;
 import com.eguy.SettingsManager;
 import com.eguy.db.TweetProvider;
+import com.eguy.db.TweetStorer;
 import com.eguy.oauth.AuthenticateActivity;
 import com.eguy.oauth.OAuthProviderAndConsumer;
 import com.eguy.twitterapi.HttpClientBuilder;
@@ -24,6 +27,7 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
 {
 	private CursorAdapter adapter;
 	private int previousNumberOfItemsInList = 0;
+	private TweetStorer database;
 
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -33,6 +37,7 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
 		setContentView(R.layout.timeline_listview);
 
 		getLoaderManager().initLoader(0, null, this);
+		database = new TweetStorer(this.getApplicationContext().getContentResolver());
 		adapter = new TimelineAdapter(this, null);
 		((ListView) findViewById(R.id.lstTimeline)).setAdapter(adapter);
 
@@ -119,14 +124,14 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
 	private void getLatestTweets()
 	{
 		SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
-		OAuthProviderAndConsumer producerAndConsumer = new OAuthProviderAndConsumer(settingsManager);
+		OAuthConsumer consumer = new OAuthProviderAndConsumer(settingsManager).getConsumer();
 
 		Log.d("ScrollLock", "starting run");
 		Log.d("ScrollLock", "since_id: " + settingsManager.getTweetSinceId());
 		Log.d("ScrollLock", "max_id: " + settingsManager.getTweetMaxId());
 
-		new RequestTweetsAndUpdateDbTask(settingsManager, this.getApplicationContext().getContentResolver(),
-				settingsManager.getTweetSinceId(), 0, 1, true, new TweetRequester(producerAndConsumer.getConsumer())).execute();
+		new RequestTweetsAndUpdateDbTask(settingsManager, database, new TweetRequester(consumer,
+				settingsManager.getUsername(), settingsManager.getTweetSinceId(), 0, 1, true)).execute();
 	}
 
 	@Override

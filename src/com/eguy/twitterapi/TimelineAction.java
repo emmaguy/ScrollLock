@@ -13,7 +13,7 @@ public class TimelineAction
 		this.shouldRequestMoreTweets = shouldRequestMoreTweets;
 	}
 	
-	public boolean requestMoreTweest()
+	public boolean requestMoreTweets()
 	{
 		return shouldRequestMoreTweets;
 	}

@@ -1,3 +1,4 @@
+package tests.unit;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +18,7 @@ public class TimelineGapCalculatorTest
     	
     	TimelineAction gapCalculator = new TimelineGapCalculator(oldestTweetId, oldestProcessedTweet).calculate();
     	
-    	Assert.assertTrue(gapCalculator.requestMoreTweest());
+    	Assert.assertTrue(gapCalculator.requestMoreTweets());
     	Assert.assertEquals(20, gapCalculator.getTopOfGap());
     	Assert.assertEquals(49, gapCalculator.getBottomOfGap());
 	}
@@ -30,7 +31,7 @@ public class TimelineGapCalculatorTest
     	
     	TimelineAction gapCalculator = new TimelineGapCalculator(oldestTweetId, oldestProcessedTweet).calculate();
     	
-    	Assert.assertTrue(gapCalculator.requestMoreTweest());
+    	Assert.assertTrue(gapCalculator.requestMoreTweets());
     	Assert.assertEquals(20, gapCalculator.getTopOfGap());
     	Assert.assertEquals(28, gapCalculator.getBottomOfGap());
 	}
@@ -43,6 +44,6 @@ public class TimelineGapCalculatorTest
     	
     	TimelineAction gapCalculator = new TimelineGapCalculator(oldestTweetId, oldestProcessedTweet).calculate();
     	
-    	Assert.assertFalse(gapCalculator.requestMoreTweest());
+    	Assert.assertFalse(gapCalculator.requestMoreTweets());
 	}
 }

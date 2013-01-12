@@ -1,3 +1,4 @@
+package tests.unit;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
