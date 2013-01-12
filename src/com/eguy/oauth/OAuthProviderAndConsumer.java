@@ -1,6 +1,7 @@
 package com.eguy.oauth;
 
 import com.eguy.ConsumerInfo;
+import com.eguy.IContainSettings;
 import com.eguy.SettingsManager;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
@@ -18,7 +19,7 @@ public class OAuthProviderAndConsumer
                                         "https://api.twitter.com/oauth/authorize");
 
 
-    public OAuthProviderAndConsumer(SettingsManager settingsManager)
+    public OAuthProviderAndConsumer(IContainSettings settingsManager)
     {
         consumer = new CommonsHttpOAuthConsumer(ConsumerInfo.CONSUMER_KEY, ConsumerInfo.CONSUMER_SECRET);
 

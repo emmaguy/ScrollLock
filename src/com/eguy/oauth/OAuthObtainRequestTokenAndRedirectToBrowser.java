@@ -4,20 +4,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.Contacts.SettingsColumns;
 import android.util.Log;
+
+import com.eguy.IContainSettings;
 import com.eguy.SettingsManager;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 
 public class OAuthObtainRequestTokenAndRedirectToBrowser extends AsyncTask<Object, Void, Void>
 {
-    @Override
+	private IContainSettings settingsManager;
+
+	public OAuthObtainRequestTokenAndRedirectToBrowser(IContainSettings settingsManager)
+	{
+		this.settingsManager = settingsManager;
+	}
+
+	@Override
     protected Void doInBackground(Object... objects)
     {
         Context context = (Context)objects[0];
         OAuthProviderAndConsumer oAuthProviderAndConsumer = (OAuthProviderAndConsumer)objects[1];
 
-        String authUrl = obtainRequestToken(context, oAuthProviderAndConsumer);
+        String authUrl = obtainRequestToken(oAuthProviderAndConsumer);
         redirectToBrowser(context, authUrl);
 
         return null;
@@ -30,7 +40,7 @@ public class OAuthObtainRequestTokenAndRedirectToBrowser extends AsyncTask<Objec
         context.startActivity(intent);
     }
 
-    private String obtainRequestToken(Context context, OAuthProviderAndConsumer oAuthProviderAndConsumer)
+    private String obtainRequestToken(OAuthProviderAndConsumer oAuthProviderAndConsumer)
     {
         String authUrl = null;
         try
@@ -40,7 +50,7 @@ public class OAuthObtainRequestTokenAndRedirectToBrowser extends AsyncTask<Objec
 
             authUrl = provider.retrieveRequestToken(consumer, oAuthProviderAndConsumer.CALLBACK_URL);
 
-            new SettingsManager(context).saveTokenAndSecret(consumer.getToken(), consumer.getTokenSecret());
+            settingsManager.saveTokenAndSecret(consumer.getToken(), consumer.getTokenSecret());
         }
         catch (Exception e)
         {

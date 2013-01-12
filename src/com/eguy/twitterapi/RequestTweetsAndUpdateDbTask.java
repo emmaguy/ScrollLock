@@ -1,5 +1,6 @@
 package com.eguy.twitterapi;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -7,6 +8,9 @@ import android.util.Log;
 import com.eguy.SettingsManager;
 import com.eguy.db.TweetProvider;
 import com.eguy.oauth.OAuthProviderAndConsumer;
+
+import oauth.signpost.OAuthConsumer;
+
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -14,16 +18,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
+public class RequestTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 {
 	private static final int MAX_NUMBER_OF_REQUESTS_PER_WINDOW = 5;
 	private static final int WINDOW_LENGTH = 15;
 
-	private OAuthProviderAndConsumer producerAndConsumer;
 	private SettingsManager settingsManager;
 	private static RateCalculator rateCalculator;
 
-	private Context context;
+	private ContentResolver context;
 	private long sinceId;
 	private long maxId;
 	private int numberOfTweetsToRequest;
@@ -35,13 +38,12 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 		rateCalculator = new RateCalculator(MAX_NUMBER_OF_REQUESTS_PER_WINDOW, WINDOW_LENGTH);
 	}
 
-	public LoadTweetsAndUpdateDbTask(OAuthProviderAndConsumer producerAndConsumer, SettingsManager settingsManager,
-			Context context, long sinceId, long maxId, int numberOfTweetsToRequest, boolean getLatestTweets,
+	public RequestTweetsAndUpdateDbTask(SettingsManager settingsManager,
+			ContentResolver contentResolver, long sinceId, long maxId, int numberOfTweetsToRequest, boolean getLatestTweets,
 			IRequestTweets requestTweets)
 	{
-		this.producerAndConsumer = producerAndConsumer;
 		this.settingsManager = settingsManager;
-		this.context = context;
+		this.context = contentResolver;
 		this.sinceId = sinceId;
 		this.maxId = maxId;
 		this.numberOfTweetsToRequest = numberOfTweetsToRequest;
@@ -59,10 +61,10 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 		}
 
 		String uri = new HomeTimelineUriBuilder(settingsManager.getUsername(), numberOfTweetsToRequest, sinceId, maxId,
-				getLatestTweets).build();
-		HttpClient client = new HttpClientBuilder().build();
+				getLatestTweets).build();		
 
-		return requestTweets.requestTweets(uri, producerAndConsumer, rateCalculator, client);
+		rateCalculator.requestMade();
+		return requestTweets.requestTweets(uri);
 	}
 
 	protected void onPostExecute(JSONArray jsonArray)
@@ -122,11 +124,11 @@ public class LoadTweetsAndUpdateDbTask extends AsyncTask<Void, Void, JSONArray>
 		if (gapCalculator.requestMoreTweest())
 		{
 			Log.d("ScrollLock", "Requesting more tweets");
-			new LoadTweetsAndUpdateDbTask(producerAndConsumer, settingsManager, context, gapCalculator.getTopOfGap(),
+			new RequestTweetsAndUpdateDbTask(settingsManager, context, gapCalculator.getTopOfGap(),
 					gapCalculator.getBottomOfGap(), 1, false, requestTweets).execute();
 		}
 
-		context.getContentResolver().bulkInsert(TweetProvider.TWEET_URI, tweets);
+		context.bulkInsert(TweetProvider.TWEET_URI, tweets);
 		Log.d("ScrollLock", "Leaving req tweets method");
 	}
 }

@@ -1,5 +1,7 @@
 package com.eguy.twitterapi;
 
+import oauth.signpost.OAuthConsumer;
+
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -11,16 +13,23 @@ import com.eguy.oauth.OAuthProviderAndConsumer;
 
 public class TweetRequester implements IRequestTweets
 {
+	private OAuthConsumer oAuthConsumer;
+
+	public TweetRequester(OAuthConsumer consumer)
+	{
+		this.oAuthConsumer = consumer;
+	}
+	
 	@Override
-	public JSONArray requestTweets(String uri, OAuthProviderAndConsumer producerAndConsumer, RateCalculator rateCalculator, HttpClient client)
+	public JSONArray requestTweets(String uri)
 	{
 		HttpGet get = new HttpGet(uri);
 
 		try
 		{
-			producerAndConsumer.getConsumer().sign(get);
-			rateCalculator.requestMade();
+			oAuthConsumer.sign(get);
 			
+			HttpClient client = new HttpClientBuilder().build();			
 			String response = client.execute(get, new BasicResponseHandler());
 			
 			return new JSONArray(response);

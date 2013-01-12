@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import oauth.signpost.OAuth;
 
-public class SettingsManager
+public class SettingsManager implements IContainSettings
 {
     private SharedPreferences sharedPreferences;
     private String USER_TOKEN = "userToken";

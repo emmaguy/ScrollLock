@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import com.eguy.IContainSettings;
 import com.eguy.R;
 import com.eguy.SettingsManager;
 import com.eguy.ui.TimelineActivity;
@@ -28,7 +30,9 @@ public class AuthenticateActivity extends Activity
         setContentView(R.layout.main);
 
         final Context context = getApplicationContext();
-        oAuthProviderAndConsumer = new OAuthProviderAndConsumer(new SettingsManager(this.getApplicationContext()));
+        final IContainSettings settingsManager = new SettingsManager(this.getApplicationContext());
+		
+        oAuthProviderAndConsumer = new OAuthProviderAndConsumer(settingsManager);
 
         Button btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener()
@@ -36,7 +40,7 @@ public class AuthenticateActivity extends Activity
             @Override
             public void onClick(View view)
             {
-                new OAuthObtainRequestTokenAndRedirectToBrowser().execute(context, oAuthProviderAndConsumer);
+                new OAuthObtainRequestTokenAndRedirectToBrowser(settingsManager).execute(context, oAuthProviderAndConsumer);
             }
         });
     }
@@ -55,9 +59,9 @@ public class AuthenticateActivity extends Activity
 
     private void retrieveAccessTokenFromRequestToken(Uri uri)
     {
-        SettingsManager credentialManager = new SettingsManager(this.getApplicationContext());
-        String token = credentialManager.getToken();
-        String secret = credentialManager.getTokenSecret();
+        SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
+        String token = settingsManager.getToken();
+        String secret = settingsManager.getTokenSecret();
 
         OAuthConsumer consumer = oAuthProviderAndConsumer.getConsumer();
         OAuthProvider provider = oAuthProviderAndConsumer.getProvider();
@@ -68,13 +72,13 @@ public class AuthenticateActivity extends Activity
             Assert.assertEquals(uri.getQueryParameter(OAuth.OAUTH_TOKEN), consumer.getToken());
 
             provider.retrieveAccessToken(consumer, uri.getQueryParameter(OAuth.OAUTH_VERIFIER));
-            credentialManager.saveUserTokenAndSecret(consumer.getToken(), consumer.getTokenSecret());
+            settingsManager.saveUserTokenAndSecret(consumer.getToken(), consumer.getTokenSecret());
 
             HttpParameters responseParameters = provider.getResponseParameters();
             String userName = responseParameters.getFirst("screen_name");
             String userId = responseParameters.getFirst("user_id");
 
-            credentialManager.saveUsernameAndUserId(userName, userId);
+            settingsManager.saveUsernameAndUserId(userName, userId);
 
             startActivity(new Intent(this, TimelineActivity.class));
         }
