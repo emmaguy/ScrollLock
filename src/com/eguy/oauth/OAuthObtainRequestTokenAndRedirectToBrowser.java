@@ -1,16 +1,14 @@
 package com.eguy.oauth;
 
+import oauth.signpost.OAuthConsumer;
+import oauth.signpost.OAuthProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.Contacts.SettingsColumns;
 import android.util.Log;
 
 import com.eguy.IContainSettings;
-import com.eguy.SettingsManager;
-import oauth.signpost.OAuthConsumer;
-import oauth.signpost.OAuthProvider;
 
 public class OAuthObtainRequestTokenAndRedirectToBrowser extends AsyncTask<Object, Void, Void>
 {

@@ -1,12 +1,12 @@
 package com.eguy.oauth;
 
-import com.eguy.ConsumerInfo;
-import com.eguy.IContainSettings;
-import com.eguy.SettingsManager;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 import oauth.signpost.basic.DefaultOAuthProvider;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
+
+import com.eguy.ConsumerInfo;
+import com.eguy.IContainSettings;
 
 public class OAuthProviderAndConsumer
 {

@@ -23,7 +23,8 @@ public class RequestTweetsAndUpdateDbTaskTest
 	{
 		Robolectric.bindShadowClass(ShadowLog.class);
 
-		// request latest 5 tweets, newer than id 100
+		// request latest tweets - sinceId much higher than maxId
+		// and let the async task recurse to fill in the gap
 		MockTweetRequester requestTweets = new MockTweetRequester(5, 100, 0);
 		MockTweetDatabase database = new MockTweetDatabase();
 		MockSettingsManager settings = new MockSettingsManager();
@@ -33,9 +34,16 @@ public class RequestTweetsAndUpdateDbTaskTest
 
 		new RequestTweetsAndUpdateDbTask(settings, database, requestTweets).execute();
 
-		Thread.sleep(30000);
+		// latest tweets from 100 to 104 (5 tweets), plus gap (10 to 99, 89
+		// tweets)
+		Assert.assertEquals(94, database.getNumberOfTweetsSaved());
 
-		Assert.assertEquals(90, database.getNumberOfTweetsSaved());
+		Assert.assertEquals(104, database.getMaxTweetId());
+		Assert.assertEquals(11, database.getMinTweetId());
+
+		// settings should have been updated after gap has been filled
+		Assert.assertEquals(104, settings.getTweetSinceId());
+		Assert.assertEquals(104, settings.getTweetMaxId());
 	}
 
 	@Implements(Log.class)
@@ -43,7 +51,13 @@ public class RequestTweetsAndUpdateDbTaskTest
 	{
 		public static int d(java.lang.String tag, java.lang.String msg)
 		{
-			System.out.println("[" + tag + "] " + msg);
+			System.out.println("[" + tag + ", debug] " + msg);
+			return 0;
+		}
+
+		public static int e(java.lang.String tag, java.lang.String msg)
+		{
+			System.out.println("[" + tag + ", error] " + msg);
 			return 0;
 		}
 	}

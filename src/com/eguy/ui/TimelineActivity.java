@@ -1,25 +1,29 @@
 package com.eguy.ui;
 
 import oauth.signpost.OAuthConsumer;
-
-import org.apache.http.client.HttpClient;
-
 import android.app.Activity;
 import android.app.LoaderManager;
-import android.content.*;
+import android.content.Context;
+import android.content.CursorLoader;
+import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.CursorAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.eguy.R;
 import com.eguy.SettingsManager;
 import com.eguy.db.TweetProvider;
 import com.eguy.db.TweetStorer;
 import com.eguy.oauth.AuthenticateActivity;
 import com.eguy.oauth.OAuthProviderAndConsumer;
-import com.eguy.twitterapi.HttpClientBuilder;
 import com.eguy.twitterapi.RequestTweetsAndUpdateDbTask;
 import com.eguy.twitterapi.TweetRequester;
 

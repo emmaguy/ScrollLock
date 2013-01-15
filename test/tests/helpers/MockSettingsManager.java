@@ -5,6 +5,7 @@ public class MockSettingsManager implements IContainSettings
 {
 	private long maxId;
 	private long sinceId;
+	private long bottomOfGapId = -1;
 	
 	@Override
 	public long getTweetSinceId()
@@ -91,5 +92,17 @@ public class MockSettingsManager implements IContainSettings
 	{
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public long getTweetBottomOfGapId()
+	{
+		return bottomOfGapId;
+	}
+
+	@Override
+	public void setTweetBottomOfGapId(long oldestTweetId)
+	{
+		this.bottomOfGapId = oldestTweetId;
 	}	
 }

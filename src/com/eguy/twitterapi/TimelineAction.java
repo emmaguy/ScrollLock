@@ -2,13 +2,13 @@ package com.eguy.twitterapi;
 
 public class TimelineAction
 {
-	private long oldestTweetId;
+	private long oldestTweetIdFromLastRequest;
 	private long newestProcessedTweet;
 	private boolean shouldRequestMoreTweets;
 
-	public TimelineAction(long oldestTweetId, long newestProcessedTweet, boolean shouldRequestMoreTweets)
+	public TimelineAction(long oldestTweetIdFromLastRequest, long newestProcessedTweet, boolean shouldRequestMoreTweets)
 	{
-		this.oldestTweetId = oldestTweetId;
+		this.oldestTweetIdFromLastRequest = oldestTweetIdFromLastRequest;
 		this.newestProcessedTweet = newestProcessedTweet;
 		this.shouldRequestMoreTweets = shouldRequestMoreTweets;
 	}
@@ -25,6 +25,6 @@ public class TimelineAction
 
 	public long getBottomOfGap()
 	{
-		return oldestTweetId - 1;
+		return oldestTweetIdFromLastRequest - 1;
 	}
 }

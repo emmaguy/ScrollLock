@@ -11,12 +11,22 @@ import android.util.Log;
 
 public class TweetRequester implements IRequestTweets
 {
+	private static final int MAX_NUMBER_OF_REQUESTS_PER_WINDOW = 5;
+	private static final int WINDOW_LENGTH = 15;
+
+	private static RateCalculator rateCalculator;
+	
 	private OAuthConsumer oAuthConsumer;
 	private String username;
 	private long sinceId;
 	private long maxId;
 	private int numberOfTweetsToRequest;
 	private boolean getLatestTweets;
+	
+	static
+	{
+		rateCalculator = new RateCalculator(MAX_NUMBER_OF_REQUESTS_PER_WINDOW, WINDOW_LENGTH);
+	}
 
 	public TweetRequester(OAuthConsumer consumer, String username, long sinceId, long maxId, int numberOfTweetsToRequest, boolean getLatestTweets)
 	{
@@ -48,6 +58,14 @@ public class TweetRequester implements IRequestTweets
 			oAuthConsumer.sign(get);
 
 			HttpClient client = new HttpClientBuilder().build();
+			
+			if (!rateCalculator.canMakeRequest())
+			{
+				Log.d("ScrollLock", "Not performing request to twitter as it may exceed the rate limit");
+				return null;
+			}
+
+			rateCalculator.requestMade();
 			String response = client.execute(get, new BasicResponseHandler());
 
 			return new JSONArray(response);
@@ -64,5 +82,11 @@ public class TweetRequester implements IRequestTweets
 			Log.e("ScrollLock", e.getClass().toString(), e);
 		}
 		return null;
+	}
+
+	@Override
+	public boolean requestedLatestTweets()
+	{
+		return getLatestTweets;
 	}
 }

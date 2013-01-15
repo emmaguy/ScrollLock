@@ -18,10 +18,10 @@ public class MockTweetRequestTest
 	@Test
 	public void testWhen_building_mock_tweet_id_20()
 	{
-		MockTweetRequester requestTweets = new MockTweetRequester(1, 20, 25);
+		MockTweetRequester requestTweets = new MockTweetRequester(1, 20, 0);
 		JSONArray jsonArray = requestTweets.requestTweets();
 
-		Assert.assertEquals(jsonArray.length(), 1);
+		Assert.assertEquals(1, jsonArray.length());
 
 		try
 		{
@@ -38,16 +38,16 @@ public class MockTweetRequestTest
 	
 	
 	@Test
-	public void testWhen_building_10_mock_tweets_over_max_boundary_should_get_6()
+	public void testWhen_building_10_mock_tweets_but_max_id_is_only_6_tweets_higher_should_get_6_tweets_back()
 	{
-		MockTweetRequester requestTweets = new MockTweetRequester(10, 10, 15);
+		MockTweetRequester requestTweets = new MockTweetRequester(10, 10, 16);
 		JSONArray jsonArray = requestTweets.requestTweets();
 
 		Assert.assertEquals(jsonArray.length(), 6);
 	}
 	
 	@Test
-	public void testWhen_building_5_mock_tweets_should_get_5_tweets_back()
+	public void testWhen_building_5_mock_tweets_but_gap_is_larger_should_get_5_tweets_back()
 	{
 		MockTweetRequester requestTweets = new MockTweetRequester(5, 10, 25);
 		JSONArray jsonArray = requestTweets.requestTweets();
