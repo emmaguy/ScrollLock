@@ -11,7 +11,7 @@ import android.util.Log;
 
 public class TweetRequester implements IRequestTweets
 {
-	private static final int MAX_NUMBER_OF_REQUESTS_PER_WINDOW = 5;
+	private static final int MAX_NUMBER_OF_REQUESTS_PER_WINDOW = 15;
 	private static final int WINDOW_LENGTH = 15;
 
 	private static RateCalculator rateCalculator;

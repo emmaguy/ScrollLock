@@ -34,8 +34,8 @@ public class RequestTweetsAndUpdateDbTaskTest
 
 		new RequestTweetsAndUpdateDbTask(settings, database, requestTweets).execute();
 
-		// latest tweets from 100 to 104 (5 tweets), plus gap (10 to 99, 89
-		// tweets)
+		// latest tweets from 100 to 104 (5 tweets), 
+		// plus gap (10 to 99, 89 tweets)
 		Assert.assertEquals(94, database.getNumberOfTweetsSaved());
 
 		Assert.assertEquals(104, database.getMaxTweetId());
