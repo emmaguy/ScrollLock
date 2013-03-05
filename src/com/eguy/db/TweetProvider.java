@@ -79,7 +79,7 @@ public class TweetProvider extends ContentProvider
 			cur = database.rawQuery("SELECT t." + TWEET_USER_ID + "," + TWEET_ID + "," + TWEET_TEXT + "," + TWEET_CREATED_AT
 					+ "," + TWEET_USERNAME + "," + TWEET_PROFILE_PIC_URL + "," + USER_PROFILE_PIC + " FROM " + TWEET_TABLE_NAME
 					+ " t LEFT JOIN " + USER_TABLE_NAME + " u ON t." + TWEET_USER_ID + " = u." + USER_USER_ID + " ORDER BY t."
-					+ TWEET_ID + " DESC ", null);
+					+ TWEET_ID + " ASC ", null);
 			cur.setNotificationUri(getContext().getContentResolver(), uri);
 		}
 		catch (Exception ex)

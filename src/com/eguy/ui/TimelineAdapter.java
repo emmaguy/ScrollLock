@@ -98,14 +98,14 @@ public class TimelineAdapter extends CursorAdapter
 			return desiredFormat.format(dateTimeOfTweet);
 
 		if (DateMatches(tweetDateTime, getYesterday()))
-			return "Yesterday";
+			return "Yesterday " + desiredFormat.format(dateTimeOfTweet);
 
 		return formatDateWithTwoLetterContractions(dateTimeOfTweet);
 	}
 
 	private String formatDateWithTwoLetterContractions(Date dateTimeOfTweet)
 	{
-		SimpleDateFormat format = new SimpleDateFormat("d");
+		SimpleDateFormat format = new SimpleDateFormat("d HH:mm");
 		String date = format.format(dateTimeOfTweet);
 
 		if (date.endsWith("1") && !date.endsWith("11"))

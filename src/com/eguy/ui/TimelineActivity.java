@@ -148,15 +148,7 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
 	@Override
 	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
 	{
-		ListView timeline = (ListView) findViewById(R.id.lstTimeline);
-
-		int selection = timeline.getFirstVisiblePosition();
 		adapter.changeCursor(cursor);
-		if (previousNumberOfItemsInList != 0)
-		{
-			timeline.setSelection(selection + (cursor.getCount() - previousNumberOfItemsInList));
-		}
-		previousNumberOfItemsInList = cursor.getCount();
 	}
 
 	@Override
