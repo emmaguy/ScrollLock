@@ -110,19 +110,19 @@ public class TimelineAdapter extends CursorAdapter
 
 		if (date.endsWith("1") && !date.endsWith("11"))
 		{
-			format = new SimpleDateFormat("EE MMM d'st'");
+			format = new SimpleDateFormat("EE MMM d'st' HH:mm");
 		}
 		else if (date.endsWith("2") && !date.endsWith("12"))
 		{
-			format = new SimpleDateFormat("EE MMM d'nd'");
+			format = new SimpleDateFormat("EE MMM d'nd' HH:mm");
 		}
 		else if (date.endsWith("3") && !date.endsWith("13"))
 		{
-			format = new SimpleDateFormat("EE MMM d'rd'");
+			format = new SimpleDateFormat("EE MMM d'rd' HH:mm");
 		}
 		else
 		{
-			format = new SimpleDateFormat("EE MMM d'th'");
+			format = new SimpleDateFormat("EE MMM d'th' HH:mm");
 		}
 
 		return format.format(dateTimeOfTweet);
