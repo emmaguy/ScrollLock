@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 import com.eguy.R;
+import com.eguy.R.color;
 import com.eguy.db.TweetProvider;
 
 import java.util.ArrayList;
@@ -57,6 +58,8 @@ public class TweetViewerActivity extends Activity
             webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
             webView.getSettings().setBuiltInZoomControls(true);
             webView.getSettings().setDomStorageEnabled(true);
+            webView.setBackgroundColor(0);
+            webView.setBackgroundResource(color.Black);
             webView.loadUrl(urls.get(0));
         }
     }

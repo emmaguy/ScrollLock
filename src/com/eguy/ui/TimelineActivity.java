@@ -130,6 +130,17 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
 				//new FakeTweetInserterTask(getApplicationContext()).execute();
 			}
 		});
+		
+		TextView deleteBar = (TextView) findViewById(R.id.deleteBar);
+		deleteBar.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				Toast.makeText(getApplicationContext(), "deleting...", Toast.LENGTH_SHORT).show();
+				getApplicationContext().getContentResolver().delete(TweetProvider.TWEET_URI, "", null);
+			}
+		});
 	}
 
 	private void getLatestTweets()

@@ -53,12 +53,10 @@ public class TweetProvider extends ContentProvider
 	public boolean onCreate()
 	{
 		tweetDatabase = new TweetDatabase(getContext());
+
 		// SQLiteDatabase db = tweetDatabase.getWritableDatabase();
 		// db.execSQL("DELETE FROM " + TWEET_TABLE_NAME + " WHERE " + TWEET_TEXT
 		// + " LIKE 'Generated Tweet:%'");
-		// db.execSQL("DELETE FROM " + TWEET_TABLE_NAME + " WHERE " + TWEET_ID +
-		// " IN (SELECT " + TWEET_ID + " FROM " + TWEET_TABLE_NAME +
-		// " ORDER BY " + TWEET_ID + " DESC LIMIT 10)");
 
 		return true;
 	}
@@ -230,7 +228,38 @@ public class TweetProvider extends ContentProvider
 	@Override
 	public int delete(Uri uri, String s, String[] strings)
 	{
-		return 0;
+		int deletedValues = 0;
+		switch (uriMatcher.match(uri))
+		{
+		case TWEET_TIMELINE_QUERY:
+		{
+			SQLiteDatabase writableDatabase = null;
+
+			try
+			{
+				writableDatabase = tweetDatabase.getWritableDatabase();
+				writableDatabase.beginTransaction();
+
+				deletedValues = writableDatabase.delete(TWEET_TABLE_NAME, TWEET_ID + " IN (SELECT " + TWEET_ID + " FROM "
+						+ TWEET_TABLE_NAME + " ORDER BY " + TWEET_ID + " ASC LIMIT 200)", null);
+
+				writableDatabase.setTransactionSuccessful();
+
+				getContext().getContentResolver().notifyChange(uri, null);
+			}
+			catch (Exception e)
+			{
+				Log.d("ScrollLockDb", e.getClass().toString(), e);
+			}
+			finally
+			{
+				if (writableDatabase != null)
+					writableDatabase.endTransaction();
+			}
+			break;
+		}
+		}
+		return deletedValues;
 	}
 
 	@Override
