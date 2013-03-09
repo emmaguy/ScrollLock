@@ -53,38 +53,7 @@ public class AuthenticateActivity extends Activity
         Uri uri = this.getIntent().getData();
         if (uri != null && uri.toString().startsWith(oAuthProviderAndConsumer.CALLBACK_URL))
         {
-            retrieveAccessTokenFromRequestToken(uri);
-        }
-    }
-
-    private void retrieveAccessTokenFromRequestToken(Uri uri)
-    {
-        SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
-        String token = settingsManager.getToken();
-        String secret = settingsManager.getTokenSecret();
-
-        OAuthConsumer consumer = oAuthProviderAndConsumer.getConsumer();
-        OAuthProvider provider = oAuthProviderAndConsumer.getProvider();
-
-        consumer.setTokenWithSecret(token, secret);
-        try
-        {
-            Assert.assertEquals(uri.getQueryParameter(OAuth.OAUTH_TOKEN), consumer.getToken());
-
-            provider.retrieveAccessToken(consumer, uri.getQueryParameter(OAuth.OAUTH_VERIFIER));
-            settingsManager.saveUserTokenAndSecret(consumer.getToken(), consumer.getTokenSecret());
-
-            HttpParameters responseParameters = provider.getResponseParameters();
-            String userName = responseParameters.getFirst("screen_name");
-            String userId = responseParameters.getFirst("user_id");
-
-            settingsManager.saveUsernameAndUserId(userName, userId);
-
-            startActivity(new Intent(this, TimelineActivity.class));
-        }
-        catch (Exception e)
-        {
-            Log.e("ScrollLock", e.getClass().toString(), e);
+            new OAuthRetrieveAccessTokenFromRequestToken(this.getApplicationContext()).execute(uri);
         }
     }
 }

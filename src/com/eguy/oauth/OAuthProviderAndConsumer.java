@@ -18,7 +18,6 @@ public class OAuthProviderAndConsumer
                                         "https://api.twitter.com/oauth/access_token",
                                         "https://api.twitter.com/oauth/authorize");
 
-
     public OAuthProviderAndConsumer(IContainSettings settingsManager)
     {
         consumer = new CommonsHttpOAuthConsumer(ConsumerInfo.CONSUMER_KEY, ConsumerInfo.CONSUMER_SECRET);
@@ -26,7 +25,7 @@ public class OAuthProviderAndConsumer
         String userToken = settingsManager.getUserToken();
         String userTokenSecret = settingsManager.getUserTokenSecret();
 
-        if(!userToken.isEmpty() && !userTokenSecret.isEmpty())
+        if(userToken != null && !userToken.isEmpty() && userTokenSecret != null && !userTokenSecret.isEmpty())
             consumer.setTokenWithSecret(userToken, userTokenSecret);
     }
 
