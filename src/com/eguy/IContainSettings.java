@@ -16,9 +16,13 @@ public interface IContainSettings
     void saveUserTokenAndSecret(String token, String secret);
     void saveUsernameAndUserId(String userName, String userId);
 	
+    int getTweetPosition();
+    void setTweetPosition(int position);
+    
     String getToken();
     String getTokenSecret();
     String getUserToken();
     String getUserTokenSecret();
     String getUsername();
+	
 }

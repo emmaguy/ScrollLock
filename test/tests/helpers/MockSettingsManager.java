@@ -104,5 +104,19 @@ public class MockSettingsManager implements IContainSettings
 	public void setTweetBottomOfGapId(long oldestTweetId)
 	{
 		this.bottomOfGapId = oldestTweetId;
+	}
+
+	@Override
+	public int getTweetPosition()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setTweetPosition(int position)
+	{
+		// TODO Auto-generated method stub
+		
 	}	
 }

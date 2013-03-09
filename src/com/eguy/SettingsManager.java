@@ -17,12 +17,28 @@ public class SettingsManager implements IContainSettings
     private String MAX_ID = "maxId";
     private String SINCE_ID = "sinceId";
     private String BOTTOM_OF_GAP_ID = "bottomGap";
+    
+    private String TWEET_POSITION = "tweetPos";
 
     public SettingsManager(Context context)
     {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
+	@Override
+	public int getTweetPosition()
+	{
+		return sharedPreferences.getInt(TWEET_POSITION, 0);
+	}
+
+	@Override
+	public void setTweetPosition(int position)
+	{
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(TWEET_POSITION, position);
+        editor.commit();
+	}
+    
 	@Override
 	public long getTweetBottomOfGapId()
 	{

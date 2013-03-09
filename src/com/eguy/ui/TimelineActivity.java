@@ -8,10 +8,13 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.media.audiofx.Visualizer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
@@ -24,28 +27,35 @@ import com.eguy.db.TweetProvider;
 import com.eguy.db.TweetStorer;
 import com.eguy.oauth.AuthenticateActivity;
 import com.eguy.oauth.OAuthProviderAndConsumer;
+import com.eguy.twitterapi.FakeTweetInserterTask;
 import com.eguy.twitterapi.RequestTweetsAndUpdateDbTask;
 import com.eguy.twitterapi.TweetRequester;
 
 public class TimelineActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>
 {
 	private CursorAdapter adapter;
-	private int previousNumberOfItemsInList = 0;
 	private TweetStorer database;
-
+	
+	private ListView listView;
+	private boolean isInitialLoad = true;
+	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.timeline_listview);
+		
+		listView = ((ListView) findViewById(R.id.lstTimeline));
 
 		getLoaderManager().initLoader(0, null, this);
 		database = new TweetStorer(this.getApplicationContext().getContentResolver());
 		adapter = new TimelineAdapter(this, null);
-		((ListView) findViewById(R.id.lstTimeline)).setAdapter(adapter);
+		listView.setAdapter(adapter);
 
 		getLatestTweetsOrAuthenticate();
+		
+		initialiseStoringTweetPositionOnScroll();
 		initialiseRefreshBar();
 		initialiseLongClickToShare();
 		initialiseShortClickToOpenTweetViewer();
@@ -55,8 +65,7 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
 	{
 		final Context context = this;
 
-		ListView timeline = (ListView) findViewById(R.id.lstTimeline);
-		timeline.setOnItemClickListener(new AdapterView.OnItemClickListener()
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
 		{
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
@@ -75,8 +84,7 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
 	{
 		final Context context = this;
 
-		ListView timeline = (ListView) findViewById(R.id.lstTimeline);
-		timeline.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+		listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
 		{
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l)
@@ -119,8 +127,7 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
 			{
 				Toast.makeText(getApplicationContext(), "refreshing...", Toast.LENGTH_SHORT).show();
 				getLatestTweets();
-				// new FakeTweetInserterTask(context, new
-				// SettingsManager(context)).execute();
+				//new FakeTweetInserterTask(getApplicationContext()).execute();
 			}
 		});
 	}
@@ -145,15 +152,72 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
 		return new CursorLoader(this, TweetProvider.TWEET_URI, projection, null, null, null);
 	}
 
+    public void initialiseStoringTweetPositionOnScroll() 
+	{
+        listView.setOnScrollListener(new OnScrollListener()
+		{
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState)
+			{
+					
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
+			{
+				int xPos = view.getScrollX();
+				int yPos = view.getScrollY();
+				
+				view.scrollTo(xPos, yPos);
+				
+				if(!isInitialLoad)
+					storeScrollPosition();
+			}
+		});
+        
+    }
+	
 	@Override
 	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
 	{
 		adapter.changeCursor(cursor);
+		
+		scrollToLastReadTweetPosition();
+		
+		isInitialLoad = false;
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> cursorLoader)
 	{
 		adapter.changeCursor(null);
+	}
+	
+	@Override
+	protected void onPause() 
+	{
+	    super.onPause();
+	    
+	    storeScrollPosition();
+	}
+
+	private void storeScrollPosition()
+	{
+		int indexFromTop = listView.getFirstVisiblePosition();
+	    new SettingsManager(getApplicationContext()).setTweetPosition(indexFromTop);
+	}
+	
+	@Override
+	protected void onResume() 
+	{
+	    super.onResume();
+	    
+	    scrollToLastReadTweetPosition();
+	}
+
+	private void scrollToLastReadTweetPosition()
+	{
+		int indexFromTop = new SettingsManager(getApplicationContext()).getTweetPosition();
+	    listView.setSelectionFromTop(indexFromTop, 0);
 	}
 }
