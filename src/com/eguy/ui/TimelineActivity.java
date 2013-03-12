@@ -109,7 +109,7 @@ public class TimelineActivity extends Activity implements LoaderManager.LoaderCa
 		SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
 		if (settingsManager.credentialsAvailable())
 		{
-			getLatestTweets();
+			//getLatestTweets();
 		}
 		else
 		{

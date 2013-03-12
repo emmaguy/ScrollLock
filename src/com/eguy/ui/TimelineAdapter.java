@@ -37,10 +37,12 @@ public class TimelineAdapter extends CursorAdapter
 		View view = inflater.inflate(R.layout.timeline_row, viewGroup, false);
 
 		ViewHolder holder = new ViewHolder();
+		holder.RetweetInfo = ((TextView) view.findViewById(R.id.retweetInfo));
 		holder.TweetText = ((TextView) view.findViewById(R.id.tweetText));
 		holder.Username = ((TextView) view.findViewById(R.id.username));
 		holder.CreatedAt = ((TextView) view.findViewById(R.id.timestamp));
-		holder.ProfilePicture = ((ImageView) view.findViewById(R.id.avatar));
+		holder.ProfilePicture = ((ImageView) view.findViewById(R.id.avatarMain));
+		holder.ProfilePictureSmall = ((ImageView) view.findViewById(R.id.avatarSmall));
 
 		view.setTag(holder);
 
@@ -51,15 +53,57 @@ public class TimelineAdapter extends CursorAdapter
 	public void bindView(View view, Context context, Cursor cursor)
 	{
 		ViewHolder holder = (ViewHolder) view.getTag();
+		
+		String mainUserProfileImg = TweetProvider.TWEET_PROFILE_PIC_URL;
+		String mainUserTweeterId = TweetProvider.TWEET_USER_ID;
+		
 		String username = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_USERNAME));
-
 		byte[] image = cursor.getBlob(cursor.getColumnIndex(TweetProvider.USER_PROFILE_PIC));
+		
+		int retweetCount = cursor.getInt(cursor.getColumnIndex(TweetProvider.TWEET_RETWEET_COUNT));
+		if(retweetCount ==  0)
+		{
+			holder.RetweetInfo.setVisibility(View.GONE);
+			holder.ProfilePictureSmall.setVisibility(View.GONE);
+		}
+		else
+		{
+			holder.RetweetInfo.setVisibility(View.VISIBLE);
+			
+			String rtUsername = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_RETWEETED_BY_USERNAME));			
+			if(rtUsername != null && !rtUsername.isEmpty())
+			{
+				holder.ProfilePictureSmall.setVisibility(View.VISIBLE);
+				
+				int otherRetweetersCount = retweetCount - 1;
+				if(otherRetweetersCount > 0)
+				{
+					holder.RetweetInfo.setText("Retweeted by " + username + " and " + otherRetweetersCount + " other(s)");
+				}
+				else
+				{
+					holder.RetweetInfo.setText("Retweeted by " + username);
+				}
+				
+				username = rtUsername;
+			}
+			else
+			{
+				holder.ProfilePictureSmall.setVisibility(View.GONE);
+				holder.RetweetInfo.setText("Retweets: " + retweetCount);
+			}
+			
+			image = cursor.getBlob(cursor.getColumnIndex(TweetProvider.TWEET_RETWEETED_BY_PROFILE_PIC));
+			mainUserProfileImg = TweetProvider.TWEET_RETWEET_PROFILE_PIC_URL;
+			mainUserTweeterId = TweetProvider.TWEET_RETWEETED_BY_USER_ID;
+		}
+
 		if (image == null || image.length == 0)
 		{
 			Log.d("ScrollLock", "No user image for user: " + username + " starting async task");
 
-			String url = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_PROFILE_PIC_URL));
-			long userId = cursor.getLong(cursor.getColumnIndex(TweetProvider.TWEET_USER_ID));
+			String url = cursor.getString(cursor.getColumnIndex(mainUserProfileImg));
+			long userId = cursor.getLong(cursor.getColumnIndex(mainUserTweeterId));
 
 			new DownloadImageTask(userId, context).execute(url);
 		}
@@ -159,7 +203,10 @@ public class TimelineAdapter extends CursorAdapter
 class ViewHolder
 {
 	ImageView ProfilePicture;
+	ImageView ProfilePictureSmall;
 	TextView TweetText;
 	TextView Username;
 	TextView CreatedAt;
+	TextView RetweetInfo;
+	boolean IsRetweet;
 }
