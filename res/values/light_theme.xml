@@ -7,6 +7,7 @@
         <item name="username">@style/username_light</item>
         <item name="tweetText">@style/tweetText_light</item>
         <item name="timestamp">@style/timestamp_light</item>
+        <item name="retweetInfo">@style/retweetInfo_light</item>
     </style>
 
     <style name="timeline_row_light">
@@ -30,6 +31,10 @@
         <item name="android:textColor">@color/DarkBlue</item>
     </style>
 
+    <style name="retweetInfo_light" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/DarkSlateBlue</item>
+    </style>
+    
     <style name="timestamp_light" parent="@android:style/TextAppearance.Medium">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/DarkSlateBlue</item>

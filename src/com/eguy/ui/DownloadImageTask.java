@@ -6,6 +6,7 @@ import java.net.URL;
 
 import org.apache.http.util.ByteArrayBuffer;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -14,14 +15,14 @@ import android.util.Log;
 import com.eguy.db.TweetProvider;
 
 public class DownloadImageTask extends AsyncTask<String, Void, byte[]>
-{;
+{
 	private long userId;
-	private Context context;
+	private ContentResolver contentResolver;
 
-	public DownloadImageTask(long userId, Context context)
+	public DownloadImageTask(long userId, ContentResolver contentResolver)
 	{
 		this.userId = userId;
-		this.context = context;
+		this.contentResolver = contentResolver;
 	}
 
 	protected byte[] doInBackground(String... urls)
@@ -54,6 +55,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, byte[]>
 		ContentValues values = new ContentValues();
 		values.put(TweetProvider.USER_USER_ID, userId);
 		values.put(TweetProvider.USER_PROFILE_PIC, bytes);
-		context.getContentResolver().insert(TweetProvider.USER_URI, values);
+		contentResolver.insert(TweetProvider.USER_URI, values);
 	}
 }

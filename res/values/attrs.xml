@@ -6,4 +6,5 @@
     <attr name="username" format="reference" />
     <attr name="tweetText" format="reference" />
     <attr name="timestamp" format="reference" />
+    <attr name="retweetInfo" format="reference" />
 </resources>

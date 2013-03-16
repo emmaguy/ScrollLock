@@ -37,10 +37,12 @@ public class TimelineAdapter extends CursorAdapter
 		View view = inflater.inflate(R.layout.timeline_row, viewGroup, false);
 
 		ViewHolder holder = new ViewHolder();
+		holder.RetweetInfo = ((TextView) view.findViewById(R.id.retweetInfo));
 		holder.TweetText = ((TextView) view.findViewById(R.id.tweetText));
 		holder.Username = ((TextView) view.findViewById(R.id.username));
 		holder.CreatedAt = ((TextView) view.findViewById(R.id.timestamp));
-		holder.ProfilePicture = ((ImageView) view.findViewById(R.id.avatar));
+		holder.ProfilePicture = ((ImageView) view.findViewById(R.id.avatarMain));
+		holder.ProfilePictureSmall = ((ImageView) view.findViewById(R.id.avatarSmall));
 
 		view.setTag(holder);
 
@@ -51,115 +53,21 @@ public class TimelineAdapter extends CursorAdapter
 	public void bindView(View view, Context context, Cursor cursor)
 	{
 		ViewHolder holder = (ViewHolder) view.getTag();
-		String username = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_USERNAME));
 
-		byte[] image = cursor.getBlob(cursor.getColumnIndex(TweetProvider.USER_PROFILE_PIC));
-		if (image == null || image.length == 0)
-		{
-			Log.d("ScrollLock", "No user image for user: " + username + " starting async task");
+		String tweetText = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_TEXT));
+		String tweetCreatedAt = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_CREATED_AT));
+		String tweetUserUsername = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_USERNAME));
+		String tweetUserProfileUrl = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_PROFILE_PIC_URL));
+		byte[] tweetUserProfileImage = cursor.getBlob(cursor.getColumnIndex(TweetProvider.USER_PROFILE_PIC));
+		int tweetRetweetCount = cursor.getInt(cursor.getColumnIndex(TweetProvider.TWEET_RETWEET_COUNT));
+		long tweetUserUserId = cursor.getLong(cursor.getColumnIndex(TweetProvider.TWEET_USER_ID));
 
-			String url = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_PROFILE_PIC_URL));
-			long userId = cursor.getLong(cursor.getColumnIndex(TweetProvider.TWEET_USER_ID));
-
-			new DownloadImageTask(userId, context).execute(url);
-		}
-		else
-		{
-			Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
-			(holder.ProfilePicture).setImageBitmap(bmp);
-		}
-
-		String text = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_TEXT));
-		String createdAt = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_CREATED_AT));
-
-		holder.TweetText.setText(text);
-		holder.Username.setText("@" + username);
-		holder.CreatedAt.setText(getFormattedDateTime(createdAt));
+		long retweetedByUserId = cursor.getLong(cursor.getColumnIndex(TweetProvider.TWEET_RETWEETED_BY_USER_ID));
+		byte[] retweetedByImage = cursor.getBlob(cursor.getColumnIndex(TweetProvider.TWEET_RETWEETED_BY_PROFILE_PIC));
+		String retweetedByUsername = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_RETWEETED_BY_USERNAME));		
+		String retweetedByUserUrl = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_RETWEET_PROFILE_PIC_URL));
+		
+		new ConstructTweetUI(holder, context.getContentResolver(), tweetText, tweetCreatedAt, tweetUserUsername, tweetUserProfileUrl, tweetUserProfileImage,
+				tweetRetweetCount, tweetUserUserId, retweetedByImage, retweetedByUsername, retweetedByUserId, retweetedByUserUrl).Create();
 	}
-
-	private String getFormattedDateTime(String datetime)
-	{
-		Date dateTimeOfTweet;
-		SimpleDateFormat desiredFormat = new SimpleDateFormat("HH:mm:ss");
-		SimpleDateFormat twitterFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
-		try
-		{
-			dateTimeOfTweet = twitterFormat.parse(datetime);
-		}
-		catch (ParseException e)
-		{
-			Log.e("ScrollLock", e.getClass().toString(), e);
-			return datetime;
-		}
-
-		Calendar tweetDateTime = getTweetDateCalendar(dateTimeOfTweet);
-
-		if (DateMatches(tweetDateTime, getToday()))
-			return desiredFormat.format(dateTimeOfTweet);
-
-		if (DateMatches(tweetDateTime, getYesterday()))
-			return "Yesterday " + desiredFormat.format(dateTimeOfTweet);
-
-		return formatDateWithTwoLetterContractions(dateTimeOfTweet);
-	}
-
-	private String formatDateWithTwoLetterContractions(Date dateTimeOfTweet)
-	{
-		SimpleDateFormat format = new SimpleDateFormat("d HH:mm");
-		String date = format.format(dateTimeOfTweet);
-
-		if (date.endsWith("1") && !date.endsWith("11"))
-		{
-			format = new SimpleDateFormat("EE MMM d'st' HH:mm");
-		}
-		else if (date.endsWith("2") && !date.endsWith("12"))
-		{
-			format = new SimpleDateFormat("EE MMM d'nd' HH:mm");
-		}
-		else if (date.endsWith("3") && !date.endsWith("13"))
-		{
-			format = new SimpleDateFormat("EE MMM d'rd' HH:mm");
-		}
-		else
-		{
-			format = new SimpleDateFormat("EE MMM d'th' HH:mm");
-		}
-
-		return format.format(dateTimeOfTweet);
-	}
-
-	private Calendar getTweetDateCalendar(Date dateTimeOfTweet)
-	{
-		Calendar tweetDateCalendar = Calendar.getInstance();
-		tweetDateCalendar.setTime(dateTimeOfTweet);
-		return tweetDateCalendar;
-	}
-
-	private Calendar getYesterday()
-	{
-		Calendar yesterday = getToday();
-		yesterday.add(Calendar.DAY_OF_YEAR, -1);
-		return yesterday;
-	}
-
-	private Calendar getToday()
-	{
-		Calendar today = Calendar.getInstance();
-		DateFormat.getDateTimeInstance().setCalendar(today);
-		return today;
-	}
-
-	private boolean DateMatches(Calendar cal1, Calendar cal2)
-	{
-		return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
-				&& cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
-	}
-}
-
-class ViewHolder
-{
-	ImageView ProfilePicture;
-	TextView TweetText;
-	TextView Username;
-	TextView CreatedAt;
 }

@@ -29,7 +29,13 @@ public class TweetProvider extends ContentProvider
 	public static final String TWEET_CREATED_AT = "CreatedAt";
 	public static final String TWEET_USERNAME = "Username";
 	public static final String TWEET_PROFILE_PIC_URL = "ProfilePictureUrl";
-
+	
+	public static final String TWEET_RETWEET_COUNT = "RetweetCount";
+	public static final String TWEET_RETWEET_PROFILE_PIC_URL = "RtProfilePictureUrl";
+	public static final String TWEET_RETWEETED_BY_USER_ID = "RetweetUserId";
+	public static final String TWEET_RETWEETED_BY_USERNAME = "RetweetUsername";
+	public static final String TWEET_RETWEETED_BY_PROFILE_PIC = "RtProfilePic";
+	
 	public static final String USER_TABLE_NAME = "User";
 	public static final String USER_USER_ID = "UserId";
 	public static final String USER_PROFILE_PIC = "ProfilePicture";
@@ -53,8 +59,12 @@ public class TweetProvider extends ContentProvider
 	public boolean onCreate()
 	{
 		tweetDatabase = new TweetDatabase(getContext());
-
-		// SQLiteDatabase db = tweetDatabase.getWritableDatabase();
+		
+//		SQLiteDatabase db = tweetDatabase.getWritableDatabase();
+//		db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_NAME);
+//		db.execSQL("CREATE TABLE " + USER_TABLE_NAME + " (" + USER_USER_ID + "  BIGINT PRIMARY KEY NOT NULL, "
+//				+ USER_PROFILE_PIC + " BLOB NOT NULL" + ");");
+//		
 		// db.execSQL("DELETE FROM " + TWEET_TABLE_NAME + " WHERE " + TWEET_TEXT
 		// + " LIKE 'Generated Tweet:%'");
 
@@ -74,10 +84,26 @@ public class TweetProvider extends ContentProvider
 		try
 		{
 			SQLiteDatabase database = tweetDatabase.getReadableDatabase();
-			cur = database.rawQuery("SELECT t." + TWEET_USER_ID + "," + TWEET_ID + "," + TWEET_TEXT + "," + TWEET_CREATED_AT
-					+ "," + TWEET_USERNAME + "," + TWEET_PROFILE_PIC_URL + "," + USER_PROFILE_PIC + " FROM " + TWEET_TABLE_NAME
-					+ " t LEFT JOIN " + USER_TABLE_NAME + " u ON t." + TWEET_USER_ID + " = u." + USER_USER_ID + " ORDER BY t."
-					+ TWEET_ID + " ASC ", null);
+			cur = database.rawQuery(
+			
+			"SELECT t." + 
+						TWEET_USER_ID + "," + 
+						TWEET_ID + "," + 
+						TWEET_TEXT + "," + 
+						TWEET_CREATED_AT + "," + 
+						TWEET_USERNAME + "," + 
+						TWEET_PROFILE_PIC_URL + "," + 
+						" u." + USER_PROFILE_PIC +"," +
+						TWEET_RETWEET_COUNT + "," +
+						TWEET_RETWEET_PROFILE_PIC_URL + "," +
+						TWEET_RETWEETED_BY_USER_ID + "," +
+						TWEET_RETWEETED_BY_USERNAME  +"," +
+						" u1." + USER_PROFILE_PIC + " AS " + TWEET_RETWEETED_BY_PROFILE_PIC + 
+			" FROM " + TWEET_TABLE_NAME + " t " + 
+						" LEFT JOIN " + USER_TABLE_NAME + " u ON t." + TWEET_USER_ID + " = u." + USER_USER_ID +
+						" LEFT JOIN " + USER_TABLE_NAME + " u1 ON t." + TWEET_RETWEETED_BY_USER_ID + " = u1." + USER_USER_ID +
+			" ORDER BY t." + TWEET_ID + " ASC ", null);
+			
 			cur.setNotificationUri(getContext().getContentResolver(), uri);
 		}
 		catch (Exception ex)
@@ -283,10 +309,19 @@ public class TweetProvider extends ContentProvider
 		{
 			try
 			{
-				db.execSQL("CREATE TABLE " + TWEET_TABLE_NAME + " (" + TWEET_ID + "  BIGINT CLUSTERED PRIMARY KEY NOT NULL,"
-						+ TWEET_USER_ID + "  BIGINT NOT NULL," + TWEET_TEXT + " NVARCHAR(128) NOT NULL," + TWEET_CREATED_AT
-						+ " NVARCHAR(50) NOT NULL," + TWEET_USERNAME + "  NVARCHAR(128) NOT NULL, " + TWEET_PROFILE_PIC_URL
-						+ " NVARCHAR(1024) NOT NULL" + ");");
+				db.execSQL("CREATE TABLE " + TWEET_TABLE_NAME + 
+						" (" + 
+						TWEET_ID + "  BIGINT CLUSTERED PRIMARY KEY NOT NULL," + 
+						TWEET_USER_ID + "  BIGINT NOT NULL," + 
+						TWEET_TEXT + " NVARCHAR(128) NOT NULL," + 
+						TWEET_CREATED_AT + " NVARCHAR(50) NOT NULL," + 
+						TWEET_USERNAME + " NVARCHAR(128) NOT NULL, " + 
+						TWEET_PROFILE_PIC_URL + " NVARCHAR(1024) NOT NULL," +
+						TWEET_RETWEET_COUNT + " INT NOT NULL, " + 
+						TWEET_RETWEET_PROFILE_PIC_URL + " NVARCHAR(1024), " + 
+						TWEET_RETWEETED_BY_USER_ID + " BIGINT, " + 
+						TWEET_RETWEETED_BY_USERNAME + " NVARCHAR(128) " + 
+						");");
 				db.execSQL("CREATE TABLE " + USER_TABLE_NAME + " (" + USER_USER_ID + "  BIGINT PRIMARY KEY NOT NULL, "
 						+ USER_PROFILE_PIC + " BLOB NOT NULL" + ");");
 			}

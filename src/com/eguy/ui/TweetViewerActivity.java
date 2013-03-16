@@ -59,7 +59,7 @@ public class TweetViewerActivity extends Activity
             webView.getSettings().setBuiltInZoomControls(true);
             webView.getSettings().setDomStorageEnabled(true);
             webView.setBackgroundColor(0);
-            webView.setBackgroundResource(color.Black);
+            webView.setBackgroundResource(color.BlanchedAlmond);
             webView.loadUrl(urls.get(0));
         }
     }
