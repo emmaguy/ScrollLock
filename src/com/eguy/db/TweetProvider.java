@@ -101,7 +101,7 @@ public class TweetProvider extends ContentProvider
 						" u1." + USER_PROFILE_PIC + " AS " + TWEET_RETWEETED_BY_PROFILE_PIC + 
 			" FROM " + TWEET_TABLE_NAME + " t " + 
 						" LEFT JOIN " + USER_TABLE_NAME + " u ON t." + TWEET_USER_ID + " = u." + USER_USER_ID +
-						" LEFT JOIN " + USER_TABLE_NAME + " u1 ON t." + TWEET_USER_ID + " = u1." + USER_USER_ID +
+						" LEFT JOIN " + USER_TABLE_NAME + " u1 ON t." + TWEET_RETWEETED_BY_USER_ID + " = u1." + USER_USER_ID +
 			" ORDER BY t." + TWEET_ID + " ASC ", null);
 			
 			cur.setNotificationUri(getContext().getContentResolver(), uri);
