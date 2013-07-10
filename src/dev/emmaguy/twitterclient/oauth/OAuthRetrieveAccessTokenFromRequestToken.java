@@ -1,59 +1,71 @@
 package dev.emmaguy.twitterclient.oauth;
 
-import junit.framework.Assert;
-import oauth.signpost.OAuth;
-import oauth.signpost.OAuthConsumer;
-import oauth.signpost.OAuthProvider;
-import oauth.signpost.http.HttpParameters;
-import android.content.Context;
-import android.content.Intent;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.User;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
+import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationBuilder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-
-import dev.emmaguy.twitterclient.SettingsManager;
-import dev.emmaguy.twitterclient.ui.TimelineActivity;
+import dev.emmaguy.twitterclient.ConsumerInfo;
+import dev.emmaguy.twitterclient.IContainSettings;
+import dev.emmaguy.twitterclient.ui.OnAccessTokenRetrievedListener;
 
 public class OAuthRetrieveAccessTokenFromRequestToken extends AsyncTask<Uri, Void, Void> {
-    private Context context;
 
-    public OAuthRetrieveAccessTokenFromRequestToken(Context context) {
-	this.context = context;
+    private final IContainSettings settings;
+    private final RequestToken requestToken;
+    private final String verifier;
+    private final OnAccessTokenRetrievedListener listener;
+
+    public OAuthRetrieveAccessTokenFromRequestToken(final IContainSettings settings, final RequestToken requestToken,
+	    final String verifier, final OnAccessTokenRetrievedListener listener) {
+	this.settings = settings;
+	this.requestToken = requestToken;
+	this.verifier = verifier;
+	this.listener = listener;
     }
 
     @Override
     protected Void doInBackground(Uri... params) {
-	Uri uri = (Uri) params[0];
+	ConfigurationBuilder builder = new ConfigurationBuilder();
+	builder.setOAuthConsumerKey(ConsumerInfo.CONSUMER_KEY);
+	builder.setOAuthConsumerSecret(ConsumerInfo.CONSUMER_SECRET);
+	Configuration configuration = builder.build();
 
-	SettingsManager settingsManager = new SettingsManager(context);
-	OAuthProviderAndConsumer oAuthProviderAndConsumer = new OAuthProviderAndConsumer(settingsManager);
+	TwitterFactory factory = new TwitterFactory(configuration);
+	Twitter twitter = factory.getInstance();
 
-	String token = settingsManager.getToken();
-	String secret = settingsManager.getTokenSecret();
-
-	OAuthConsumer consumer = oAuthProviderAndConsumer.getConsumer();
-	OAuthProvider provider = oAuthProviderAndConsumer.getProvider();
-
-	consumer.setTokenWithSecret(token, secret);
 	try {
-	    Assert.assertEquals(uri.getQueryParameter(OAuth.OAUTH_TOKEN), consumer.getToken());
+	    Log.i("retrieve access token",
+		    "token: " + requestToken.getToken() + " secret: " + requestToken.getTokenSecret());
 
-	    provider.retrieveAccessToken(consumer, uri.getQueryParameter(OAuth.OAUTH_VERIFIER));
-	    settingsManager.saveUserTokenAndSecret(consumer.getToken(), consumer.getTokenSecret());
+	    AccessToken accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
+	    settings.saveUserTokenAndSecret(accessToken.getToken(), accessToken.getTokenSecret());
 
-	    HttpParameters responseParameters = provider.getResponseParameters();
-	    String userName = responseParameters.getFirst("screen_name");
-	    String userId = responseParameters.getFirst("user_id");
+	    final User user = twitter.verifyCredentials();
+	    settings.saveUsernameAndUserId(user.getName(), user.getId());
 
-	    settingsManager.saveUsernameAndUserId(userName, userId);
+	} catch (TwitterException te) {
+	    Log.e("ScrollLock", "Failed to get request token: " + te.getMessage());
 
-	    Intent intent = new Intent(context, TimelineActivity.class);
-	    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	    context.startActivity(intent);
-	} catch (Exception e) {
-	    Log.e("ScrollLock", e.getClass().toString(), e);
+	    StringWriter sw = new StringWriter();
+	    te.printStackTrace(new PrintWriter(sw));
+	    Log.e("ScrollLock", sw.toString());
 	}
 
 	return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void v) {
+	listener.onRetrievedAccessToken();
     }
 }

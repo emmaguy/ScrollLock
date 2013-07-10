@@ -1,39 +1,32 @@
 package dev.emmaguy.twitterclient.twitterapi;
 
-import oauth.signpost.OAuthConsumer;
+import java.util.List;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.json.JSONArray;
-
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
 import android.util.Log;
+import dev.emmaguy.twitterclient.ConsumerInfo;
+import dev.emmaguy.twitterclient.IContainSettings;
 
 public class TweetRequester implements IRequestTweets {
-    private static final int MAX_NUMBER_OF_REQUESTS_PER_WINDOW = 15;
-    private static final int WINDOW_LENGTH = 15;
 
-    private static RateCalculator rateCalculator;
-
-    private OAuthConsumer oAuthConsumer;
     private String username;
     private long sinceId;
     private long maxId;
     private int numberOfTweetsToRequest;
     private boolean getLatestTweets;
+    private IContainSettings settings;
 
-    static {
-	rateCalculator = new RateCalculator(MAX_NUMBER_OF_REQUESTS_PER_WINDOW, WINDOW_LENGTH);
-    }
-
-    public TweetRequester(OAuthConsumer consumer, String username, long sinceId, long maxId,
-	    int numberOfTweetsToRequest, boolean getLatestTweets) {
-	this.oAuthConsumer = consumer;
+    public TweetRequester(String username, long sinceId, long maxId,
+	    int numberOfTweetsToRequest, boolean getLatestTweets, IContainSettings settings) {
 	this.username = username;
 	this.sinceId = sinceId;
 	this.maxId = maxId;
 	this.numberOfTweetsToRequest = numberOfTweetsToRequest;
 	this.getLatestTweets = getLatestTweets;
+	this.settings = settings;
     }
 
     public TweetRequester updateRequestToFillGap(long sinceId, long maxId) {
@@ -45,29 +38,18 @@ public class TweetRequester implements IRequestTweets {
     }
 
     @Override
-    public JSONArray requestTweets() {
+    public List<Status> requestTweets() {
 	String uri = new HomeTimelineUriBuilder(username, numberOfTweetsToRequest, sinceId, maxId, getLatestTweets)
 		.build();
-	HttpGet get = new HttpGet(uri);
+	
 
 	try {
-	    oAuthConsumer.sign(get);
-
-	    HttpClient client = new HttpClientBuilder().build();
-
-	    if (!rateCalculator.canMakeRequest()) {
-		Log.d("ScrollLock", "Not performing request to twitter as it may exceed the rate limit");
-		return null;
-	    }
-
-	    rateCalculator.requestMade();
-	    String response = client.execute(get, new BasicResponseHandler());
-
-	    return new JSONArray(response);
-	} catch (org.apache.http.client.HttpResponseException ex) {
-	    if (ex.getMessage().contains("Too Many Requests")) {
-		Log.e("ScrollLock", "Exceeded twitter rate limit!", ex);
-	    }
+	    Twitter twitter = TwitterFactory.getSingleton();
+	    twitter.setOAuthConsumer(ConsumerInfo.CONSUMER_KEY, ConsumerInfo.CONSUMER_SECRET);
+	    twitter.setOAuthAccessToken(new AccessToken(settings.getUserToken(), settings.getUserTokenSecret()));
+	    List<Status> statuses = twitter.getHomeTimeline();
+	    
+	    return statuses;
 	} catch (Exception e) {
 	    Log.e("ScrollLock", e.getClass().toString(), e);
 	}

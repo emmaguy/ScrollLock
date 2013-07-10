@@ -19,7 +19,7 @@ public interface IContainSettings {
 
     void saveUserTokenAndSecret(String token, String secret);
 
-    void saveUsernameAndUserId(String userName, String userId);
+    void saveUsernameAndUserId(String userName, long userId);
 
     int getTweetPosition();
 

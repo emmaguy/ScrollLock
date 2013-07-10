@@ -1,51 +1,60 @@
 package dev.emmaguy.twitterclient.oauth;
 
-import oauth.signpost.OAuthConsumer;
-import oauth.signpost.OAuthProvider;
-import android.content.Context;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.RequestToken;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import dev.emmaguy.twitterclient.ConsumerInfo;
+import dev.emmaguy.twitterclient.ui.SignInFragment;
 
-import dev.emmaguy.twitterclient.IContainSettings;
+public class OAuthObtainRequestTokenAndRedirectToBrowser extends AsyncTask<Object, Void, RequestToken> {
+    
+    private final Activity activity;
+    private final RequestTokenReceivedListener listener;
+    
+    public OAuthObtainRequestTokenAndRedirectToBrowser(final Activity activity, final RequestTokenReceivedListener listener) {
+	this.activity = activity;
+	this.listener = listener;
+    } 
 
-public class OAuthObtainRequestTokenAndRedirectToBrowser extends AsyncTask<Object, Void, Void> {
-    private IContainSettings settingsManager;
+    @Override
+    protected RequestToken doInBackground(Object... objects) {
+	RequestToken requestToken = null;
+	try {
+   
+	    Twitter twitter = TwitterFactory.getSingleton();
+	    twitter.setOAuthConsumer(ConsumerInfo.CONSUMER_KEY, ConsumerInfo.CONSUMER_SECRET);
 
-    public OAuthObtainRequestTokenAndRedirectToBrowser(IContainSettings settingsManager) {
-	this.settingsManager = settingsManager;
+	    requestToken = twitter.getOAuthRequestToken(SignInFragment.SCROLLLOCK_CALLBACK);
+	    Log.i("request token", "token: " + requestToken.getToken() + " secret: " + requestToken.getTokenSecret());
+	    
+	    
+	    redirectToBrowser(Uri.parse(requestToken.getAuthenticationURL()));
+
+	} catch (TwitterException te) {
+	    Log.e("ScrollLock", "Failed to get request token: " + te.getMessage(), te);
+	}
+
+	return requestToken;
+    }
+    
+    public interface RequestTokenReceivedListener {
+	void onRequestTokenReceived(RequestToken r);
     }
 
     @Override
-    protected Void doInBackground(Object... objects) {
-	Context context = (Context) objects[0];
-	OAuthProviderAndConsumer oAuthProviderAndConsumer = (OAuthProviderAndConsumer) objects[1];
-
-	String authUrl = obtainRequestToken(oAuthProviderAndConsumer);
-	redirectToBrowser(context, authUrl);
-
-	return null;
+    protected void onPostExecute(RequestToken r) {
+	listener.onRequestTokenReceived(r);
     }
-
-    private void redirectToBrowser(Context context, String authUrl) {
-	Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(authUrl));
+    
+    private void redirectToBrowser(Uri uri) {
+	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 	intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	context.startActivity(intent);
-    }
-
-    private String obtainRequestToken(OAuthProviderAndConsumer oAuthProviderAndConsumer) {
-	String authUrl = null;
-	try {
-	    OAuthProvider provider = oAuthProviderAndConsumer.getProvider();
-	    OAuthConsumer consumer = oAuthProviderAndConsumer.getConsumer();
-
-	    authUrl = provider.retrieveRequestToken(consumer, oAuthProviderAndConsumer.CALLBACK_URL);
-
-	    settingsManager.saveTokenAndSecret(consumer.getToken(), consumer.getTokenSecret());
-	} catch (Exception e) {
-	    Log.e("ScrollLock", e.getClass().toString(), e);
-	}
-	return authUrl;
+	activity.startActivity(intent);
     }
 }

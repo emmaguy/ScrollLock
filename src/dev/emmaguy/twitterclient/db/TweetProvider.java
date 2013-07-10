@@ -17,7 +17,7 @@ public class TweetProvider extends ContentProvider {
     public static final int TWEET_TIMELINE_QUERY = 1;
     public static final int USER_QUERY = 2;
     public static final int INVALID_URI = -1;
-    public static final String AUTHORITY = "com.eguy.db.TweetProvider";
+    public static final String AUTHORITY = "dev.emmaguy.twitterclient.db.TweetProvider";
 
     public static final String TWEET_TABLE_NAME = "Tweet";
 

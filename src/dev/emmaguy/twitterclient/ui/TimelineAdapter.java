@@ -16,7 +16,7 @@ import dev.emmaguy.twitterclient.db.TweetProvider;
 public class TimelineAdapter extends CursorAdapter {
     private LayoutInflater inflater;
 
-    public TimelineAdapter(TimelineActivity context, Cursor tweetsCursor) {
+    public TimelineAdapter(Context context, Cursor tweetsCursor) {
 	super(context, tweetsCursor, true);
 
 	this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

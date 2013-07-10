@@ -2,31 +2,31 @@ package dev.emmaguy.twitterclient.twitterapi;
 
 import org.json.JSONException;
 
+import twitter4j.Status;
 import android.content.ContentValues;
-
 import dev.emmaguy.twitterclient.db.TweetProvider;
 
 public class TweetBuilder {
-    private JsonTweet tweet;
+    private Status tweet;
 
-    public TweetBuilder(JsonTweet tweet) {
-	this.tweet = tweet;
+    public TweetBuilder(Status s) {
+	this.tweet = s;
     }
 
-    public ContentValues build() throws JSONException {
+    public ContentValues build() {
 	ContentValues tweetValue = new ContentValues();
-	tweetValue.put(TweetProvider.TWEET_ID, tweet.getTweetId());
+	tweetValue.put(TweetProvider.TWEET_ID, tweet.getId());
 	tweetValue.put(TweetProvider.TWEET_TEXT, tweet.getText());
-	tweetValue.put(TweetProvider.TWEET_CREATED_AT, tweet.getTweetCreatedAt());
-	tweetValue.put(TweetProvider.TWEET_USER_ID, tweet.getUserId());
-	tweetValue.put(TweetProvider.TWEET_USERNAME, tweet.getUsername());
-	tweetValue.put(TweetProvider.TWEET_PROFILE_PIC_URL, tweet.getProfilePicUrl());
+	tweetValue.put(TweetProvider.TWEET_CREATED_AT, tweet.getCreatedAt().toString());
+	tweetValue.put(TweetProvider.TWEET_USER_ID, tweet.getUser().getId());
+	tweetValue.put(TweetProvider.TWEET_USERNAME, tweet.getUser().getName());
+	tweetValue.put(TweetProvider.TWEET_PROFILE_PIC_URL, tweet.getUser().getOriginalProfileImageURL());
 	tweetValue.put(TweetProvider.TWEET_RETWEET_COUNT, tweet.getRetweetCount());
 
 	if (tweet.isRetweet()) {
-	    tweetValue.put(TweetProvider.TWEET_RETWEETED_BY_USER_ID, tweet.getRetweetUserId());
-	    tweetValue.put(TweetProvider.TWEET_RETWEETED_BY_USERNAME, tweet.getRetweetUsername());
-	    tweetValue.put(TweetProvider.TWEET_RETWEET_PROFILE_PIC_URL, tweet.getRetweetUserProfileUrl());
+	    tweetValue.put(TweetProvider.TWEET_RETWEETED_BY_USER_ID, tweet.getRetweetedStatus().getUser().getId());
+	    tweetValue.put(TweetProvider.TWEET_RETWEETED_BY_USERNAME, tweet.getRetweetedStatus().getUser().getName());
+	    tweetValue.put(TweetProvider.TWEET_RETWEET_PROFILE_PIC_URL, tweet.getRetweetedStatus().getUser().getOriginalProfileImageURL());
 	}
 	return tweetValue;
     }

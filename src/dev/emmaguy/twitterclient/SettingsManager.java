@@ -3,21 +3,25 @@ package dev.emmaguy.twitterclient;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import oauth.signpost.OAuth;
 
 public class SettingsManager implements IContainSettings {
+    
     private SharedPreferences sharedPreferences;
-    private String USER_TOKEN = "userToken";
-    private String USER_SECRET = "userSecret";
+    
+    private static final String OAUTH_TOKEN = "oauthtoken";
+    private static final String OAUTH_VERIFIER = "oauthveri";
+    
+    private static final String USER_TOKEN = "userToken";
+    private static final String USER_SECRET = "userSecret";
 
-    private String USERNAME = "username";
-    private String USER_ID = "userId";
+    private static final String USERNAME = "username";
+    private static final String USER_ID = "userId";
 
-    private String MAX_ID = "maxId";
-    private String SINCE_ID = "sinceId";
-    private String BOTTOM_OF_GAP_ID = "bottomGap";
+    private static final String MAX_ID = "maxId";
+    private static final String SINCE_ID = "sinceId";
+    private static final String BOTTOM_OF_GAP_ID = "bottomGap";
 
-    private String TWEET_POSITION = "tweetPos";
+    private static final String TWEET_POSITION = "tweetPos";
 
     public SettingsManager(Context context) {
 	sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -68,18 +72,17 @@ public class SettingsManager implements IContainSettings {
     }
 
     private boolean IsNullOrEmpty(String s) {
-	return s == null || s.isEmpty();
+	return s == null || s.length() == 0;
     }
 
     public boolean credentialsAvailable() {
-	return !IsNullOrEmpty(getUserToken()) && !IsNullOrEmpty(getUserTokenSecret()) && !IsNullOrEmpty(getUsername())
-		&& !IsNullOrEmpty(getUserId());
+	return !IsNullOrEmpty(getUserToken()) && !IsNullOrEmpty(getUserTokenSecret()) && !IsNullOrEmpty(getUsername()) && getUserId() >= 0;
     }
 
     public void saveTokenAndSecret(String token, String tokenSecret) {
 	SharedPreferences.Editor editor = sharedPreferences.edit();
-	editor.putString(OAuth.OAUTH_TOKEN, token);
-	editor.putString(OAuth.OAUTH_VERIFIER, tokenSecret);
+	editor.putString(OAUTH_TOKEN, token);
+	editor.putString(OAUTH_VERIFIER, tokenSecret);
 	editor.commit();
     }
 
@@ -90,19 +93,19 @@ public class SettingsManager implements IContainSettings {
 	editor.commit();
     }
 
-    public void saveUsernameAndUserId(String userName, String userId) {
+    public void saveUsernameAndUserId(String userName, long userId) {
 	SharedPreferences.Editor editor = sharedPreferences.edit();
 	editor.putString(USERNAME, userName);
-	editor.putString(USER_ID, userId);
+	editor.putLong(USER_ID, userId);
 	editor.commit();
     }
 
     public String getToken() {
-	return sharedPreferences.getString(OAuth.OAUTH_TOKEN, null);
+	return sharedPreferences.getString(OAUTH_TOKEN, null);
     }
 
     public String getTokenSecret() {
-	return sharedPreferences.getString(OAuth.OAUTH_VERIFIER, null);
+	return sharedPreferences.getString(OAUTH_VERIFIER, null);
     }
 
     public String getUserToken() {
@@ -117,7 +120,7 @@ public class SettingsManager implements IContainSettings {
 	return sharedPreferences.getString(USERNAME, null);
     }
 
-    private String getUserId() {
-	return sharedPreferences.getString(USER_ID, null);
+    private long getUserId() {
+	return sharedPreferences.getLong(USER_ID, -1);
     }
 }

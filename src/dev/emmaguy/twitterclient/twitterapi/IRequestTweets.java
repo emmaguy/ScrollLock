@@ -1,11 +1,11 @@
 package dev.emmaguy.twitterclient.twitterapi;
 
-import org.json.JSONArray;
+import java.util.List;
+
+import twitter4j.Status;
 
 public interface IRequestTweets {
-    JSONArray requestTweets();
-
+    List<Status> requestTweets();
     IRequestTweets updateRequestToFillGap(long sinceId, long maxId);
-
     boolean requestedLatestTweets();
 }
