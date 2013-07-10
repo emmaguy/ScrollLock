@@ -4,8 +4,8 @@ import java.util.HashSet;
 import android.content.ContentValues;
 import android.util.Log;
 
-import com.eguy.db.IStoreTweets;
-import com.eguy.db.TweetProvider;
+import dev.emmaguy.twitterclient.db.IStoreTweets;
+import dev.emmaguy.twitterclient.db.TweetProvider;
 
 public class MockTweetDatabase implements IStoreTweets
 {

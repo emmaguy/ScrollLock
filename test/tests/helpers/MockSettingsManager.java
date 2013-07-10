@@ -1,5 +1,5 @@
 package tests.helpers;
-import com.eguy.IContainSettings;
+import dev.emmaguy.twitterclient.IContainSettings;
 
 public class MockSettingsManager implements IContainSettings
 {

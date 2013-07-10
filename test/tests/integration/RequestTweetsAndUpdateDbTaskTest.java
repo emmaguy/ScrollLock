@@ -10,10 +10,11 @@ import tests.helpers.MockTweetDatabase;
 import tests.helpers.MockTweetRequester;
 import android.util.Log;
 
-import com.eguy.twitterapi.RequestTweetsAndUpdateDbTask;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 import com.xtremelabs.robolectric.internal.Implements;
+
+import dev.emmaguy.twitterclient.twitterapi.RequestTweetsAndUpdateDbTask;
 
 @RunWith(RobolectricTestRunner.class)
 public class RequestTweetsAndUpdateDbTaskTest

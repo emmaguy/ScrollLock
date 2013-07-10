@@ -3,9 +3,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.eguy.twitterapi.TimelineAction;
-import com.eguy.twitterapi.TimelineGapCalculator;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
+
+import dev.emmaguy.twitterclient.twitterapi.TimelineAction;
+import dev.emmaguy.twitterclient.twitterapi.TimelineGapCalculator;
 
 @RunWith(RobolectricTestRunner.class)
 public class TimelineGapCalculatorTest 

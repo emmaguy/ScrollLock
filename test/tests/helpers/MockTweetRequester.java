@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-import com.eguy.twitterapi.IRequestTweets;
+import dev.emmaguy.twitterclient.twitterapi.IRequestTweets;
 
 
 public class MockTweetRequester implements IRequestTweets

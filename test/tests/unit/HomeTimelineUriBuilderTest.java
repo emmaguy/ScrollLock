@@ -6,8 +6,9 @@ import static org.hamcrest.CoreMatchers.not;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.eguy.twitterapi.HomeTimelineUriBuilder;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
+
+import dev.emmaguy.twitterclient.twitterapi.HomeTimelineUriBuilder;
 
 @RunWith(RobolectricTestRunner.class)
 public class HomeTimelineUriBuilderTest 

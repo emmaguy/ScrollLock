@@ -9,8 +9,9 @@ import org.junit.runner.RunWith;
 
 import tests.helpers.MockTweetRequester;
 
-import com.eguy.twitterapi.JsonTweet;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
+
+import dev.emmaguy.twitterclient.twitterapi.JsonTweet;
 
 @RunWith(RobolectricTestRunner.class)
 public class MockTweetRequestTest
