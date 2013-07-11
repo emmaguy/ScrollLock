@@ -1,4 +1,4 @@
-package dev.emmaguy.twitterclient.ui;
+package dev.emmaguy.twitterclient.timeline.details;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.R.color;
@@ -31,9 +33,16 @@ public class TweetDetailsFragment extends Fragment {
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-	final View v = inflater.inflate(R.layout.fragment_tweet_details, null);
-
-	TextView tweetTextView = (TextView) v.findViewById(R.id.tweet);
+	return inflater.inflate(R.layout.fragment_tweet_details, null);
+    }
+    
+    @Override
+    public void onStart() {
+	super.onStart();
+	
+	final ProgressBar webViewProgressBar = (ProgressBar) getActivity().findViewById(R.id.page_load_progress_bar);
+	
+	TextView tweetTextView = (TextView) getActivity().findViewById(R.id.tweet_text_details_textview);
 	tweetTextView.setText(tweetText);
 
 	Pattern p = Pattern.compile(String.valueOf(Patterns.WEB_URL));
@@ -45,12 +54,23 @@ public class TweetDetailsFragment extends Fragment {
 	}
 
 	if (!urls.isEmpty()) {
-	    WebView webView = (WebView) v.findViewById(R.id.webView);
+	    WebView webView = (WebView) getActivity().findViewById(R.id.webView);
 	    webView.setWebViewClient(new WebViewClient() {
 		public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
 		    handler.proceed();
 		}
 	    });
+	    webView.setWebChromeClient(new WebChromeClient() {
+		    public void onProgressChanged(WebView view, int progress) {
+			if (progress < 100 && webViewProgressBar.getVisibility() == ProgressBar.GONE) {
+			    webViewProgressBar.setVisibility(ProgressBar.VISIBLE);
+			}
+			webViewProgressBar.setProgress(progress);
+			if (progress == 100) {
+			    webViewProgressBar.setVisibility(ProgressBar.GONE);
+			}
+		    }
+		});
 	    webView.getSettings().setJavaScriptEnabled(true);
 	    webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
 	    webView.getSettings().setBuiltInZoomControls(true);
@@ -61,7 +81,5 @@ public class TweetDetailsFragment extends Fragment {
 	    webView.setBackgroundResource(color.BlanchedAlmond);
 	    webView.loadUrl(urls.get(0));
 	}
-	
-	return v;
     }
 }

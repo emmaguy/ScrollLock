@@ -1,4 +1,4 @@
-package dev.emmaguy.twitterclient.oauth;
+package dev.emmaguy.twitterclient.authentication;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -16,7 +16,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import dev.emmaguy.twitterclient.ConsumerInfo;
 import dev.emmaguy.twitterclient.IContainSettings;
-import dev.emmaguy.twitterclient.ui.OnAccessTokenRetrievedListener;
 
 public class OAuthRetrieveAccessTokenFromRequestToken extends AsyncTask<Uri, Void, Void> {
 

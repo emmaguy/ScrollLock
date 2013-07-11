@@ -1,6 +1,4 @@
-package dev.emmaguy.twitterclient.twitterapi;
-
-import org.json.JSONException;
+package dev.emmaguy.twitterclient.timeline;
 
 import twitter4j.Status;
 import android.content.ContentValues;
@@ -19,11 +17,12 @@ public class TweetBuilder {
 	tweetValue.put(TweetProvider.TWEET_TEXT, tweet.getText());
 	tweetValue.put(TweetProvider.TWEET_CREATED_AT, tweet.getCreatedAt().toString());
 	tweetValue.put(TweetProvider.TWEET_USER_ID, tweet.getUser().getId());
-	tweetValue.put(TweetProvider.TWEET_USERNAME, tweet.getUser().getName());
+	tweetValue.put(TweetProvider.TWEET_USERNAME, tweet.getUser().getScreenName());
 	tweetValue.put(TweetProvider.TWEET_PROFILE_PIC_URL, tweet.getUser().getOriginalProfileImageURL());
 	tweetValue.put(TweetProvider.TWEET_RETWEET_COUNT, tweet.getRetweetCount());
 
 	if (tweet.isRetweet()) {
+	    tweetValue.put(TweetProvider.TWEET_TEXT, tweet.getRetweetedStatus().getText());
 	    tweetValue.put(TweetProvider.TWEET_RETWEETED_BY_USER_ID, tweet.getRetweetedStatus().getUser().getId());
 	    tweetValue.put(TweetProvider.TWEET_RETWEETED_BY_USERNAME, tweet.getRetweetedStatus().getUser().getName());
 	    tweetValue.put(TweetProvider.TWEET_RETWEET_PROFILE_PIC_URL, tweet.getRetweetedStatus().getUser().getOriginalProfileImageURL());

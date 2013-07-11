@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="darkTheme" parent="android:Theme">
-        <item name="timeline_row">@style/timeline_row_dark</item>
+    <style name="darkTheme" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
         <item name="tweetContents_row">@style/tweetContents_row_dark</item>
         <item name="refreshBar">@style/refreshBar_dark</item>
         <item name="username">@style/username_dark</item>
         <item name="tweetText">@style/tweetText_dark</item>
         <item name="timestamp">@style/timestamp_dark</item>
         <item name="retweetInfo">@style/retweetInfo_dark</item>
-    </style>
-
-    <style name="timeline_row_dark">
-        <item name="android:background">@drawable/timeline_row_dark</item>
     </style>
 
     <style name="tweetContents_row_dark">

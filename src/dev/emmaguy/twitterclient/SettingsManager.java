@@ -123,4 +123,9 @@ public class SettingsManager implements IContainSettings {
     private long getUserId() {
 	return sharedPreferences.getLong(USER_ID, -1);
     }
+
+    public void clearTweetPositions() {
+	setTweetSinceId(-1);
+	setTweetMaxId(-1);
+    }
 }

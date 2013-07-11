@@ -1,34 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
     <RelativeLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
         <ImageView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:id="@+id/profilePic"
-                android:contentDescription="@string/profilePicture"/>
+            android:id="@+id/avatar_imageview"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:contentDescription="@string/profilePicture" />
 
         <TextView
-                android:id="@+id/tweet"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:gravity="left"
-                android:layout_toRightOf="@id/profilePic"
-                android:paddingLeft="3dp"
-                style="?tweetText"/>
-
+            android:id="@+id/tweet_text_details_textview"
+            style="?tweetText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/avatar_imageview"
+            android:gravity="left"
+            android:paddingLeft="3dp" />
     </RelativeLayout>
 
+    <ProgressBar
+        android:id="@+id/page_load_progress_bar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="4dp"
+        android:visibility="gone" >
+    </ProgressBar>
+
     <WebView
-            android:id="@+id/webView"
-            android:layout_height="match_parent"
-            android:layout_width="fill_parent"/>
+        android:id="@+id/webView"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

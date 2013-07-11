@@ -1,4 +1,4 @@
-package dev.emmaguy.twitterclient.ui;
+package dev.emmaguy.twitterclient.timeline;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;

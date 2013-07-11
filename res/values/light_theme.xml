@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="lightTheme" parent="android:Theme">
-        <item name="timeline_row">@style/timeline_row_light</item>
+    <style name="lightTheme" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
         <item name="tweetContents_row">@style/tweetContents_row_light</item>
         <item name="refreshBar">@style/refreshBar_light</item>
         <item name="username">@style/username_light</item>
@@ -9,11 +8,7 @@
         <item name="timestamp">@style/timestamp_light</item>
         <item name="retweetInfo">@style/retweetInfo_light</item>
     </style>
-
-    <style name="timeline_row_light">
-        <item name="android:background">@drawable/timeline_row_light</item>
-    </style>
-
+    
     <style name="tweetContents_row_light">
         <item name="android:background">@drawable/timeline_tweet_contents_light</item>
     </style>

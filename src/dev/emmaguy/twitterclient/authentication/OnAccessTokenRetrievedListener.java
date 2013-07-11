@@ -1,4 +1,4 @@
-package dev.emmaguy.twitterclient.ui;
+package dev.emmaguy.twitterclient.authentication;
 
 public interface OnAccessTokenRetrievedListener {
     void onRetrievedAccessToken();

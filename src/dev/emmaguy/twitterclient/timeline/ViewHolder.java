@@ -1,4 +1,4 @@
-package dev.emmaguy.twitterclient.ui;
+package dev.emmaguy.twitterclient.timeline;
 
 import android.widget.ImageView;
 import android.widget.TextView;

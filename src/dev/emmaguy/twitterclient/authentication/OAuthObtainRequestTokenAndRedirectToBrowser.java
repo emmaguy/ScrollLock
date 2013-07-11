@@ -1,4 +1,4 @@
-package dev.emmaguy.twitterclient.oauth;
+package dev.emmaguy.twitterclient.authentication;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -10,14 +10,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import dev.emmaguy.twitterclient.ConsumerInfo;
-import dev.emmaguy.twitterclient.ui.SignInFragment;
 
 public class OAuthObtainRequestTokenAndRedirectToBrowser extends AsyncTask<Object, Void, RequestToken> {
     
     private final Activity activity;
-    private final RequestTokenReceivedListener listener;
+    private final OnRequestTokenReceivedListener listener;
     
-    public OAuthObtainRequestTokenAndRedirectToBrowser(final Activity activity, final RequestTokenReceivedListener listener) {
+    public OAuthObtainRequestTokenAndRedirectToBrowser(final Activity activity, final OnRequestTokenReceivedListener listener) {
 	this.activity = activity;
 	this.listener = listener;
     } 
@@ -43,7 +42,7 @@ public class OAuthObtainRequestTokenAndRedirectToBrowser extends AsyncTask<Objec
 	return requestToken;
     }
     
-    public interface RequestTokenReceivedListener {
+    public interface OnRequestTokenReceivedListener {
 	void onRequestTokenReceived(RequestToken r);
     }
 
