@@ -22,9 +22,11 @@ public class RequestAndStoreNewTweetsAsyncTask extends AsyncTask<Void, Void, Lis
     private long maxId;
     private int numberOfTweetsToRequest;
     private int pageId;
+    private boolean isFillingGapInTimeline;
 
     public RequestAndStoreNewTweetsAsyncTask(IContainSettings settingsManager, IStoreTweets tweetStorer,
-	    long newestTweetIdFromLastRequest, long sinceId, long maxId, int numberOfTweetsToRequest, int pageId) {
+	    long newestTweetIdFromLastRequest, long sinceId, long maxId, int numberOfTweetsToRequest, int pageId,
+	    boolean isFillingGapInTimeline) {
 	this.settingsManager = settingsManager;
 	this.tweetStorer = tweetStorer;
 	this.newestTweetIdFromLastRequest = newestTweetIdFromLastRequest;
@@ -32,6 +34,7 @@ public class RequestAndStoreNewTweetsAsyncTask extends AsyncTask<Void, Void, Lis
 	this.maxId = maxId;
 	this.numberOfTweetsToRequest = numberOfTweetsToRequest;
 	this.pageId = pageId;
+	this.isFillingGapInTimeline = isFillingGapInTimeline;
     }
 
     @Override
@@ -74,12 +77,11 @@ public class RequestAndStoreNewTweetsAsyncTask extends AsyncTask<Void, Void, Lis
 	long oldestTweetId = Long.MAX_VALUE;
 
 	ContentValues[] tweets = new ContentValues[statuses.size()];
-	for (int i = 0; i < statuses.size(); ++i) {
+	for (int i = 0, size = statuses.size(); i < size; i++) {
 	    twitter4j.Status s = statuses.get(i);
 	    tweets[i] = new TweetBuilder(s).build();
 
 	    final long tweetId = s.getId();
-
 	    if (tweetId > newestTweetId) {
 		newestTweetId = tweetId;
 	    }
@@ -94,18 +96,12 @@ public class RequestAndStoreNewTweetsAsyncTask extends AsyncTask<Void, Void, Lis
 	    settingsManager.setTweetSinceId(newestTweetId);
 	}
 
-	if (newestTweetId - 1 <= maxId || oldestTweetId > newestTweetIdFromLastRequest) {
-	    sinceId = newestTweetIdFromLastRequest;
-	    if (maxId > 0) {
-		pageId++;
-		newestTweetIdFromLastRequest = newestTweetId;
-	    } else {
-		// get tweets in the gap up until this value
-		maxId = oldestTweetId - 1;
-	    }
-	    
-	    new RequestAndStoreNewTweetsAsyncTask(settingsManager, tweetStorer, newestTweetIdFromLastRequest, sinceId,
-		    maxId, numberOfTweetsToRequest, pageId).execute();
+	if (!isFillingGapInTimeline && oldestTweetId > newestTweetIdFromLastRequest) {
+	    new RequestAndStoreNewTweetsAsyncTask(settingsManager, tweetStorer, newestTweetId,
+		    newestTweetIdFromLastRequest, oldestTweetId - 1, numberOfTweetsToRequest, pageId, true).execute();
+	} else if (isFillingGapInTimeline) {
+	    new RequestAndStoreNewTweetsAsyncTask(settingsManager, tweetStorer, newestTweetIdFromLastRequest,
+		    sinceId, maxId, numberOfTweetsToRequest, ++pageId, true).execute();
 	}
     }
 }

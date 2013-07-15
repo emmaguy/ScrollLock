@@ -96,7 +96,7 @@ public class TimelineFragment extends SherlockFragment implements LoaderManager.
 			+ settingsManager.getTweetMaxId());
 
 	new RequestAndStoreNewTweetsAsyncTask(settingsManager, database, settingsManager.getTweetMaxId(),
-		settingsManager.getTweetSinceId(), -1, 1, 1).execute();
+		settingsManager.getTweetSinceId(), -1, 1, 1, false).execute();
     }
 
     @Override
