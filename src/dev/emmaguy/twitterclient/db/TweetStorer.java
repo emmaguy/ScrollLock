@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.widget.ListAdapter;
 import dev.emmaguy.twitterclient.timeline.TimelineAdapter;
 
@@ -30,6 +31,7 @@ public class TweetStorer implements IManageTweetStorage, LoaderManager.LoaderCal
 
     @Override
     public void addTweets(ContentValues[] tweets) {
+	Log.i("x", "storing: " + tweets.length + " uri: " + uri);
 	contentResolver.bulkInsert(uri, tweets);
     }
     

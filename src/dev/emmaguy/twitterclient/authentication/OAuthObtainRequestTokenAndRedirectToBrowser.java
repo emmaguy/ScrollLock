@@ -4,19 +4,22 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.RequestToken;
+import twitter4j.conf.ConfigurationBuilder;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.util.Log;
 import dev.emmaguy.twitterclient.ConsumerInfo;
+import dev.emmaguy.twitterclient.ui.ProgressAsyncTask;
 
-public class OAuthObtainRequestTokenAndRedirectToBrowser extends AsyncTask<Object, Void, RequestToken> {
+public class OAuthObtainRequestTokenAndRedirectToBrowser extends ProgressAsyncTask<Object, Void, RequestToken> {
     
     private final Activity activity;
     private final OnRequestTokenReceivedListener listener;
     
-    public OAuthObtainRequestTokenAndRedirectToBrowser(final Activity activity, final OnRequestTokenReceivedListener listener) {
+    public OAuthObtainRequestTokenAndRedirectToBrowser(final Activity activity, final OnRequestTokenReceivedListener listener, final String dialogMessage) {
+	super(activity, dialogMessage);
+	
 	this.activity = activity;
 	this.listener = listener;
     } 
@@ -26,13 +29,14 @@ public class OAuthObtainRequestTokenAndRedirectToBrowser extends AsyncTask<Objec
 	RequestToken requestToken = null;
 	try {
    
-	    Twitter twitter = TwitterFactory.getSingleton();
-	    twitter.setOAuthConsumer(ConsumerInfo.CONSUMER_KEY, ConsumerInfo.CONSUMER_SECRET);
-
+	    ConfigurationBuilder builder = new ConfigurationBuilder();
+	    builder.setOAuthConsumerKey(ConsumerInfo.CONSUMER_KEY);
+	    builder.setOAuthConsumerSecret(ConsumerInfo.CONSUMER_SECRET);
+	    
+	    TwitterFactory factory = new TwitterFactory(builder.build());
+	    Twitter twitter = factory.getInstance();
 	    requestToken = twitter.getOAuthRequestToken(SignInFragment.SCROLLLOCK_CALLBACK);
-	    Log.i("request token", "token: " + requestToken.getToken() + " secret: " + requestToken.getTokenSecret());
-	    
-	    
+
 	    redirectToBrowser(Uri.parse(requestToken.getAuthenticationURL()));
 
 	} catch (TwitterException te) {
@@ -48,6 +52,7 @@ public class OAuthObtainRequestTokenAndRedirectToBrowser extends AsyncTask<Objec
 
     @Override
     protected void onPostExecute(RequestToken r) {
+	super.onPostExecute(r);
 	listener.onRequestTokenReceived(r);
     }
     

@@ -11,13 +11,14 @@ import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
+import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.util.Log;
 import dev.emmaguy.twitterclient.ConsumerInfo;
 import dev.emmaguy.twitterclient.IContainSettings;
+import dev.emmaguy.twitterclient.ui.ProgressAsyncTask;
 
-public class OAuthRetrieveAccessTokenFromRequestToken extends AsyncTask<Uri, Void, Void> {
+public class OAuthRetrieveAccessTokenFromRequestToken extends ProgressAsyncTask<Uri, Void, Void> {
 
     private final IContainSettings settings;
     private final RequestToken requestToken;
@@ -25,7 +26,9 @@ public class OAuthRetrieveAccessTokenFromRequestToken extends AsyncTask<Uri, Voi
     private final OnAccessTokenRetrievedListener listener;
 
     public OAuthRetrieveAccessTokenFromRequestToken(final IContainSettings settings, final RequestToken requestToken,
-	    final String verifier, final OnAccessTokenRetrievedListener listener) {
+	    final String verifier, final OnAccessTokenRetrievedListener listener, final Context c, final String dialogMessage) {
+	super(c, dialogMessage);
+	
 	this.settings = settings;
 	this.requestToken = requestToken;
 	this.verifier = verifier;
@@ -43,9 +46,6 @@ public class OAuthRetrieveAccessTokenFromRequestToken extends AsyncTask<Uri, Voi
 	Twitter twitter = factory.getInstance();
 
 	try {
-	    Log.i("retrieve access token",
-		    "token: " + requestToken.getToken() + " secret: " + requestToken.getTokenSecret());
-
 	    AccessToken accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
 	    settings.saveUserTokenAndSecret(accessToken.getToken(), accessToken.getTokenSecret());
 
@@ -65,6 +65,7 @@ public class OAuthRetrieveAccessTokenFromRequestToken extends AsyncTask<Uri, Voi
 
     @Override
     protected void onPostExecute(Void v) {
+	super.onPostExecute(v);
 	listener.onRetrievedAccessToken();
     }
 }

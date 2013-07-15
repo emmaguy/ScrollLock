@@ -1,20 +1,48 @@
 package dev.emmaguy.twitterclient.timeline;
 
-import android.content.ContentValues;
+import java.util.List;
 
 public class TimelineUpdate {
-    private ContentValues[] tweets;
-    private long newestTweetId;
-    private long oldestTweetId;
+    private long newestTweetId = 0;
+    private long oldestTweetId = Long.MAX_VALUE;
+    private boolean hasTweets = false;
 
-    public TimelineUpdate(ContentValues[] tweets, long newestTweetId, long oldestTweetId) {
-	this.tweets = tweets;
-	this.newestTweetId = newestTweetId;
-	this.oldestTweetId = oldestTweetId;
+    public TimelineUpdate buildFromTweets(List<twitter4j.Status> statuses) {
+	
+	if(statuses == null) return this;
+	
+	for (twitter4j.Status status : statuses) {
+	    final long tweetId = status.getId();
+	    if (tweetId > newestTweetId) {
+		newestTweetId = tweetId;
+	    }
+	    if (tweetId < oldestTweetId) {
+		oldestTweetId = tweetId;
+	    }
+	    hasTweets = true;
+	}
+	return this;
+    }
+    
+    public TimelineUpdate buildFromDMs(List<twitter4j.DirectMessage> directMessages) {
+
+	if(directMessages == null) return this;
+	
+	for (twitter4j.DirectMessage dm : directMessages) {
+	    final long tweetId = dm.getId();
+	    if (tweetId > newestTweetId) {
+		newestTweetId = tweetId;
+	    }
+	    if (tweetId < oldestTweetId) {
+		oldestTweetId = tweetId;
+	    }
+	    hasTweets = true;
+	}
+	return this;
     }
 
-    public ContentValues[] getTweets() {
-	return tweets;
+    public boolean hasTweets() {
+	return hasTweets;
     }
 
     public long getNewestTweetId() {

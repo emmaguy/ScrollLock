@@ -28,30 +28,28 @@ import dev.emmaguy.twitterclient.ui.ViewHolder;
 public class TimelineFragment extends SherlockFragment implements OnItemClickListener, OnItemLongClickListener {
     private ListView listView;
     private OnUserActionListener listener;
-    
+
     private IContainSettings settings;
-    private IBuildTimelineUpdates timelineUpdater;
     private IRequestTweets tweetRequester;
     private IManageTweetStorage tweetStorer;
-    
-    public void setArguments(IContainSettings settings, IBuildTimelineUpdates timelineUpdater, IRequestTweets tweetRequester, IManageTweetStorage tweetStorer) {
+
+    public void setArguments(IContainSettings settings, IRequestTweets tweetRequester, IManageTweetStorage tweetStorer) {
 	this.settings = settings;
-	this.timelineUpdater = timelineUpdater;
 	this.tweetRequester = tweetRequester;
 	this.tweetStorer = tweetStorer;
     }
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
-	
+
 	setHasOptionsMenu(true);
     }
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	final View v = inflater.inflate(R.layout.fragment_timeline, null);
-	
+
 	listView = ((ListView) v.findViewById(R.id.timeline_listview));
 	listView.setAdapter(tweetStorer.getAdapter());
 	listView.setOnItemClickListener(this);
@@ -59,7 +57,7 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
 
 	return v;
     }
-    
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 	inflater.inflate(R.menu.menu_timeline, menu);
@@ -71,13 +69,13 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
 	switch (item.getItemId()) {
 	case R.id.delete_button:
 	    Toast.makeText(getActivity(), "Deleting...", Toast.LENGTH_SHORT).show();
-	    new SettingsManager(getActivity()).clearTweetPositions();
-//	    getActivity().getContentResolver().delete(uri, "", null);
+	    new SettingsManager(getActivity()).clearUserData();
+	    // getActivity().getContentResolver().delete(uri, "", null);
 	    return true;
 	case R.id.refresh_button:
 	    Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
-	    new RequestAndStoreNewTweetsAsyncTask(settings, tweetStorer, tweetRequester, timelineUpdater, settings.getTweetMaxId(),
-			settings.getTweetSinceId(), -1, 1, 1, false).execute();
+	    new RequestAndStoreNewTweetsAsyncTask(settings, tweetStorer, tweetRequester, settings.getTweetMaxId(),
+		    settings.getTweetSinceId(), -1, 1, 1, false).execute();
 	    return true;
 	default:
 	    return super.onOptionsItemSelected(item);

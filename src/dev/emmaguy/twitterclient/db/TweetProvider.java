@@ -80,10 +80,13 @@ public class TweetProvider extends ContentProvider {
 	    String whereClause = "";
 	    switch (uriMatcher.match(uri)) {
 	    case TWEET_MENTIONS_TIMELINE_QUERY:
-		whereClause = " WHERE " + TWEET_IS_MENTION + " = 1 ";
+		whereClause = " WHERE " + TWEET_IS_MENTION + " = 1 AND " + TWEET_IS_DM + " = 0";
+		break;
+	    case TWEET_DMS_TIMELINE_QUERY:
+		whereClause = " WHERE " + TWEET_IS_MENTION + " = 0 AND " + TWEET_IS_DM + " = 1";
 		break;
 	    case TWEET_HOME_TIMELINE_QUERY:
-		whereClause = " WHERE " + TWEET_IS_MENTION + " = 0 ";
+		whereClause = " WHERE " + TWEET_IS_MENTION + " = 0 AND " + TWEET_IS_DM + " = 0";
 		break;
 	    }
 	    Log.i("x", "clause: " + whereClause);
@@ -130,7 +133,7 @@ public class TweetProvider extends ContentProvider {
 		Log.d("ScrollLockDb", "Insert error for userid/profile picture");
 		return uri;
 	    }
-
+	case TWEET_DMS_TIMELINE_QUERY:
 	case TWEET_MENTIONS_TIMELINE_QUERY:
 	case TWEET_HOME_TIMELINE_QUERY:
 
@@ -158,6 +161,7 @@ public class TweetProvider extends ContentProvider {
 	int insertedValues = -1;
 	switch (uriMatcher.match(uri)) {
 
+	case TWEET_DMS_TIMELINE_QUERY:
 	case TWEET_MENTIONS_TIMELINE_QUERY:
 	case TWEET_HOME_TIMELINE_QUERY:
 	    SQLiteDatabase writableDatabase = null;
@@ -215,6 +219,7 @@ public class TweetProvider extends ContentProvider {
     public int delete(Uri uri, String s, String[] strings) {
 	int deletedValues = 0;
 	switch (uriMatcher.match(uri)) {
+	case TWEET_DMS_TIMELINE_QUERY:
 	case TWEET_MENTIONS_TIMELINE_QUERY:
 	case TWEET_HOME_TIMELINE_QUERY:
 	    SQLiteDatabase writableDatabase = null;
@@ -261,7 +266,7 @@ public class TweetProvider extends ContentProvider {
 			+ "  BIGINT CLUSTERED PRIMARY KEY NOT NULL," + TWEET_USER_ID + "  BIGINT NOT NULL,"
 			+ TWEET_TEXT + " NVARCHAR(128) NOT NULL," + TWEET_CREATED_AT + " NVARCHAR(50) NOT NULL,"
 			+ TWEET_USERNAME + " NVARCHAR(128) NOT NULL, " + TWEET_PROFILE_PIC_URL
-			+ " NVARCHAR(1024) NOT NULL," + TWEET_RETWEET_COUNT + " INT NOT NULL, "
+			+ " NVARCHAR(1024) NOT NULL," + TWEET_RETWEET_COUNT + " INT NOT NULL DEFAULT(0), "
 			+ TWEET_RETWEET_PROFILE_PIC_URL + " NVARCHAR(1024), " + TWEET_RETWEETED_BY_USER_ID
 			+ " BIGINT, " + TWEET_RETWEETED_BY_USERNAME + " NVARCHAR(128)" + ", " + TWEET_IS_MENTION
 			+ " BIT NOT NULL DEFAULT(0)" + ", " + TWEET_IS_DM + " BIT NOT NULL DEFAULT(0)" + ");");

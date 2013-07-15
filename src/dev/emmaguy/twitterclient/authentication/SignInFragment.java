@@ -30,7 +30,7 @@ public class SignInFragment extends Fragment implements OnClickListener, OnReque
 
     @Override
     public void onClick(View arg0) {
-	new OAuthObtainRequestTokenAndRedirectToBrowser(getActivity(), (OnRequestTokenReceivedListener) this).execute();
+	new OAuthObtainRequestTokenAndRedirectToBrowser(getActivity(), (OnRequestTokenReceivedListener) this, "Retrieving request token from Twitter").execute();
     }
     
     @Override
@@ -41,7 +41,7 @@ public class SignInFragment extends Fragment implements OnClickListener, OnReque
 	if (uri != null && uri.toString().startsWith("scrolllock")) {
 	    String verifier = uri.getQueryParameter("oauth_verifier");
 	    new OAuthRetrieveAccessTokenFromRequestToken(new SettingsManager(getActivity()), requestToken, verifier,
-		    (OnAccessTokenRetrievedListener) this).execute(uri);
+		    (OnAccessTokenRetrievedListener) this, getActivity(), "Retrieving access token from Twitter").execute(uri);
 	}
     }
 

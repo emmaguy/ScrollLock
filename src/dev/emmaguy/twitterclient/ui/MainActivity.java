@@ -15,21 +15,18 @@ import dev.emmaguy.twitterclient.authentication.SignInFragment.OnSignInCompleteL
 import dev.emmaguy.twitterclient.db.TweetProvider;
 import dev.emmaguy.twitterclient.db.TweetStorer;
 import dev.emmaguy.twitterclient.timeline.DMsTimelineTweetRequester;
-import dev.emmaguy.twitterclient.timeline.DMsTimelineUpdateBuilder;
 import dev.emmaguy.twitterclient.timeline.HomeTimelineTweetRequester;
 import dev.emmaguy.twitterclient.timeline.MentionsTimelineTweetRequester;
-import dev.emmaguy.twitterclient.timeline.MentionsTimelineUpdateBuilder;
 import dev.emmaguy.twitterclient.timeline.TimelineAdapter;
 import dev.emmaguy.twitterclient.timeline.TimelineFragment;
 import dev.emmaguy.twitterclient.timeline.TimelineFragment.OnUserActionListener;
-import dev.emmaguy.twitterclient.timeline.TimelineUpdateBuilder;
 import dev.emmaguy.twitterclient.timeline.details.TweetDetailsFragment;
 
 public class MainActivity extends SherlockFragmentActivity implements OnSignInCompleteListener, OnUserActionListener,
 	ActionBar.TabListener {
 
     private SettingsManager settingsManager;
-    
+
     private TimelineFragment homeTimelineFragment;
     private TimelineFragment mentionsFragment;
     private TimelineFragment dmsFragment;
@@ -41,16 +38,19 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 	settingsManager = new SettingsManager(this.getApplicationContext());
 
 	homeTimelineFragment = new TimelineFragment();
-	homeTimelineFragment.setArguments(settingsManager, new TimelineUpdateBuilder(),
-		new HomeTimelineTweetRequester(), new TweetStorer(getContentResolver(), getSupportLoaderManager(), new TimelineAdapter(this, null), TweetProvider.TWEET_HOME_TIMELINE_URI, getApplicationContext()));
-	
+	homeTimelineFragment.setArguments(settingsManager, new HomeTimelineTweetRequester(), new TweetStorer(
+		getContentResolver(), getSupportLoaderManager(), new TimelineAdapter(this, null),
+		TweetProvider.TWEET_HOME_TIMELINE_URI, getApplicationContext()));
+
 	mentionsFragment = new TimelineFragment();
-	mentionsFragment.setArguments(settingsManager, new MentionsTimelineUpdateBuilder(),
-		new MentionsTimelineTweetRequester(), new TweetStorer(getContentResolver(), getSupportLoaderManager(), new TimelineAdapter(this, null), TweetProvider.TWEET_MENTIONS_TIMELINE_URI, getApplicationContext()));
-	
+	mentionsFragment.setArguments(settingsManager, new MentionsTimelineTweetRequester(), new TweetStorer(
+		getContentResolver(), getSupportLoaderManager(), new TimelineAdapter(this, null),
+		TweetProvider.TWEET_MENTIONS_TIMELINE_URI, getApplicationContext()));
+
 	dmsFragment = new TimelineFragment();
-	dmsFragment.setArguments(settingsManager, new DMsTimelineUpdateBuilder(),
-		new DMsTimelineTweetRequester(), new TweetStorer(getContentResolver(), getSupportLoaderManager(), new TimelineAdapter(this, null), TweetProvider.TWEET_DMS_TIMELINE_URI, getApplicationContext()));
+	dmsFragment.setArguments(settingsManager, new DMsTimelineTweetRequester(), new TweetStorer(
+		getContentResolver(), getSupportLoaderManager(), new TimelineAdapter(this, null),
+		TweetProvider.TWEET_DMS_TIMELINE_URI, getApplicationContext()));
 
 	getLatestTweetsOrAuthenticate();
     }
@@ -64,7 +64,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 	    ft.add(R.id.fragment_container, mentionsFragment);
 	    ft.attach(mentionsFragment);
 	} else if (tab.getPosition() == 2) {
-
+	    ft.add(R.id.fragment_container, dmsFragment);
+	    ft.attach(dmsFragment);
 	}
     }
 
@@ -75,7 +76,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 	} else if (tab.getPosition() == 1) {
 	    ft.remove(mentionsFragment);
 	} else if (tab.getPosition() == 2) {
-
+	    ft.remove(dmsFragment);	
 	}
     }
 
