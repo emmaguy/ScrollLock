@@ -127,6 +127,7 @@ public class SettingsManager implements IContainSettings {
     public void clearUserData() {
 	setTweetSinceId(-1);
 	setTweetMaxId(-1);
-	saveTokenAndSecret("", "");
+	saveTokenAndSecret(null, null);
+	saveUserTokenAndSecret(null, null);
     }
 }
