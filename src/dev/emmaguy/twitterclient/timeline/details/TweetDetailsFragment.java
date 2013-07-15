@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 import android.annotation.SuppressLint;
 import android.net.http.SslError;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +18,17 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.R.color;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class TweetDetailsFragment extends Fragment {
+public class TweetDetailsFragment extends SherlockFragment {
     
     private String tweetText;
 
@@ -33,7 +38,25 @@ public class TweetDetailsFragment extends Fragment {
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	setHasOptionsMenu(true);
 	return inflater.inflate(R.layout.fragment_tweet_details, null);
+    }
+    
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	inflater.inflate(R.menu.menu_details, menu);
+	super.onCreateOptionsMenu(menu, inflater);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	switch (item.getItemId()) {
+	case R.id.back_button:
+	    getActivity().onBackPressed();
+	    return true;
+	default:
+	    return super.onOptionsItemSelected(item);
+	}
     }
     
     @Override

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="darkTheme" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+    <style name="darkTheme" parent="@style/Theme.Sherlock">
         <item name="tweetContents_row">@style/tweetContents_row_dark</item>
-        <item name="refreshBar">@style/refreshBar_dark</item>
+        <item name="refreshBar">@style/action_bar_dark</item>
         <item name="username">@style/username_dark</item>
         <item name="tweetText">@style/tweetText_dark</item>
         <item name="timestamp">@style/timestamp_dark</item>
@@ -14,9 +14,9 @@
         <item name="android:background">@drawable/timeline_tweet_contents_dark</item>
     </style>
 
-    <style name="refreshBar_dark">
-        <item name="android:background">@drawable/refresh_bar_dark</item>
-    </style>
+    <style name="action_bar_dark" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+    	<item name="android:background">@drawable/refresh_bar_dark</item>
+	</style>
 
     <style name="username_dark" parent="@android:style/TextAppearance.Medium">
         <item name="android:textStyle">bold</item>

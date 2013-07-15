@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -19,12 +17,18 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.SettingsManager;
 import dev.emmaguy.twitterclient.db.TweetProvider;
 import dev.emmaguy.twitterclient.db.TweetStorer;
 
-public class TimelineFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, OnClickListener,
+public class TimelineFragment extends SherlockFragment implements LoaderManager.LoaderCallbacks<Cursor>,
 	OnItemClickListener, OnItemLongClickListener {
     private CursorAdapter adapter;
     private TweetStorer database;
@@ -36,6 +40,8 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	final View v = inflater.inflate(R.layout.fragment_timeline, null);
 
+	setHasOptionsMenu(true);
+
 	getActivity().getSupportLoaderManager().initLoader(0, null, this);
 	database = new TweetStorer(getActivity().getContentResolver());
 	adapter = new TimelineAdapter(getActivity(), null);
@@ -45,10 +51,30 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 	listView.setOnItemClickListener(this);
 	listView.setOnItemLongClickListener(this);
 
-	v.findViewById(R.id.refresh_button).setOnClickListener(this);
-	v.findViewById(R.id.delete_button).setOnClickListener(this);
-
 	return v;
+    }
+    
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	inflater.inflate(R.menu.menu_timeline, menu);
+	super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	switch (item.getItemId()) {
+	case R.id.delete_button:
+	    Toast.makeText(getActivity(), "deleting...", Toast.LENGTH_SHORT).show();
+	    new SettingsManager(getActivity()).clearTweetPositions();
+	    getActivity().getContentResolver().delete(TweetProvider.TWEET_URI, "", null);
+	    return true;
+	case R.id.refresh_button:
+	    Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
+	    getLatestTweets();
+	    return true;
+	default:
+	    return super.onOptionsItemSelected(item);
+	}
     }
 
     @Override
@@ -87,20 +113,6 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
 	adapter.changeCursor(null);
-    }
-
-    @Override
-    public void onClick(View v) {
-	final int id = v.getId();
-
-	if (id == R.id.refresh_button) {
-	    Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
-	    getLatestTweets();
-	} else if (id == R.id.delete_button) {
-	    Toast.makeText(getActivity(), "deleting...", Toast.LENGTH_SHORT).show();
-	    new SettingsManager(getActivity()).clearTweetPositions();
-	    getActivity().getContentResolver().delete(TweetProvider.TWEET_URI, "", null);
-	}
     }
 
     @Override

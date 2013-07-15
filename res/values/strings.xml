@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ScrollLock</string>
+    <string name="app_name">Scroll Lock</string>
     <string name="profilePicture">usersprofilepicture</string>
     <string name="login">Sign In</string>
+    <string name="delete">Delete</string>
+    <string name="refresh">Refresh</string>
+    <string name="back">Back</string>
 </resources>

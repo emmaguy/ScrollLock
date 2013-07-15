@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="lightTheme" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+    <style name="lightTheme" parent="android:style/Theme.Holo.Light">
         <item name="tweetContents_row">@style/tweetContents_row_light</item>
-        <item name="refreshBar">@style/refreshBar_light</item>
+        <item name="refreshBar">@style/action_bar_light</item>
         <item name="username">@style/username_light</item>
         <item name="tweetText">@style/tweetText_light</item>
         <item name="timestamp">@style/timestamp_light</item>
         <item name="retweetInfo">@style/retweetInfo_light</item>
     </style>
     
+    <style name="action_bar_light" parent="android:style/Widget.Holo.Light.ActionBar">
+    	<item name="android:background">@drawable/refresh_bar_light</item>
+	</style>
+    
     <style name="tweetContents_row_light">
         <item name="android:background">@drawable/timeline_tweet_contents_light</item>
-    </style>
-
-    <style name="refreshBar_light">
-        <item name="android:background">@drawable/refresh_bar_light</item>
     </style>
 
     <style name="username_light" parent="@android:style/TextAppearance.Medium">

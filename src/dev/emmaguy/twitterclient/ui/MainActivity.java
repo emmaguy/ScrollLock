@@ -2,8 +2,10 @@ package dev.emmaguy.twitterclient.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
 import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.SettingsManager;
 import dev.emmaguy.twitterclient.authentication.SignInFragment;
@@ -12,7 +14,7 @@ import dev.emmaguy.twitterclient.timeline.TimelineFragment;
 import dev.emmaguy.twitterclient.timeline.TimelineFragment.OnUserActionListener;
 import dev.emmaguy.twitterclient.timeline.details.TweetDetailsFragment;
 
-public class MainActivity extends FragmentActivity implements OnSignInCompleteListener, OnUserActionListener {
+public class MainActivity extends SherlockFragmentActivity implements OnSignInCompleteListener, OnUserActionListener {
 
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
@@ -21,7 +23,7 @@ public class MainActivity extends FragmentActivity implements OnSignInCompleteLi
 
 	getLatestTweetsOrAuthenticate();
     }
-
+    
     private void getLatestTweetsOrAuthenticate() {
 	SettingsManager settingsManager = new SettingsManager(this.getApplicationContext());
 	if (settingsManager.credentialsAvailable()) {
