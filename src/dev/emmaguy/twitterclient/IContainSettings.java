@@ -35,4 +35,8 @@ public interface IContainSettings {
 
     String getUsername();
 
+    void clearUserData();
+
+    int getNumberOfTweetsToRequest();
+
 }

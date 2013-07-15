@@ -20,7 +20,6 @@ import com.actionbarsherlock.view.MenuItem;
 
 import dev.emmaguy.twitterclient.IContainSettings;
 import dev.emmaguy.twitterclient.R;
-import dev.emmaguy.twitterclient.SettingsManager;
 import dev.emmaguy.twitterclient.db.IManageTweetStorage;
 import dev.emmaguy.twitterclient.db.TweetProvider;
 import dev.emmaguy.twitterclient.ui.ViewHolder;
@@ -69,13 +68,12 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
 	switch (item.getItemId()) {
 	case R.id.delete_button:
 	    Toast.makeText(getActivity(), "Deleting...", Toast.LENGTH_SHORT).show();
-	    new SettingsManager(getActivity()).clearUserData();
-	    // getActivity().getContentResolver().delete(uri, "", null);
+	    settings.clearUserData();
 	    return true;
 	case R.id.refresh_button:
 	    Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
 	    new RequestAndStoreNewTweetsAsyncTask(settings, tweetStorer, tweetRequester, settings.getTweetMaxId(),
-		    settings.getTweetSinceId(), -1, 1, 1, false).execute();
+		    settings.getTweetSinceId(), -1, settings.getNumberOfTweetsToRequest(), 1, false).execute();
 	    return true;
 	default:
 	    return super.onOptionsItemSelected(item);

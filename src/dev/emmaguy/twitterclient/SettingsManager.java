@@ -16,6 +16,7 @@ public class SettingsManager implements IContainSettings {
 
     private static final String USERNAME = "username";
     private static final String USER_ID = "userId";
+    private static final String NUMBER_OF_TWEETS_TO_REQ = "numtweetstoreq";
 
     private static final String MAX_ID = "maxId";
     private static final String SINCE_ID = "sinceId";
@@ -129,5 +130,10 @@ public class SettingsManager implements IContainSettings {
 	setTweetMaxId(-1);
 	saveTokenAndSecret(null, null);
 	saveUserTokenAndSecret(null, null);
+    }
+
+    @Override
+    public int getNumberOfTweetsToRequest() {
+	return sharedPreferences.getInt(NUMBER_OF_TWEETS_TO_REQ, 20);
     }
 }
