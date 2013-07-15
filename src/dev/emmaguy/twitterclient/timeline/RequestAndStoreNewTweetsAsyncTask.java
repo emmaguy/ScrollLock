@@ -2,21 +2,22 @@ package dev.emmaguy.twitterclient.timeline;
 
 import java.util.List;
 
-import twitter4j.Paging;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
-import android.content.ContentValues;
 import android.os.AsyncTask;
 import android.util.Log;
 import dev.emmaguy.twitterclient.ConsumerInfo;
 import dev.emmaguy.twitterclient.IContainSettings;
-import dev.emmaguy.twitterclient.db.IStoreTweets;
+import dev.emmaguy.twitterclient.db.IManageTweetStorage;
 
 public class RequestAndStoreNewTweetsAsyncTask extends AsyncTask<Void, Void, List<Status>> {
     private final IContainSettings settingsManager;
-    private final IStoreTweets tweetStorer;
+    private final IManageTweetStorage tweetStorer;
+    private final IRequestTweets tweetRequester;
+    private final IBuildTimelineUpdates timelineUpdates;
+
     private long newestTweetIdFromLastRequest;
     private long sinceId;
     private long maxId;
@@ -24,11 +25,13 @@ public class RequestAndStoreNewTweetsAsyncTask extends AsyncTask<Void, Void, Lis
     private int pageId;
     private boolean isFillingGapInTimeline;
 
-    public RequestAndStoreNewTweetsAsyncTask(IContainSettings settingsManager, IStoreTweets tweetStorer,
-	    long newestTweetIdFromLastRequest, long sinceId, long maxId, int numberOfTweetsToRequest, int pageId,
-	    boolean isFillingGapInTimeline) {
+    public RequestAndStoreNewTweetsAsyncTask(IContainSettings settingsManager, IManageTweetStorage tweetStorer,
+	    IRequestTweets tweetRequester, IBuildTimelineUpdates timelineUpdates, long newestTweetIdFromLastRequest,
+	    long sinceId, long maxId, int numberOfTweetsToRequest, int pageId, boolean isFillingGapInTimeline) {
 	this.settingsManager = settingsManager;
 	this.tweetStorer = tweetStorer;
+	this.tweetRequester = tweetRequester;
+	this.timelineUpdates = timelineUpdates;
 	this.newestTweetIdFromLastRequest = newestTweetIdFromLastRequest;
 	this.sinceId = sinceId;
 	this.maxId = maxId;
@@ -49,59 +52,34 @@ public class RequestAndStoreNewTweetsAsyncTask extends AsyncTask<Void, Void, Lis
 	    TwitterFactory factory = new TwitterFactory(builder.build());
 	    Twitter twitter = factory.getInstance();
 
-	    Paging p;
-
-	    if (sinceId <= 0) {
-		p = new Paging(pageId, numberOfTweetsToRequest);
-	    } else if (maxId <= 0) {
-		p = new Paging(pageId, numberOfTweetsToRequest, sinceId);
-	    } else {
-		p = new Paging(pageId, numberOfTweetsToRequest, sinceId, maxId);
-	    }
-
-	    List<twitter4j.Status> statuses = twitter.getHomeTimeline(p);
-	    return statuses;
+	    return tweetRequester.requestTweets(twitter, pageId, numberOfTweetsToRequest, sinceId, maxId);
 	} catch (Exception e) {
 	    Log.e("ScrollLock", e.getClass().toString(), e);
 	}
 	return null;
     }
 
+    @Override
     protected void onPostExecute(List<twitter4j.Status> statuses) {
 	if (statuses == null || statuses.size() <= 0) {
 	    settingsManager.setTweetMaxId(newestTweetIdFromLastRequest);
 	    return;
 	}
 
-	long newestTweetId = 0;
-	long oldestTweetId = Long.MAX_VALUE;
+	TimelineUpdate update = timelineUpdates.build(statuses);
+	tweetStorer.addTweets(update.getTweets());
 
-	ContentValues[] tweets = new ContentValues[statuses.size()];
-	for (int i = 0, size = statuses.size(); i < size; i++) {
-	    twitter4j.Status s = statuses.get(i);
-	    tweets[i] = new TweetBuilder(s).build();
-
-	    final long tweetId = s.getId();
-	    if (tweetId > newestTweetId) {
-		newestTweetId = tweetId;
-	    }
-	    if (tweetId < oldestTweetId) {
-		oldestTweetId = tweetId;
-	    }
+	if (update.getNewestTweetId() > settingsManager.getTweetSinceId()) {
+	    settingsManager.setTweetSinceId(update.getNewestTweetId());
 	}
 
-	tweetStorer.addTweets(tweets);
-
-	if (newestTweetId > settingsManager.getTweetSinceId()) {
-	    settingsManager.setTweetSinceId(newestTweetId);
-	}
-
-	if (!isFillingGapInTimeline && oldestTweetId > newestTweetIdFromLastRequest) {
-	    new RequestAndStoreNewTweetsAsyncTask(settingsManager, tweetStorer, newestTweetId,
-		    newestTweetIdFromLastRequest, oldestTweetId - 1, numberOfTweetsToRequest, pageId, true).execute();
+	if (!isFillingGapInTimeline && update.getOldestTweetId() > newestTweetIdFromLastRequest) {
+	    new RequestAndStoreNewTweetsAsyncTask(settingsManager, tweetStorer, tweetRequester, timelineUpdates,
+		    update.getNewestTweetId(), newestTweetIdFromLastRequest, update.getOldestTweetId() - 1,
+		    numberOfTweetsToRequest, pageId, true).execute();
 	} else if (isFillingGapInTimeline) {
-	    new RequestAndStoreNewTweetsAsyncTask(settingsManager, tweetStorer, newestTweetIdFromLastRequest,
-		    sinceId, maxId, numberOfTweetsToRequest, ++pageId, true).execute();
+	    new RequestAndStoreNewTweetsAsyncTask(settingsManager, tweetStorer, tweetRequester, timelineUpdates,
+		    newestTweetIdFromLastRequest, sinceId, maxId, numberOfTweetsToRequest, ++pageId, true).execute();
 	}
     }
 }

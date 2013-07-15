@@ -76,7 +76,7 @@
                 android:id="@+id/retweet_information_textview"
                 style="?retweetInfo"
                 android:layout_width="fill_parent"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:paddingLeft="8dp"
                 android:textSize="12sp"/>

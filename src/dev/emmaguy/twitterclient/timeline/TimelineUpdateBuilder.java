@@ -1,17 +1,36 @@
 package dev.emmaguy.twitterclient.timeline;
 
-import twitter4j.Status;
+import java.util.List;
+
+import twitter4j.DirectMessage;
+
 import android.content.ContentValues;
 import dev.emmaguy.twitterclient.db.TweetProvider;
 
-public class TweetBuilder {
-    private Status tweet;
+public class TimelineUpdateBuilder implements IBuildTimelineUpdates {
+    private long newestTweetId = 0;
+    private long oldestTweetId = Long.MAX_VALUE;
 
-    public TweetBuilder(Status s) {
-	this.tweet = s;
+    public TimelineUpdate build(List<twitter4j.Status> statuses) {
+	final ContentValues[] tweets = new ContentValues[statuses.size()];
+
+	for (int i = 0, size = statuses.size(); i < size; i++) {
+	    twitter4j.Status s = statuses.get(i);
+	    tweets[i] = createNewContentValues(s);
+
+	    final long tweetId = s.getId();
+	    if (tweetId > newestTweetId) {
+		newestTweetId = tweetId;
+	    }
+	    if (tweetId < oldestTweetId) {
+		oldestTweetId = tweetId;
+	    }
+	}
+
+	return new TimelineUpdate(tweets, newestTweetId, oldestTweetId);
     }
 
-    public ContentValues build() {
+    protected ContentValues createNewContentValues(twitter4j.Status tweet) {
 	ContentValues tweetValue = new ContentValues();
 	tweetValue.put(TweetProvider.TWEET_ID, tweet.getId());
 	tweetValue.put(TweetProvider.TWEET_TEXT, tweet.getText());
@@ -25,7 +44,8 @@ public class TweetBuilder {
 	    tweetValue.put(TweetProvider.TWEET_TEXT, tweet.getRetweetedStatus().getText());
 	    tweetValue.put(TweetProvider.TWEET_RETWEETED_BY_USER_ID, tweet.getRetweetedStatus().getUser().getId());
 	    tweetValue.put(TweetProvider.TWEET_RETWEETED_BY_USERNAME, tweet.getRetweetedStatus().getUser().getName());
-	    tweetValue.put(TweetProvider.TWEET_RETWEET_PROFILE_PIC_URL, tweet.getRetweetedStatus().getUser().getOriginalProfileImageURL());
+	    tweetValue.put(TweetProvider.TWEET_RETWEET_PROFILE_PIC_URL, tweet.getRetweetedStatus().getUser()
+		    .getOriginalProfileImageURL());
 	}
 	return tweetValue;
     }

@@ -1,4 +1,4 @@
-package dev.emmaguy.twitterclient.timeline;
+package dev.emmaguy.twitterclient.ui;
 
 import java.text.DateFormat;
 import java.text.ParseException;

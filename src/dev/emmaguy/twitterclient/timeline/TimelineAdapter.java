@@ -19,6 +19,9 @@ import android.widget.TextView;
 import dev.emmaguy.twitterclient.R;
 
 import dev.emmaguy.twitterclient.db.TweetProvider;
+import dev.emmaguy.twitterclient.ui.DownloadImageTask;
+import dev.emmaguy.twitterclient.ui.TweetDateFormatter;
+import dev.emmaguy.twitterclient.ui.ViewHolder;
 
 public class TimelineAdapter extends CursorAdapter {
     private LayoutInflater inflater;
@@ -132,7 +135,7 @@ public class TimelineAdapter extends CursorAdapter {
 	holder.RetweetInfo.setVisibility(View.GONE);
 	holder.ProfilePictureSmall.setVisibility(View.GONE);
 
-	setTweet(holder, tweetText, tweetUserUsername,  tweetCreatedAt);
+	setTweet(holder, tweetText, tweetUserUsername, tweetCreatedAt);
 	setOrRetrieveProfilePicture(contentResolver, tweetUserUserId, tweetUserProfileUrl, tweetUserUsername, tweetUserProfileImage, holder.ProfilePicture);
     }
 }
