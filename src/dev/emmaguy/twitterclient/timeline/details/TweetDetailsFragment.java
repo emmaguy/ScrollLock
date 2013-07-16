@@ -28,16 +28,22 @@ import com.actionbarsherlock.view.MenuItem;
 
 import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.R.color;
+import dev.emmaguy.twitterclient.ui.TweetDateFormatter;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class TweetDetailsFragment extends SherlockFragment {
     
     private String tweetText;
     private Bitmap avatar;
+    private String tweetCreatedAt;
+    private String tweetUserUsername;
+    private final TweetDateFormatter tweetDateFormatter = new TweetDateFormatter();
 
-    public void setTweet(String tweetText, Bitmap avatar) {
+    public void setTweet(String tweetText, Bitmap avatar, String tweetCreatedAt, String tweetUserUsername) {
 	this.tweetText = tweetText;
 	this.avatar = avatar;
+	this.tweetCreatedAt = tweetCreatedAt;
+	this.tweetUserUsername = tweetUserUsername;
     }
     
     @Override
@@ -71,6 +77,12 @@ public class TweetDetailsFragment extends SherlockFragment {
 	
 	TextView tweetTextView = (TextView) getActivity().findViewById(R.id.tweet_text_details_textview);
 	tweetTextView.setText(tweetText);
+	
+	TextView usernameTextView = (TextView) getActivity().findViewById(R.id.details_username_textview);
+	usernameTextView.setText("@" + tweetUserUsername);
+	
+	TextView timestampTextView = (TextView) getActivity().findViewById(R.id.details_timestamp_textview);
+	timestampTextView.setText(tweetDateFormatter.getFormattedDateTime(tweetCreatedAt));
 	
 	ImageView avatarImageView = (ImageView) getActivity().findViewById(R.id.avatar_imageview);
 	avatarImageView.setImageBitmap(avatar);

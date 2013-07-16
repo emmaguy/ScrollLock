@@ -57,7 +57,7 @@ public class HomeTimelineTweetRequester implements IRequestTweets {
 	if (tweet.isRetweet()) {
 	    tweetValue.put(TweetProvider.TWEET_TEXT, tweet.getRetweetedStatus().getText());
 	    tweetValue.put(TweetProvider.TWEET_RETWEETED_BY_USER_ID, tweet.getRetweetedStatus().getUser().getId());
-	    tweetValue.put(TweetProvider.TWEET_RETWEETED_BY_USERNAME, tweet.getRetweetedStatus().getUser().getName());
+	    tweetValue.put(TweetProvider.TWEET_RETWEETED_BY_USERNAME, tweet.getRetweetedStatus().getUser().getScreenName());
 	    tweetValue.put(TweetProvider.TWEET_RETWEET_PROFILE_PIC_URL, tweet.getRetweetedStatus().getUser()
 		    .getOriginalProfileImageURL());
 	}

@@ -98,10 +98,24 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
     public void onItemClick(AdapterView<?> adapterView, View arg1, int i, long arg3) {
 	Cursor c = ((Cursor) adapterView.getAdapter().getItem(i));
 	final String tweetText = c.getString(c.getColumnIndex(TweetProvider.TWEET_TEXT));
-	byte[] tweetUserProfileImage = c.getBlob(c.getColumnIndex(TweetProvider.USER_PROFILE_PIC));
+
+	String retweetedByUsername = c.getString(c.getColumnIndex(TweetProvider.TWEET_RETWEETED_BY_USERNAME));
+	int retweetCount = c.getInt(c.getColumnIndex(TweetProvider.TWEET_RETWEET_COUNT));
+
+	String tweetUserUsername = c.getString(c.getColumnIndex(TweetProvider.TWEET_RETWEETED_BY_USERNAME));
+	byte[] tweetUserProfileImage = c.getBlob(c.getColumnIndex(TweetProvider.TWEET_RETWEETED_BY_PROFILE_PIC));
+
+	if (retweetCount <= 0 || retweetedByUsername == null || retweetedByUsername.length() <= 0) {
+	    tweetUserProfileImage = c.getBlob(c.getColumnIndex(TweetProvider.USER_PROFILE_PIC));
+	    tweetUserUsername = c.getString(c.getColumnIndex(TweetProvider.TWEET_USERNAME));
+	}
+
+	String tweetCreatedAt = c.getString(c.getColumnIndex(TweetProvider.TWEET_CREATED_AT));
 
 	TweetDetailsFragment tweetDetailsFragment = new TweetDetailsFragment();
-	tweetDetailsFragment.setTweet(tweetText, BitmapFactory.decodeByteArray(tweetUserProfileImage, 0, tweetUserProfileImage.length));
+	tweetDetailsFragment.setTweet(tweetText,
+		BitmapFactory.decodeByteArray(tweetUserProfileImage, 0, tweetUserProfileImage.length), tweetCreatedAt,
+		tweetUserUsername);
 
 	// create the details fragment as a child so we can go back afterwards
 	FragmentTransaction transaction = (FragmentTransaction) getChildFragmentManager().beginTransaction();
