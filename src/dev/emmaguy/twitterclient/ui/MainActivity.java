@@ -30,6 +30,12 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 	    @Override
 	    public void onPageSelected(int position) {
 		super.onPageSelected(position);
+		
+		// the user can click on a tweet to view details - a webview etc
+		// if the user navigates away, ensure we are at the top of the backstack and are viewing the timeline, not a child fragment
+		TimelineFragment f = (TimelineFragment)viewPagerAdapter.getRegisteredFragment(pager.getCurrentItem());
+		f.onBackButtonPressed();
+		       
 		getSupportActionBar().setSelectedNavigationItem(position);
 	    }
 	};

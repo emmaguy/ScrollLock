@@ -2,6 +2,7 @@ package dev.emmaguy.twitterclient.timeline;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -97,9 +98,10 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
     public void onItemClick(AdapterView<?> adapterView, View arg1, int i, long arg3) {
 	Cursor c = ((Cursor) adapterView.getAdapter().getItem(i));
 	final String tweetText = c.getString(c.getColumnIndex(TweetProvider.TWEET_TEXT));
+	byte[] tweetUserProfileImage = c.getBlob(c.getColumnIndex(TweetProvider.USER_PROFILE_PIC));
 
 	TweetDetailsFragment tweetDetailsFragment = new TweetDetailsFragment();
-	tweetDetailsFragment.setTweetText(tweetText);
+	tweetDetailsFragment.setTweet(tweetText, BitmapFactory.decodeByteArray(tweetUserProfileImage, 0, tweetUserProfileImage.length));
 
 	// create the details fragment as a child so we can go back afterwards
 	FragmentTransaction transaction = (FragmentTransaction) getChildFragmentManager().beginTransaction();

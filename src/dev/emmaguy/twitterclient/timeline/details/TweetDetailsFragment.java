@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -16,6 +17,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -31,9 +33,11 @@ import dev.emmaguy.twitterclient.R.color;
 public class TweetDetailsFragment extends SherlockFragment {
     
     private String tweetText;
+    private Bitmap avatar;
 
-    public void setTweetText(String tweetText) {
+    public void setTweet(String tweetText, Bitmap avatar) {
 	this.tweetText = tweetText;
+	this.avatar = avatar;
     }
     
     @Override
@@ -67,6 +71,9 @@ public class TweetDetailsFragment extends SherlockFragment {
 	
 	TextView tweetTextView = (TextView) getActivity().findViewById(R.id.tweet_text_details_textview);
 	tweetTextView.setText(tweetText);
+	
+	ImageView avatarImageView = (ImageView) getActivity().findViewById(R.id.avatar_imageview);
+	avatarImageView.setImageBitmap(avatar);
 
 	Pattern p = Pattern.compile(String.valueOf(Patterns.WEB_URL));
 	Matcher m = p.matcher(tweetText);
