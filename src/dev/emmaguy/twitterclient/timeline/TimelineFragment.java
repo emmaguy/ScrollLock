@@ -1,9 +1,10 @@
 package dev.emmaguy.twitterclient.timeline;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +23,13 @@ import dev.emmaguy.twitterclient.IContainSettings;
 import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.db.IManageTweetStorage;
 import dev.emmaguy.twitterclient.db.TweetProvider;
+import dev.emmaguy.twitterclient.timeline.details.TweetDetailsFragment;
+import dev.emmaguy.twitterclient.ui.MainActivity.BackButtonPressedListener;
 import dev.emmaguy.twitterclient.ui.ViewHolder;
 
-public class TimelineFragment extends SherlockFragment implements OnItemClickListener, OnItemLongClickListener {
+public class TimelineFragment extends SherlockFragment implements OnItemClickListener, OnItemLongClickListener,
+	BackButtonPressedListener {
     private ListView listView;
-    private OnUserActionListener listener;
-
     private IContainSettings settings;
     private IRequestTweets tweetRequester;
     private IManageTweetStorage tweetStorer;
@@ -81,23 +83,29 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
     }
 
     @Override
-    public void onAttach(Activity activity) {
-	super.onAttach(activity);
-
+    public boolean onBackButtonPressed() {
 	try {
-	    listener = (OnUserActionListener) activity;
-	} catch (ClassCastException e) {
-	    throw new ClassCastException(activity.toString() + " must implement OnUserActionListener");
+	    // go back to viewing this parent fragment
+	    return getChildFragmentManager().popBackStackImmediate();
+	} catch (Exception e) {
+	    Log.e("ScrollLock", "Failed to pop back stack", e);
 	}
+	return false;
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View arg1, int i, long arg3) {
 	Cursor c = ((Cursor) adapterView.getAdapter().getItem(i));
 	final String tweetText = c.getString(c.getColumnIndex(TweetProvider.TWEET_TEXT));
-	final long tweetUserId = c.getLong(c.getColumnIndex(TweetProvider.USER_USER_ID));
 
-	listener.onOpenTweetDetails(tweetText, tweetUserId);
+	TweetDetailsFragment tweetDetailsFragment = new TweetDetailsFragment();
+	tweetDetailsFragment.setTweetText(tweetText);
+
+	// create the details fragment as a child so we can go back afterwards
+	FragmentTransaction transaction = (FragmentTransaction) getChildFragmentManager().beginTransaction();
+	transaction.add(R.id.timeline_fragment_container, tweetDetailsFragment);
+	transaction.addToBackStack(null);
+	transaction.commit();
     }
 
     @Override
@@ -112,9 +120,5 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
 
 	getActivity().startActivity(Intent.createChooser(sendIntent, "Share"));
 	return true;
-    }
-
-    public interface OnUserActionListener {
-	void onOpenTweetDetails(String tweetText, long userId);
     }
 }

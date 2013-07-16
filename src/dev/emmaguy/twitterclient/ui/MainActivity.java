@@ -3,6 +3,7 @@ package dev.emmaguy.twitterclient.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -12,72 +13,44 @@ import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.SettingsManager;
 import dev.emmaguy.twitterclient.authentication.SignInFragment;
 import dev.emmaguy.twitterclient.authentication.SignInFragment.OnSignInCompleteListener;
-import dev.emmaguy.twitterclient.db.TweetProvider;
-import dev.emmaguy.twitterclient.db.TweetStorer;
-import dev.emmaguy.twitterclient.timeline.DMsTimelineTweetRequester;
-import dev.emmaguy.twitterclient.timeline.HomeTimelineTweetRequester;
-import dev.emmaguy.twitterclient.timeline.MentionsTimelineTweetRequester;
-import dev.emmaguy.twitterclient.timeline.TimelineAdapter;
 import dev.emmaguy.twitterclient.timeline.TimelineFragment;
-import dev.emmaguy.twitterclient.timeline.TimelineFragment.OnUserActionListener;
-import dev.emmaguy.twitterclient.timeline.details.TweetDetailsFragment;
 
-public class MainActivity extends SherlockFragmentActivity implements OnSignInCompleteListener, OnUserActionListener,
-	ActionBar.TabListener {
+public class MainActivity extends SherlockFragmentActivity implements OnSignInCompleteListener, ActionBar.TabListener {
 
     private SettingsManager settingsManager;
-
-    private TimelineFragment homeTimelineFragment;
-    private TimelineFragment mentionsFragment;
-    private TimelineFragment dmsFragment;
+    private ViewPagerAdapter viewPagerAdapter;
+    private ViewPager pager;
 
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 
 	setContentView(R.layout.activity_main);
+
+	ViewPager.SimpleOnPageChangeListener ViewPagerListener = new ViewPager.SimpleOnPageChangeListener() {
+	    @Override
+	    public void onPageSelected(int position) {
+		super.onPageSelected(position);
+		getSupportActionBar().setSelectedNavigationItem(position);
+	    }
+	};
+
 	settingsManager = new SettingsManager(this.getApplicationContext());
-
-	homeTimelineFragment = new TimelineFragment();
-	homeTimelineFragment.setArguments(settingsManager, new HomeTimelineTweetRequester(), new TweetStorer(
-		getContentResolver(), getSupportLoaderManager(), new TimelineAdapter(this, null),
-		TweetProvider.TWEET_HOME_TIMELINE_URI, getApplicationContext()));
-
-	mentionsFragment = new TimelineFragment();
-	mentionsFragment.setArguments(settingsManager, new MentionsTimelineTweetRequester(), new TweetStorer(
-		getContentResolver(), getSupportLoaderManager(), new TimelineAdapter(this, null),
-		TweetProvider.TWEET_MENTIONS_TIMELINE_URI, getApplicationContext()));
-
-	dmsFragment = new TimelineFragment();
-	dmsFragment.setArguments(settingsManager, new DMsTimelineTweetRequester(), new TweetStorer(
-		getContentResolver(), getSupportLoaderManager(), new TimelineAdapter(this, null),
-		TweetProvider.TWEET_DMS_TIMELINE_URI, getApplicationContext()));
+	viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), this, settingsManager);
+	
+	pager = (ViewPager) findViewById(R.id.pager);
+	pager.setOnPageChangeListener(ViewPagerListener);
+	pager.setAdapter(viewPagerAdapter);
 
 	getLatestTweetsOrAuthenticate();
     }
 
     @Override
     public void onTabSelected(Tab tab, FragmentTransaction ft) {
-	if (tab.getPosition() == 0) {
-	    ft.add(R.id.fragment_container, homeTimelineFragment);
-	    ft.attach(homeTimelineFragment);
-	} else if (tab.getPosition() == 1) {
-	    ft.add(R.id.fragment_container, mentionsFragment);
-	    ft.attach(mentionsFragment);
-	} else if (tab.getPosition() == 2) {
-	    ft.add(R.id.fragment_container, dmsFragment);
-	    ft.attach(dmsFragment);
-	}
+	pager.setCurrentItem(tab.getPosition());
     }
 
     @Override
     public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-	if (tab.getPosition() == 0) {
-	    ft.remove(homeTimelineFragment);
-	} else if (tab.getPosition() == 1) {
-	    ft.remove(mentionsFragment);
-	} else if (tab.getPosition() == 2) {
-	    ft.remove(dmsFragment);	
-	}
     }
 
     @Override
@@ -87,7 +60,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
     private void getLatestTweetsOrAuthenticate() {
 
 	if (settingsManager.credentialsAvailable()) {
-	    showHomeTimeline();
+	    buildTabsUiWithActionBar();
 	} else {
 	    SignInFragment fragment = new SignInFragment();
 
@@ -98,8 +71,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 	}
     }
 
-    private void showHomeTimeline() {
-
+    private void buildTabsUiWithActionBar() {
 	ActionBar bar = getSupportActionBar();
 	bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -128,21 +100,18 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 
     @Override
     public void onSignInComplete() {
-	showHomeTimeline();
+	buildTabsUiWithActionBar();
     }
 
     @Override
-    public void onOpenTweetDetails(String tweetText, long userId) {
-	final TimelineFragment timelineFragment = (TimelineFragment) getSupportFragmentManager().findFragmentById(
-		R.id.fragment_container);
-
-	TweetDetailsFragment tweetDetailsFragment = new TweetDetailsFragment();
-	tweetDetailsFragment.setTweetText(tweetText);
-
-	FragmentTransaction transaction = (FragmentTransaction) getSupportFragmentManager().beginTransaction();
-	transaction.hide(timelineFragment);
-	transaction.add(R.id.fragment_container, tweetDetailsFragment);
-	transaction.addToBackStack(null);
-	transaction.commit();
+    public void onBackPressed() {
+       TimelineFragment f = (TimelineFragment)viewPagerAdapter.getRegisteredFragment(pager.getCurrentItem());
+       if(!f.onBackButtonPressed()){
+	   super.onBackPressed();
+       }
+    }
+    
+    public interface BackButtonPressedListener {
+	boolean onBackButtonPressed();
     }
 }
