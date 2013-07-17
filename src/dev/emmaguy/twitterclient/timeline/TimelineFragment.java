@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +22,9 @@ import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.db.IManageTweetStorage;
 import dev.emmaguy.twitterclient.db.TweetProvider;
 import dev.emmaguy.twitterclient.timeline.details.TweetDetailsFragment;
-import dev.emmaguy.twitterclient.ui.MainActivity.BackButtonPressedListener;
 import dev.emmaguy.twitterclient.ui.ViewHolder;
 
-public class TimelineFragment extends SherlockFragment implements OnItemClickListener, OnItemLongClickListener,
-	BackButtonPressedListener {
+public class TimelineFragment extends SherlockFragment implements OnItemClickListener, OnItemLongClickListener {
     private ListView listView;
     private IContainSettings settings;
     private IRequestTweets tweetRequester;
@@ -60,20 +58,9 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
     public void refresh() {
 	Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
 	new RequestAndStoreNewTweetsAsyncTask(settings, tweetStorer, tweetRequester, settings.getTweetMaxId(),
-	    settings.getTweetSinceId(), -1, settings.getNumberOfTweetsToRequest(), 1, false).execute();
+		settings.getTweetSinceId(), -1, settings.getNumberOfTweetsToRequest(), 1, false).execute();
     }
-
-    @Override
-    public boolean onBackButtonPressed() {
-	try {
-	    // go back to viewing this parent fragment
-	    return getChildFragmentManager().popBackStackImmediate();
-	} catch (Exception e) {
-	    Log.e("ScrollLock", "Failed to pop back stack", e);
-	}
-	return false;
-    }
-
+    
     @Override
     public void onItemClick(AdapterView<?> adapterView, View arg1, int i, long arg3) {
 	Cursor c = ((Cursor) adapterView.getAdapter().getItem(i));
@@ -116,5 +103,10 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
 
 	getActivity().startActivity(Intent.createChooser(sendIntent, "Share"));
 	return true;
+    }
+
+    public boolean isShowingTweetDetailsFragment() {
+	Fragment f = getChildFragmentManager().findFragmentById(R.id.timeline_fragment_container);
+	return f != null;
     }
 }

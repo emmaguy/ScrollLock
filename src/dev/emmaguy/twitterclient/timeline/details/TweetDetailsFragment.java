@@ -52,13 +52,13 @@ public class TweetDetailsFragment extends SherlockFragment {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-	switch (item.getItemId()) {
-	case R.id.back_button:
-	    getActivity().onBackPressed();
+//	switch (item.getItemId()) {
+//	case R.id.back_button:
+//	    getActivity().onBackPressed();
 	    return true;
-	default:
-	    return super.onOptionsItemSelected(item);
-	}
+//	default:
+//	    return super.onOptionsItemSelected(item);
+//	}
     }
     
     @Override

@@ -14,15 +14,15 @@
     </style>
 
     <style name="dm_button_icon_dark">
-        <item name="android:icon">@drawable/mentions_dark</item>
+        <item name="android:drawable">@drawable/mentions_dark</item>
     </style>
     
     <style name="mentions_button_icon_dark">
-        <item name="android:icon">@drawable/mentions_dark</item>
+        <item name="android:drawable">@drawable/mentions_dark</item>
     </style>
     
     <style name="home_button_icon_dark">
-        <item name="android:icon">@drawable/home_dark</item>
+        <item name="android:drawable">@drawable/home_dark</item>
     </style>
     
     <style name="tweetContents_row_dark">

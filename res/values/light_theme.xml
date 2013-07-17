@@ -14,15 +14,15 @@
     </style>
 
     <style name="dm_button_icon_light">
-        <item name="android:icon">@drawable/message</item>
+        <item name="android:drawable">@drawable/message</item>
     </style>
 
     <style name="mentions_button_icon_light">
-        <item name="android:icon">@drawable/mentions</item>
+        <item name="android:drawable">@drawable/mentions</item>
     </style>
 
     <style name="home_button_icon_light">
-        <item name="android:icon">@drawable/home</item>
+        <item name="android:drawable">@drawable/home</item>
     </style>
 
     <style name="action_bar_light" parent="android:style/Widget.Holo.Light.ActionBar">
