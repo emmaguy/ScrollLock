@@ -22,8 +22,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import dev.emmaguy.twitterclient.R;
@@ -53,12 +51,6 @@ public class TweetDetailsFragment extends SherlockFragment {
     }
     
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	inflater.inflate(R.menu.menu_details, menu);
-	super.onCreateOptionsMenu(menu, inflater);
-    }
-    
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 	switch (item.getItemId()) {
 	case R.id.back_button:
@@ -73,8 +65,6 @@ public class TweetDetailsFragment extends SherlockFragment {
     public void onStart() {
 	super.onStart();
 	
-	final ProgressBar webViewProgressBar = (ProgressBar) getActivity().findViewById(R.id.page_load_progress_bar);
-	
 	TextView tweetTextView = (TextView) getActivity().findViewById(R.id.tweet_text_details_textview);
 	tweetTextView.setText(tweetText);
 	
@@ -87,6 +77,12 @@ public class TweetDetailsFragment extends SherlockFragment {
 	ImageView avatarImageView = (ImageView) getActivity().findViewById(R.id.avatar_imageview);
 	avatarImageView.setImageBitmap(avatar);
 
+	initialiseWebView();
+    }
+
+    private void initialiseWebView() {
+	final ProgressBar webViewProgressBar = (ProgressBar) getActivity().findViewById(R.id.page_load_progress_bar);
+	
 	Pattern p = Pattern.compile(String.valueOf(Patterns.WEB_URL));
 	Matcher m = p.matcher(tweetText);
 

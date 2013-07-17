@@ -15,14 +15,18 @@ import dev.emmaguy.twitterclient.timeline.MentionsTimelineTweetRequester;
 import dev.emmaguy.twitterclient.timeline.TimelineAdapter;
 import dev.emmaguy.twitterclient.timeline.TimelineFragment;
 
-public class ViewPagerAdapter extends FragmentPagerAdapter {
+public class TimelinesViewPagerAdapter extends FragmentPagerAdapter {
 
-    private final int PAGE_COUNT = 3;
+    public static final int HOME_TIMELINE = 0;
+    public static final int MENTIONS_TIMELINE = 1;
+    public static final int DIRECTS_TIMELINE = 2;
+    
+    private static final int PAGE_COUNT = 3;
     private final SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
     private FragmentActivity activity;
     private SettingsManager settingsManager;
 
-    public ViewPagerAdapter(FragmentManager fm, final FragmentActivity activity, SettingsManager settingsManager) {
+    public TimelinesViewPagerAdapter(FragmentManager fm, final FragmentActivity activity, SettingsManager settingsManager) {
 	super(fm);
 	this.activity = activity;
 	this.settingsManager = settingsManager;
@@ -32,21 +36,21 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int arg0) {
 	switch (arg0) {
 
-	case 0:
+	case HOME_TIMELINE:
 	    TimelineFragment homeFragment = new TimelineFragment();
 	    homeFragment.setArguments(settingsManager, new HomeTimelineTweetRequester(),
 		    new TweetStorer(activity.getContentResolver(), activity.getSupportLoaderManager(),
 			    new TimelineAdapter(activity, null), TweetProvider.TWEET_HOME_TIMELINE_URI, activity));
 
 	    return homeFragment;
-	case 1:
+	case MENTIONS_TIMELINE:
 	    TimelineFragment mentionsFragment = new TimelineFragment();
 	    mentionsFragment.setArguments(settingsManager, new MentionsTimelineTweetRequester(), new TweetStorer(
 		    activity.getContentResolver(), activity.getSupportLoaderManager(), new TimelineAdapter(activity,
 			    null), TweetProvider.TWEET_MENTIONS_TIMELINE_URI, activity));
 
 	    return mentionsFragment;
-	case 2:
+	case DIRECTS_TIMELINE:
 	    TimelineFragment dmsFragment = new TimelineFragment();
 	    dmsFragment.setArguments(settingsManager, new DMsTimelineTweetRequester(),
 		    new TweetStorer(activity.getContentResolver(), activity.getSupportLoaderManager(),

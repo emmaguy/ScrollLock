@@ -8,8 +8,23 @@
         <item name="tweetText">@style/tweetText_dark</item>
         <item name="timestamp">@style/timestamp_dark</item>
         <item name="retweetInfo">@style/retweetInfo_dark</item>
+        <item name="dm_button">@style/dm_button_icon_dark</item>
+        <item name="mentions_button">@style/mentions_button_icon_dark</item>
+        <item name="home_button">@style/home_button_icon_dark</item>
     </style>
 
+    <style name="dm_button_icon_dark">
+        <item name="android:icon">@drawable/mentions_dark</item>
+    </style>
+    
+    <style name="mentions_button_icon_dark">
+        <item name="android:icon">@drawable/mentions_dark</item>
+    </style>
+    
+    <style name="home_button_icon_dark">
+        <item name="android:icon">@drawable/home_dark</item>
+    </style>
+    
     <style name="tweetContents_row_dark">
         <item name="android:background">@drawable/timeline_tweet_contents_dark</item>
     </style>
@@ -18,12 +33,12 @@
     	<item name="android:background">@drawable/refresh_bar_dark</item>
 	</style>
 
-    <style name="username_dark" parent="@android:style/TextAppearance.Medium">
+    <style name="username_dark" parent="@android:style/TextAppearance.Small">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/LightGrey</item>
     </style>
 
-    <style name="tweetText_dark" parent="@android:style/TextAppearance.Medium">
+    <style name="tweetText_dark" parent="@android:style/TextAppearance.Small">
         <item name="android:textColor">@color/DarkGray</item>
     </style>
 
@@ -31,7 +46,7 @@
         <item name="android:textColor">@color/Gray25</item>
     </style>
 
-    <style name="timestamp_dark" parent="@android:style/TextAppearance.Medium">
+    <style name="timestamp_dark" parent="@android:style/TextAppearance.Small">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/Gray25</item>
     </style>

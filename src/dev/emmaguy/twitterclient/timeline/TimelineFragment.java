@@ -16,9 +16,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import dev.emmaguy.twitterclient.IContainSettings;
 import dev.emmaguy.twitterclient.R;
@@ -60,27 +57,10 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
 	return v;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	inflater.inflate(R.menu.menu_timeline, menu);
-	super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-	switch (item.getItemId()) {
-	case R.id.delete_button:
-	    Toast.makeText(getActivity(), "Deleting...", Toast.LENGTH_SHORT).show();
-	    settings.clearUserData();
-	    return true;
-	case R.id.refresh_button:
-	    Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
-	    new RequestAndStoreNewTweetsAsyncTask(settings, tweetStorer, tweetRequester, settings.getTweetMaxId(),
-		    settings.getTweetSinceId(), -1, settings.getNumberOfTweetsToRequest(), 1, false).execute();
-	    return true;
-	default:
-	    return super.onOptionsItemSelected(item);
-	}
+    public void refresh() {
+	Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
+	new RequestAndStoreNewTweetsAsyncTask(settings, tweetStorer, tweetRequester, settings.getTweetMaxId(),
+	    settings.getTweetSinceId(), -1, settings.getNumberOfTweetsToRequest(), 1, false).execute();
     }
 
     @Override

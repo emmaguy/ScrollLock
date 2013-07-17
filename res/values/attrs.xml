@@ -6,4 +6,7 @@
     <attr name="tweetText" format="reference" />
     <attr name="timestamp" format="reference" />
     <attr name="retweetInfo" format="reference" />
+    <attr name="dm_button" format="reference" />
+    <attr name="mentions_button" format="reference" />
+    <attr name="home_button" format="reference" />
 </resources>

@@ -5,9 +5,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.SettingsManager;
@@ -15,18 +16,21 @@ import dev.emmaguy.twitterclient.authentication.SignInFragment;
 import dev.emmaguy.twitterclient.authentication.SignInFragment.OnSignInCompleteListener;
 import dev.emmaguy.twitterclient.timeline.TimelineFragment;
 
-public class MainActivity extends SherlockFragmentActivity implements OnSignInCompleteListener, ActionBar.TabListener {
+public class MainActivity extends SherlockFragmentActivity implements OnSignInCompleteListener {
 
     private SettingsManager settingsManager;
-    private ViewPagerAdapter viewPagerAdapter;
+    private TimelinesViewPagerAdapter viewPagerAdapter;
     private ViewPager pager;
 
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 
 	setContentView(R.layout.activity_main);
+	
+	getSupportActionBar().setDisplayShowHomeEnabled(false);
+	getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-	ViewPager.SimpleOnPageChangeListener ViewPagerListener = new ViewPager.SimpleOnPageChangeListener() {
+	ViewPager.SimpleOnPageChangeListener viewPagerListener = new ViewPager.SimpleOnPageChangeListener() {
 	    @Override
 	    public void onPageSelected(int position) {
 		super.onPageSelected(position);
@@ -35,32 +39,46 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 		// if the user navigates away, ensure we are at the top of the backstack and are viewing the timeline, not a child fragment
 		TimelineFragment f = (TimelineFragment)viewPagerAdapter.getRegisteredFragment(pager.getCurrentItem());
 		f.onBackButtonPressed();
-		       
-		getSupportActionBar().setSelectedNavigationItem(position);
 	    }
 	};
 
 	settingsManager = new SettingsManager(this.getApplicationContext());
-	viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), this, settingsManager);
+	viewPagerAdapter = new TimelinesViewPagerAdapter(getSupportFragmentManager(), this, settingsManager);
 	
 	pager = (ViewPager) findViewById(R.id.pager);
-	pager.setOnPageChangeListener(ViewPagerListener);
+	pager.setOnPageChangeListener(viewPagerListener);
 	pager.setAdapter(viewPagerAdapter);
 
 	getLatestTweetsOrAuthenticate();
     }
-
+    
     @Override
-    public void onTabSelected(Tab tab, FragmentTransaction ft) {
-	pager.setCurrentItem(tab.getPosition());
+    public boolean onCreateOptionsMenu(Menu menu) {
+	MenuInflater inflater = getSupportMenuInflater();
+	inflater.inflate(R.menu.menu_timeline, menu);
+	super.onCreateOptionsMenu(menu);
+	
+	return true;
     }
-
+    
     @Override
-    public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-    }
-
-    @Override
-    public void onTabReselected(Tab tab, FragmentTransaction ft) {
+    public boolean onOptionsItemSelected(final MenuItem menuItem) {
+	switch (menuItem.getItemId()) {
+	case R.id.home_timeline_button:
+	    pager.setCurrentItem(TimelinesViewPagerAdapter.HOME_TIMELINE);
+	    break;
+	case R.id.mentions_button:
+	    pager.setCurrentItem(TimelinesViewPagerAdapter.MENTIONS_TIMELINE);
+	    break;
+	case R.id.dms_button:
+	    pager.setCurrentItem(TimelinesViewPagerAdapter.DIRECTS_TIMELINE);
+	    break;
+	case R.id.refresh_button:
+	    TimelineFragment f = (TimelineFragment)viewPagerAdapter.getRegisteredFragment(pager.getCurrentItem());
+	    f.refresh();
+	    break;
+	}
+	return super.onOptionsItemSelected(menuItem);
     }
 
     private void getLatestTweetsOrAuthenticate() {
@@ -78,24 +96,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
     }
 
     private void buildTabsUiWithActionBar() {
-	ActionBar bar = getSupportActionBar();
-	bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-	ActionBar.Tab tabHome = bar.newTab();
-	ActionBar.Tab tabMentions = bar.newTab();
-	ActionBar.Tab tabDms = bar.newTab();
 
-	tabHome.setText("Home");
-	tabMentions.setText("Mentions");
-	tabDms.setText("Directs");
-
-	tabHome.setTabListener(this);
-	tabMentions.setTabListener(this);
-	tabDms.setTabListener(this);
-
-	bar.addTab(tabHome);
-	bar.addTab(tabMentions);
-	bar.addTab(tabDms);
     }
 
     @Override

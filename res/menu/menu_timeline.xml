@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/home_timeline_button"
+          android:title="@string/home"
+          android:showAsAction="always|withText"
+          style="?home_button" />
+    <item android:id="@+id/mentions_button"
+          android:title="@string/mentions"
+          android:showAsAction="always|withText"
+          style="?mentions_button" />
+    <item android:id="@+id/dms_button"
+          android:title="@string/dms"
+          android:showAsAction="always|withText"
+          style="?dm_button" />
+    
     <item android:id="@+id/refresh_button"
           android:title="@string/refresh"
-          android:showAsAction="always|withText" />
-    <item android:id="@+id/delete_button"
-          android:title="@string/delete"
           android:showAsAction="always|withText" />
 </menu>
