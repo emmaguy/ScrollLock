@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
-import dev.emmaguy.twitterclient.SettingsManager;
+import dev.emmaguy.twitterclient.IContainSettings;
 import dev.emmaguy.twitterclient.db.TweetProvider;
 import dev.emmaguy.twitterclient.db.TweetStorer;
 import dev.emmaguy.twitterclient.timeline.DMsTimelineTweetRequester;
@@ -24,9 +24,9 @@ public class TimelinesViewPagerAdapter extends FragmentPagerAdapter {
     private static final int PAGE_COUNT = 3;
     private final SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
     private FragmentActivity activity;
-    private SettingsManager settingsManager;
+    private IContainSettings settingsManager;
 
-    public TimelinesViewPagerAdapter(FragmentManager fm, final FragmentActivity activity, SettingsManager settingsManager) {
+    public TimelinesViewPagerAdapter(FragmentManager fm, final FragmentActivity activity, IContainSettings settingsManager) {
 	super(fm);
 	this.activity = activity;
 	this.settingsManager = settingsManager;

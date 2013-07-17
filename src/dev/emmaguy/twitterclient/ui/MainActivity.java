@@ -11,6 +11,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import dev.emmaguy.twitterclient.IContainSettings;
 import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.SettingsManager;
 import dev.emmaguy.twitterclient.authentication.SignInFragment;
@@ -19,16 +20,17 @@ import dev.emmaguy.twitterclient.timeline.TimelineFragment;
 
 public class MainActivity extends SherlockFragmentActivity implements OnSignInCompleteListener {
 
-    private SettingsManager settingsManager;
+    private IContainSettings settingsManager;
     private TimelinesViewPagerAdapter viewPagerAdapter;
     private ViewPager pager;
 
     public void onCreate(Bundle savedInstanceState) {
+	settingsManager = new SettingsManager(this.getApplicationContext());
+	setTheme(settingsManager.getThemeResourceId());
 	super.onCreate(savedInstanceState);
 
 	setContentView(R.layout.activity_main);
-
-	settingsManager = new SettingsManager(this.getApplicationContext());
+	
 	viewPagerAdapter = new TimelinesViewPagerAdapter(getSupportFragmentManager(), this, settingsManager);
 
 	initialiseActionBar();
@@ -99,6 +101,12 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 	    break;
 	case R.id.back_button:
 	    ifTweetDetailsFragmentIsShowingMoveBackToTimeline();
+	    break;
+	case R.id.settings_button:
+	    Intent intent = new Intent(this, AccountPreferencesActivity.class);
+	    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
+	    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	    startActivity(intent);
 	    break;
 	default:
 	    return super.onOptionsItemSelected(menuItem);

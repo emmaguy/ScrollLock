@@ -23,6 +23,7 @@ public class SettingsManager implements IContainSettings {
     private static final String BOTTOM_OF_GAP_ID = "bottomGap";
 
     private static final String TWEET_POSITION = "tweetPos";
+    private static final String THEME_RESOURCE_ID = "theme";
 
     public SettingsManager(Context context) {
 	sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -135,5 +136,20 @@ public class SettingsManager implements IContainSettings {
     @Override
     public int getNumberOfTweetsToRequest() {
 	return sharedPreferences.getInt(NUMBER_OF_TWEETS_TO_REQ, 20);
+    }
+    
+    @Override
+    public int getThemeResourceId() {
+	return sharedPreferences.getInt(THEME_RESOURCE_ID, R.style.lightTheme);
+    }
+
+    @Override
+    public void setTheme(String theme) {
+	int themeId = R.style.lightTheme;
+	if(theme.equals("Dark")){
+	    themeId = R.style.darkTheme;
+	}
+	
+	sharedPreferences.edit().putInt(THEME_RESOURCE_ID, themeId).commit();
     }
 }

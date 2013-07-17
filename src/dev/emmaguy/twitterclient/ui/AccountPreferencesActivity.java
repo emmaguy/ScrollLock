@@ -9,7 +9,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
@@ -18,12 +20,13 @@ import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.SettingsManager;
 
 public class AccountPreferencesActivity extends PreferenceActivity implements OnPreferenceClickListener {
-    
+
     protected Method loadHeaders = null;
     protected Method hasHeaders = null;
-    
+
     private static List<Header> headers;
     private static IContainSettings settingsManager;
+
     /**
      * Checks to see if using new v11+ way of handling PrefsFragments.
      * 
@@ -55,6 +58,9 @@ public class AccountPreferencesActivity extends PreferenceActivity implements On
 
 	if (!isNewV11Prefs()) {
 	    addPreferencesFromResource(R.xml.preference_login);
+	    
+	    ListPreference themePreference = (ListPreference) findPreference("theme_preference");
+	    setOnThemeChangeListener(themePreference);
 	}
 
 	updateAccountHeader();
@@ -85,6 +91,9 @@ public class AccountPreferencesActivity extends PreferenceActivity implements On
 	    
 	    settingsManager = new SettingsManager(getActivity());
 	    updateAccountHeader();
+	    
+	    ListPreference themePreference = (ListPreference) findPreference("theme_preference");
+	    setOnThemeChangeListener(themePreference);
 	}
 
 	@Override
@@ -99,7 +108,7 @@ public class AccountPreferencesActivity extends PreferenceActivity implements On
 	updateAccountHeader();
 	return true;
     }
-    
+
     private static void updateAccountHeader() {
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 	    buildHeader();
@@ -111,12 +120,21 @@ public class AccountPreferencesActivity extends PreferenceActivity implements On
 	if (headers != null && headers.size() > 0) {
 	    Header account = headers.get(0);
 	    final String username = settingsManager.getUsername();
-	    
+
 	    if (username != null && username.length() > 0) {
 		account.title = "Twitter Account (" + username + ")";
 	    } else {
 		account.title = "Twitter Account";
 	    }
 	}
+    }
+
+    private static void setOnThemeChangeListener(ListPreference themePreference) {
+	themePreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+	@Override
+	public boolean onPreferenceChange(Preference preference, Object value) {
+	    settingsManager.setTheme((String)value);
+	    return true;
+	}});
     }
 }

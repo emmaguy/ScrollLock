@@ -10,4 +10,14 @@
             android:value="preference_login" />
     </header>
     
+    <header
+        android:fragment="dev.emmaguy.twitterclient.ui.AccountPreferencesActivity$PrefsFragment"
+        android:icon="@android:drawable/ic_menu_view"
+        android:title="Theme"
+        android:key="theme_settings_header">
+        <extra
+            android:name="pref-resource"
+            android:value="preference_theme" />
+    </header>
+    
 </preference-headers>

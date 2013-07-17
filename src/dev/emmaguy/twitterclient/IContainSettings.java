@@ -39,4 +39,8 @@ public interface IContainSettings {
 
     int getNumberOfTweetsToRequest();
 
+    int getThemeResourceId();
+
+    void setTheme(String value);
+
 }
