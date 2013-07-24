@@ -24,9 +24,4 @@
         android:id="@+id/settings_button"
         android:showAsAction="always|withText"
         android:title="@string/settings"/>
-    <item
-        android:id="@+id/refresh_button"
-        android:showAsAction="always|withText"
-        android:title="@string/refresh"/>
-
 </menu>

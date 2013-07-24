@@ -1,5 +1,6 @@
 package dev.emmaguy.twitterclient.ui;
 
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -18,11 +19,12 @@ import dev.emmaguy.twitterclient.authentication.SignInFragment;
 import dev.emmaguy.twitterclient.authentication.SignInFragment.OnSignInCompleteListener;
 import dev.emmaguy.twitterclient.timeline.TimelineFragment;
 
-public class MainActivity extends SherlockFragmentActivity implements OnSignInCompleteListener {
+public class MainActivity extends SherlockFragmentActivity implements OnSignInCompleteListener, IContainPullToRefreshAttacher {
 
     private IContainSettings settingsManager;
     private TimelinesViewPagerAdapter viewPagerAdapter;
     private ViewPager pager;
+    private PullToRefreshAttacher pullToRefreshHelper;
 
     public void onCreate(Bundle savedInstanceState) {
 	settingsManager = new SettingsManager(this.getApplicationContext());
@@ -31,6 +33,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 
 	setContentView(R.layout.activity_main);
 	
+	pullToRefreshHelper = new PullToRefreshAttacher(this);
 	viewPagerAdapter = new TimelinesViewPagerAdapter(getSupportFragmentManager(), this, settingsManager);
 
 	initialiseActionBar();
@@ -60,6 +63,9 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 		// if the user navigates away, ensure we are at the top of the
 		// backstack and are viewing the timeline, not a child fragment
 		ifTweetDetailsFragmentIsShowingMoveBackToTimeline();
+		
+		TimelineFragment t = (TimelineFragment) viewPagerAdapter.getRegisteredFragment(pager.getCurrentItem());
+		pullToRefreshHelper.setRefreshableView(t.getListView(), t);
 	    }
 	};
 
@@ -94,10 +100,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 	    break;
 	case R.id.dms_button:
 	    pager.setCurrentItem(TimelinesViewPagerAdapter.DIRECTS_TIMELINE);
-	    break;
-	case R.id.refresh_button:
-	    TimelineFragment f = (TimelineFragment) viewPagerAdapter.getRegisteredFragment(pager.getCurrentItem());
-	    f.refresh();
 	    break;
 	case R.id.back_button:
 	    ifTweetDetailsFragmentIsShowingMoveBackToTimeline();
@@ -164,5 +166,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 
     public interface BackButtonPressedListener {
 	boolean onBackButtonPressed();
+    }
+
+    @Override
+    public PullToRefreshAttacher getRefreshAttacher() {
+	return pullToRefreshHelper;
     }
 }

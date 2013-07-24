@@ -7,12 +7,18 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import android.content.ContentValues;
+import dev.emmaguy.twitterclient.IContainSettings;
 import dev.emmaguy.twitterclient.db.TweetProvider;
 
 public class HomeTimelineTweetRequester implements IRequestTweets {
 
     private List<Status> statuses;
+    private IContainSettings settings;
 
+    public HomeTimelineTweetRequester(IContainSettings settings){
+	this.settings = settings;
+    }
+    
     @Override
     public void requestTweets(Twitter twitter, int pageId, int numberOfTweetsToRequest, long sinceId, long maxId)
 	    throws TwitterException {
@@ -62,5 +68,30 @@ public class HomeTimelineTweetRequester implements IRequestTweets {
 		    .getOriginalProfileImageURL());
 	}
 	return tweetValue;
+    }
+
+    @Override
+    public long getTweetMaxId() {
+	return settings.getTweetMaxId();
+    }
+
+    @Override
+    public long getTweetSinceId() {
+	return settings.getTweetSinceId();
+    }
+
+    @Override
+    public int getNumberOfTweetsToRequest() {
+	return settings.getNumberOfTweetsToRequest();
+    }
+
+    @Override
+    public void setTweetMaxId(long maxId) {
+	settings.setTweetMaxId(maxId);
+    }
+
+    @Override
+    public void setTweetSinceId(long sinceId) {
+	settings.setTweetSinceId(sinceId);
     }
 }

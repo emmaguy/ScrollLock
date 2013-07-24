@@ -6,13 +6,14 @@ import twitter4j.conf.ConfigurationBuilder;
 import android.os.AsyncTask;
 import android.util.Log;
 import dev.emmaguy.twitterclient.ConsumerInfo;
-import dev.emmaguy.twitterclient.IContainSettings;
 import dev.emmaguy.twitterclient.db.IManageTweetStorage;
 
 public class RequestAndStoreNewTweetsAsyncTask extends AsyncTask<Void, Void, Void> {
-    private final IContainSettings settingsManager;
     private final IManageTweetStorage tweetStorer;
     private final IRequestTweets tweetRequester;
+
+    private final String userToken;
+    private final String userSecret;
 
     private long newestTweetIdFromLastRequest;
     private long sinceId;
@@ -20,11 +21,14 @@ public class RequestAndStoreNewTweetsAsyncTask extends AsyncTask<Void, Void, Voi
     private int numberOfTweetsToRequest;
     private int pageId;
     private boolean isFillingGapInTimeline;
+    private OnRefreshTimelineComplete onRefreshTimelineComplete;
 
-    public RequestAndStoreNewTweetsAsyncTask(IContainSettings settingsManager, IManageTweetStorage tweetStorer,
+    public RequestAndStoreNewTweetsAsyncTask(String userToken, String userSecret, IManageTweetStorage tweetStorer,
 	    IRequestTweets tweetRequester, long newestTweetIdFromLastRequest, long sinceId, long maxId,
-	    int numberOfTweetsToRequest, int pageId, boolean isFillingGapInTimeline) {
-	this.settingsManager = settingsManager;
+	    int numberOfTweetsToRequest, int pageId, boolean isFillingGapInTimeline,
+	    OnRefreshTimelineComplete onRefreshTimelineComplete) {
+	this.userToken = userToken;
+	this.userSecret = userSecret;
 	this.tweetStorer = tweetStorer;
 	this.tweetRequester = tweetRequester;
 	this.newestTweetIdFromLastRequest = newestTweetIdFromLastRequest;
@@ -33,16 +37,24 @@ public class RequestAndStoreNewTweetsAsyncTask extends AsyncTask<Void, Void, Voi
 	this.numberOfTweetsToRequest = numberOfTweetsToRequest;
 	this.pageId = pageId;
 	this.isFillingGapInTimeline = isFillingGapInTimeline;
+	this.onRefreshTimelineComplete = onRefreshTimelineComplete;
     }
 
     @Override
     protected Void doInBackground(Void... arg0) {
 	try {
+	    Log.i("xx", "newestTweetIdFromLastRequest: " + newestTweetIdFromLastRequest);
+	    Log.i("xx", "sinceId: " + sinceId);
+	    Log.i("xx", "maxId: " + maxId);
+	    Log.i("xx", "numberOfTweetsToRequest: " + numberOfTweetsToRequest);
+	    Log.i("xx", "pageId: " + pageId);
+	    Log.i("xx", "isFillingGapInTimeline: " + isFillingGapInTimeline);
+
 	    ConfigurationBuilder builder = new ConfigurationBuilder();
 	    builder.setOAuthConsumerKey(ConsumerInfo.CONSUMER_KEY);
 	    builder.setOAuthConsumerSecret(ConsumerInfo.CONSUMER_SECRET);
-	    builder.setOAuthAccessToken(settingsManager.getUserToken());
-	    builder.setOAuthAccessTokenSecret(settingsManager.getUserTokenSecret());
+	    builder.setOAuthAccessToken(userToken);
+	    builder.setOAuthAccessTokenSecret(userSecret);
 
 	    TwitterFactory factory = new TwitterFactory(builder.build());
 	    Twitter twitter = factory.getInstance();
@@ -58,23 +70,31 @@ public class RequestAndStoreNewTweetsAsyncTask extends AsyncTask<Void, Void, Voi
     protected void onPostExecute(Void v) {
 	TimelineUpdate update = tweetRequester.getTimelineUpdate();
 	if (!update.hasTweets()) {
-	    settingsManager.setTweetMaxId(newestTweetIdFromLastRequest);
+	    Log.i("xx", "no tweets, setting maxid to: " + newestTweetIdFromLastRequest);
+	    tweetRequester.setTweetMaxId(newestTweetIdFromLastRequest);
 	    return;
 	}
 
 	tweetStorer.addTweets(tweetRequester.getTweets());
 
-	if (update.getNewestTweetId() > settingsManager.getTweetSinceId()) {
-	    settingsManager.setTweetSinceId(update.getNewestTweetId());
+	Log.i("xx", "getNewestTweetId: " + update.getNewestTweetId() + " getTweetSinceId:" + tweetRequester.getTweetSinceId());
+	if (update.getNewestTweetId() > tweetRequester.getTweetSinceId()) {
+	    Log.i("xx", "setting sinceid to: " + update.getNewestTweetId());
+	    tweetRequester.setTweetSinceId(update.getNewestTweetId());
 	}
 
 	if (!isFillingGapInTimeline && update.getOldestTweetId() > newestTweetIdFromLastRequest) {
-	    new RequestAndStoreNewTweetsAsyncTask(settingsManager, tweetStorer, tweetRequester,
+	    new RequestAndStoreNewTweetsAsyncTask(userToken, userSecret, tweetStorer, tweetRequester,
 		    update.getNewestTweetId(), newestTweetIdFromLastRequest, update.getOldestTweetId() - 1,
-		    numberOfTweetsToRequest, pageId, true).execute();
-	} else if (isFillingGapInTimeline) {
-	    new RequestAndStoreNewTweetsAsyncTask(settingsManager, tweetStorer, tweetRequester,
-		    newestTweetIdFromLastRequest, sinceId, maxId, numberOfTweetsToRequest, ++pageId, true).execute();
+		    numberOfTweetsToRequest, pageId, true, onRefreshTimelineComplete).execute();
+	    return;
+	} else if (isFillingGapInTimeline && sinceId > 0) {
+	    new RequestAndStoreNewTweetsAsyncTask(userToken, userSecret, tweetStorer, tweetRequester,
+		    newestTweetIdFromLastRequest, sinceId, maxId, numberOfTweetsToRequest, ++pageId, true,
+		    onRefreshTimelineComplete).execute();
+	    return;
 	}
+
+	onRefreshTimelineComplete.refreshComplete();
     }
 }

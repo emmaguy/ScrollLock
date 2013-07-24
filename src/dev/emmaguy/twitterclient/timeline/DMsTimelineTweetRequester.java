@@ -6,11 +6,17 @@ import twitter4j.DirectMessage;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import android.content.ContentValues;
+import dev.emmaguy.twitterclient.IContainSettings;
 import dev.emmaguy.twitterclient.db.TweetProvider;
 
 public class DMsTimelineTweetRequester implements IRequestTweets {
 
     private List<DirectMessage> directMessages;
+    private IContainSettings settings;
+    
+    public DMsTimelineTweetRequester(IContainSettings settings){
+	this.settings = settings;
+    }
 
     @Override
     public void requestTweets(Twitter twitter, int pageId, int numberOfTweetsToRequest, long sinceId, long maxId)
@@ -43,5 +49,30 @@ public class DMsTimelineTweetRequester implements IRequestTweets {
     @Override
     public TimelineUpdate getTimelineUpdate() {
 	return new TimelineUpdate().buildFromDMs(directMessages);
+    }
+
+    @Override
+    public long getTweetMaxId() {
+	return settings.getDMsTweetMaxId();
+    }
+
+    @Override
+    public long getTweetSinceId() {
+	return settings.getDMsTweetSinceId();
+    }
+
+    @Override
+    public int getNumberOfTweetsToRequest() {
+	return settings.getNumberOfTweetsToRequest();
+    }
+
+    @Override
+    public void setTweetMaxId(long maxId) {
+	settings.setDMsTweetMaxId(maxId);
+    }
+
+    @Override
+    public void setTweetSinceId(long sinceId) {
+	settings.setDMsTweetSinceId(sinceId);
     }
 }

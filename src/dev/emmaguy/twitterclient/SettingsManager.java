@@ -5,12 +5,12 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public class SettingsManager implements IContainSettings {
-    
+
     private SharedPreferences sharedPreferences;
-    
+
     private static final String OAUTH_TOKEN = "oauthtoken";
     private static final String OAUTH_VERIFIER = "oauthveri";
-    
+
     private static final String USER_TOKEN = "userToken";
     private static final String USER_SECRET = "userSecret";
 
@@ -20,6 +20,13 @@ public class SettingsManager implements IContainSettings {
 
     private static final String MAX_ID = "maxId";
     private static final String SINCE_ID = "sinceId";
+
+    private static final String MAX_ID_DMs = "maxIdDms";
+    private static final String SINCE_ID_DMs = "sinceIdDms";
+
+    private static final String MAX_ID_MENTIONS = "maxIdMentions";
+    private static final String SINCE_ID_MENTIONS = "sinceIdMentions";
+
     private static final String BOTTOM_OF_GAP_ID = "bottomGap";
 
     private static final String TWEET_POSITION = "tweetPos";
@@ -78,7 +85,8 @@ public class SettingsManager implements IContainSettings {
     }
 
     public boolean credentialsAvailable() {
-	return !IsNullOrEmpty(getUserToken()) && !IsNullOrEmpty(getUserTokenSecret()) && !IsNullOrEmpty(getUsername()) && getUserId() >= 0;
+	return !IsNullOrEmpty(getUserToken()) && !IsNullOrEmpty(getUserTokenSecret()) && !IsNullOrEmpty(getUsername())
+		&& getUserId() >= 0;
     }
 
     public void saveTokenAndSecret(String token, String tokenSecret) {
@@ -137,7 +145,7 @@ public class SettingsManager implements IContainSettings {
     public int getNumberOfTweetsToRequest() {
 	return sharedPreferences.getInt(NUMBER_OF_TWEETS_TO_REQ, 20);
     }
-    
+
     @Override
     public int getThemeResourceId() {
 	return sharedPreferences.getInt(THEME_RESOURCE_ID, R.style.lightTheme);
@@ -146,10 +154,58 @@ public class SettingsManager implements IContainSettings {
     @Override
     public void setTheme(String theme) {
 	int themeId = R.style.lightTheme;
-	if(theme.equals("Dark")){
+	if (theme.equals("Dark")) {
 	    themeId = R.style.darkTheme;
 	}
-	
+
 	sharedPreferences.edit().putInt(THEME_RESOURCE_ID, themeId).commit();
+    }
+
+    @Override
+    public long getMentionsTweetMaxId() {
+	return sharedPreferences.getLong(MAX_ID_MENTIONS, 0);
+    }
+
+    @Override
+    public long getMentionsTweetSinceId() {
+	return sharedPreferences.getLong(SINCE_ID_MENTIONS, 0);
+    }
+
+    @Override
+    public void setMentionsTweetMaxId(long maxId) {
+	SharedPreferences.Editor editor = sharedPreferences.edit();
+	editor.putLong(MAX_ID_MENTIONS, maxId);
+	editor.commit();
+    }
+
+    @Override
+    public void setMentionsTweetSinceId(long sinceId) {
+	SharedPreferences.Editor editor = sharedPreferences.edit();
+	editor.putLong(SINCE_ID_MENTIONS, sinceId);
+	editor.commit();
+    }
+
+    @Override
+    public long getDMsTweetSinceId() {
+	return sharedPreferences.getLong(SINCE_ID_DMs, 0);
+    }
+
+    @Override
+    public long getDMsTweetMaxId() {
+	return sharedPreferences.getLong(MAX_ID_DMs, 0);
+    }
+
+    @Override
+    public void setDMsTweetSinceId(long sinceId) {
+	SharedPreferences.Editor editor = sharedPreferences.edit();
+	editor.putLong(SINCE_ID_DMs, sinceId);
+	editor.commit();
+    }
+
+    @Override
+    public void setDMsTweetMaxId(long maxId) {
+	SharedPreferences.Editor editor = sharedPreferences.edit();
+	editor.putLong(MAX_ID_DMs, maxId);
+	editor.commit();
     }
 }

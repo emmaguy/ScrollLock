@@ -43,4 +43,19 @@ public interface IContainSettings {
 
     void setTheme(String value);
 
+    long getMentionsTweetMaxId();
+
+    long getMentionsTweetSinceId();
+
+    void setMentionsTweetMaxId(long maxId);
+
+    void setMentionsTweetSinceId(long sinceId);
+
+    void setDMsTweetSinceId(long sinceId);
+
+    void setDMsTweetMaxId(long maxId);
+
+    long getDMsTweetSinceId();
+
+    long getDMsTweetMaxId();
 }

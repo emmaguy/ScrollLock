@@ -1,5 +1,8 @@
 package dev.emmaguy.twitterclient.timeline;
 
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
@@ -17,21 +20,26 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import dev.emmaguy.twitterclient.IContainSettings;
 import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.db.IManageTweetStorage;
 import dev.emmaguy.twitterclient.db.TweetProvider;
 import dev.emmaguy.twitterclient.timeline.details.TweetDetailsFragment;
+import dev.emmaguy.twitterclient.ui.IContainPullToRefreshAttacher;
 import dev.emmaguy.twitterclient.ui.ViewHolder;
 
-public class TimelineFragment extends SherlockFragment implements OnItemClickListener, OnItemLongClickListener {
+public class TimelineFragment extends SherlockFragment implements OnItemClickListener, OnItemLongClickListener,
+	OnRefreshListener, OnRefreshTimelineComplete {
     private ListView listView;
-    private IContainSettings settings;
     private IRequestTweets tweetRequester;
     private IManageTweetStorage tweetStorer;
+    private PullToRefreshAttacher pullToRefreshAttacher;
+    private String userToken;
+    private String userSecret;
 
-    public void setArguments(IContainSettings settings, IRequestTweets tweetRequester, IManageTweetStorage tweetStorer) {
-	this.settings = settings;
+    public void setArguments(String userToken, String userSecret, IRequestTweets tweetRequester,
+	    IManageTweetStorage tweetStorer) {
+	this.userToken = userToken;
+	this.userSecret = userSecret;
 	this.tweetRequester = tweetRequester;
 	this.tweetStorer = tweetStorer;
     }
@@ -54,13 +62,11 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
 
 	return v;
     }
-
-    public void refresh() {
-	Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
-	new RequestAndStoreNewTweetsAsyncTask(settings, tweetStorer, tweetRequester, settings.getTweetMaxId(),
-		settings.getTweetSinceId(), -1, settings.getNumberOfTweetsToRequest(), 1, false).execute();
-    }
     
+    public ListView getListView() {
+	return listView;
+    }
+
     @Override
     public void onItemClick(AdapterView<?> adapterView, View arg1, int i, long arg3) {
 	Cursor c = ((Cursor) adapterView.getAdapter().getItem(i));
@@ -108,5 +114,28 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
     public boolean isShowingTweetDetailsFragment() {
 	Fragment f = getChildFragmentManager().findFragmentById(R.id.timeline_fragment_container);
 	return f != null;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+	super.onAttach(activity);
+
+	try {
+	    pullToRefreshAttacher = ((IContainPullToRefreshAttacher) activity).getRefreshAttacher();
+	} catch (ClassCastException e) {
+	    throw new ClassCastException(activity.toString() + " must implement IContainPullToRefreshAttacher");
+	}
+    }
+
+    @Override
+    public void onRefreshStarted(View arg0) {
+	new RequestAndStoreNewTweetsAsyncTask(userToken, userSecret, tweetStorer, tweetRequester, tweetRequester.getTweetMaxId(),
+		tweetRequester.getTweetSinceId(), -1, tweetRequester.getNumberOfTweetsToRequest(), 1, false,
+		(OnRefreshTimelineComplete) this).execute();
+    }
+
+    @Override
+    public void refreshComplete() {
+	pullToRefreshAttacher.setRefreshComplete();
     }
 }
