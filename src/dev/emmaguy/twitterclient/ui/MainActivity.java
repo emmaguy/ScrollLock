@@ -154,7 +154,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 
     @Override
     public void onSignInComplete() {
-
+	pager.setCurrentItem(TimelinesViewPagerAdapter.HOME_TIMELINE);
+	
+	TimelineFragment t = (TimelineFragment) viewPagerAdapter.getRegisteredFragment(pager.getCurrentItem());
+	t.refresh();
     }
 
     @Override

@@ -41,7 +41,7 @@ public class TimelinesViewPagerAdapter extends FragmentPagerAdapter {
 
 	case HOME_TIMELINE:
 	    TimelineFragment homeFragment = new TimelineFragment();
-	    homeFragment.setArguments(settingsManager.getUserToken(), settingsManager.getUserTokenSecret(),
+	    homeFragment.setArguments(settingsManager,
 		    new HomeTimelineTweetRequester(settingsManager),
 		    new TweetStorer(activity.getContentResolver(), activity.getSupportLoaderManager(),
 			    new TimelineAdapter(activity, null), TweetProvider.TWEET_HOME_TIMELINE_URI, activity));
@@ -49,7 +49,7 @@ public class TimelinesViewPagerAdapter extends FragmentPagerAdapter {
 	    return homeFragment;
 	case MENTIONS_TIMELINE:
 	    TimelineFragment mentionsFragment = new TimelineFragment();
-	    mentionsFragment.setArguments(settingsManager.getUserToken(), settingsManager.getUserTokenSecret(),
+	    mentionsFragment.setArguments(settingsManager,
 		    new MentionsTimelineTweetRequester(settingsManager),
 		    new TweetStorer(activity.getContentResolver(), activity.getSupportLoaderManager(),
 			    new TimelineAdapter(activity, null), TweetProvider.TWEET_MENTIONS_TIMELINE_URI, activity));
@@ -57,7 +57,7 @@ public class TimelinesViewPagerAdapter extends FragmentPagerAdapter {
 	    return mentionsFragment;
 	case DIRECTS_TIMELINE:
 	    TimelineFragment dmsFragment = new TimelineFragment();
-	    dmsFragment.setArguments(settingsManager.getUserToken(), settingsManager.getUserTokenSecret(),
+	    dmsFragment.setArguments(settingsManager,
 		    new DMsTimelineTweetRequester(settingsManager),
 		    new TweetStorer(activity.getContentResolver(), activity.getSupportLoaderManager(),
 			    new TimelineAdapter(activity, null), TweetProvider.TWEET_DMS_TIMELINE_URI, activity));

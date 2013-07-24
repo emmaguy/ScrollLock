@@ -2,6 +2,7 @@ package dev.emmaguy.twitterclient.timeline;
 
 import java.util.List;
 
+import twitter4j.Paging;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -21,7 +22,17 @@ public class MentionsTimelineTweetRequester implements IRequestTweets {
     @Override
     public void requestTweets(Twitter twitter, int pageId, int numberOfTweetsToRequest, long sinceId, long maxId)
 	    throws TwitterException {
-	statuses = twitter.getMentionsTimeline();
+	Paging p;
+
+	if (sinceId <= 0) {
+	    p = new Paging(pageId, numberOfTweetsToRequest);
+	} else if (maxId <= 0) {
+	    p = new Paging(pageId, numberOfTweetsToRequest, sinceId);
+	} else {
+	    p = new Paging(pageId, numberOfTweetsToRequest, sinceId, maxId);
+	}
+	
+	statuses = twitter.getMentionsTimeline(p);
     }
 
     @Override

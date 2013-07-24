@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="libs/picasso-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/twitter4j-core-3.0.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/android-support-v4.jar"/>
 	<classpathentry kind="src" path="src"/>

@@ -17,7 +17,7 @@ public class TweetProvider extends ContentProvider {
     public static final int TWEET_HOME_TIMELINE_QUERY = 1;
     public static final int TWEET_MENTIONS_TIMELINE_QUERY = 2;
     public static final int TWEET_DMS_TIMELINE_QUERY = 3;
-    public static final int USER_QUERY = 10;
+
     public static final int INVALID_URI = -1;
     public static final String AUTHORITY = "dev.emmaguy.twitterclient.db.TweetProvider";
 
@@ -38,17 +38,12 @@ public class TweetProvider extends ContentProvider {
     public static final String TWEET_RETWEETED_BY_PROFILE_PIC = "RtProfilePic";
     public static final String TWEET_IS_MENTION = "IsMention";
     public static final String TWEET_IS_DM = "IsDm";
-
-    public static final String USER_TABLE_NAME = "User";
-    public static final String USER_USER_ID = "UserId";
-    public static final String USER_PROFILE_PIC = "ProfilePicture";
-
+    
     private static final UriMatcher uriMatcher;
 
     static {
 	uriMatcher = new UriMatcher(0);
 	uriMatcher.addURI(AUTHORITY, TWEET_TABLE_NAME, TWEET_HOME_TIMELINE_QUERY);
-	uriMatcher.addURI(AUTHORITY, USER_TABLE_NAME, USER_QUERY);
 	uriMatcher.addURI(AUTHORITY, TWEET_IS_MENTION, TWEET_MENTIONS_TIMELINE_QUERY);
 	uriMatcher.addURI(AUTHORITY, TWEET_IS_DM, TWEET_DMS_TIMELINE_QUERY);
     }
@@ -59,7 +54,6 @@ public class TweetProvider extends ContentProvider {
     public static Uri TWEET_DMS_TIMELINE_URI = Uri.withAppendedPath(CONTENT_URI, TWEET_IS_DM);
     public static Uri TWEET_MENTIONS_TIMELINE_URI = Uri.withAppendedPath(CONTENT_URI, TWEET_IS_MENTION);
     public static Uri TWEET_HOME_TIMELINE_URI = Uri.withAppendedPath(CONTENT_URI, TWEET_TABLE_NAME);
-    public static Uri USER_URI = Uri.withAppendedPath(CONTENT_URI, USER_TABLE_NAME);
 
     @Override
     public boolean onCreate() {
@@ -90,14 +84,20 @@ public class TweetProvider extends ContentProvider {
 		break;
 	    }
 	    Log.i("x", "clause: " + whereClause);
-	    final String query = "SELECT t." + TWEET_USER_ID + "," + TWEET_ID + "," + TWEET_TEXT + ","
-		    + TWEET_CREATED_AT + "," + TWEET_USERNAME + "," + TWEET_PROFILE_PIC_URL + "," + " u."
-		    + USER_PROFILE_PIC + "," + TWEET_RETWEET_COUNT + "," + TWEET_RETWEET_PROFILE_PIC_URL + ","
-		    + TWEET_RETWEETED_BY_USER_ID + "," + TWEET_RETWEETED_BY_USERNAME + "," + " u1." + USER_PROFILE_PIC
-		    + " AS " + TWEET_RETWEETED_BY_PROFILE_PIC + " FROM " + TWEET_TABLE_NAME + " t " + " LEFT JOIN "
-		    + USER_TABLE_NAME + " u ON t." + TWEET_USER_ID + " = u." + USER_USER_ID + " LEFT JOIN "
-		    + USER_TABLE_NAME + " u1 ON t." + TWEET_RETWEETED_BY_USER_ID + " = u1." + USER_USER_ID
-		    + whereClause + " ORDER BY t." + TWEET_ID + " DESC ";
+	    final String query = 
+		    "SELECT t." + TWEET_USER_ID + 
+		    "," + TWEET_ID + 
+		    "," + TWEET_TEXT + 
+		    ","+ TWEET_CREATED_AT + 
+		    "," + TWEET_USERNAME + 
+		    "," + TWEET_PROFILE_PIC_URL + 
+		    "," + TWEET_RETWEET_COUNT + 
+		    "," + TWEET_RETWEET_PROFILE_PIC_URL + 
+		    "," + TWEET_RETWEETED_BY_USER_ID + 
+		    "," + TWEET_RETWEETED_BY_USERNAME +
+		    " FROM " + TWEET_TABLE_NAME + " t " +
+		    whereClause + 
+		    " ORDER BY t." + TWEET_ID + " DESC ";
 
 	    SQLiteDatabase database = tweetDatabase.getReadableDatabase();
 	    cur = database.rawQuery(query, null);
@@ -116,23 +116,6 @@ public class TweetProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
 	switch (uriMatcher.match(uri)) {
-	case USER_QUERY:
-	    long id = -1;
-
-	    try {
-		SQLiteDatabase writableDatabase = tweetDatabase.getWritableDatabase();
-		id = writableDatabase.insert(USER_TABLE_NAME, null, contentValues);
-	    } catch (Exception e) {
-		Log.d("ScrollLockDb", e.getClass().toString(), e);
-	    }
-
-	    if (-1 != id) {
-		getContext().getContentResolver().notifyChange(uri, null);
-		return Uri.withAppendedPath(uri, Long.toString(id));
-	    } else {
-		Log.d("ScrollLockDb", "Insert error for userid/profile picture");
-		return uri;
-	    }
 	case TWEET_DMS_TIMELINE_QUERY:
 	case TWEET_MENTIONS_TIMELINE_QUERY:
 	case TWEET_HOME_TIMELINE_QUERY:
@@ -185,30 +168,6 @@ public class TweetProvider extends ContentProvider {
 		    writableDatabase.endTransaction();
 	    }
 	    break;
-
-	case USER_QUERY:
-	    SQLiteDatabase localSQLiteDatabase = null;
-
-	    try {
-		localSQLiteDatabase = tweetDatabase.getWritableDatabase();
-		localSQLiteDatabase.beginTransaction();
-
-		for (ContentValues insertValue : insertValues) {
-		    localSQLiteDatabase.insert(USER_TABLE_NAME, null, insertValue);
-		}
-
-		localSQLiteDatabase.setTransactionSuccessful();
-
-		getContext().getContentResolver().notifyChange(uri, null);
-		insertedValues = insertValues.length;
-	    } catch (Exception e) {
-		Log.d("ScrollLockDb", e.getClass().toString(), e);
-	    } finally {
-		if (localSQLiteDatabase != null)
-		    localSQLiteDatabase.endTransaction();
-	    }
-	    break;
-
 	case INVALID_URI:
 	    throw new IllegalArgumentException("Bulk insert -- Invalid URI:" + uri);
 	}
@@ -270,8 +229,7 @@ public class TweetProvider extends ContentProvider {
 			+ TWEET_RETWEET_PROFILE_PIC_URL + " NVARCHAR(1024), " + TWEET_RETWEETED_BY_USER_ID
 			+ " BIGINT, " + TWEET_RETWEETED_BY_USERNAME + " NVARCHAR(128)" + ", " + TWEET_IS_MENTION
 			+ " BIT NOT NULL DEFAULT(0)" + ", " + TWEET_IS_DM + " BIT NOT NULL DEFAULT(0)" + ");");
-		db.execSQL("CREATE TABLE " + USER_TABLE_NAME + " (" + USER_USER_ID + "  BIGINT PRIMARY KEY NOT NULL, "
-			+ USER_PROFILE_PIC + " BLOB NOT NULL" + ");");
+
 	    } catch (Exception e) {
 		Log.e("ScrollLockDb", e.getClass().toString(), e);
 	    }
@@ -292,7 +250,6 @@ public class TweetProvider extends ContentProvider {
 	private void delete(SQLiteDatabase db) {
 	    try {
 		db.execSQL("DROP TABLE IF EXISTS " + TWEET_TABLE_NAME);
-		db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_NAME);
 	    } catch (Exception e) {
 		Log.e("ScrollLockDb", e.getClass().toString(), e);
 	    }

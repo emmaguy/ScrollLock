@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import dev.emmaguy.twitterclient.IContainSettings;
 import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.db.IManageTweetStorage;
 import dev.emmaguy.twitterclient.db.TweetProvider;
@@ -33,13 +34,11 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
     private IRequestTweets tweetRequester;
     private IManageTweetStorage tweetStorer;
     private PullToRefreshAttacher pullToRefreshAttacher;
-    private String userToken;
-    private String userSecret;
+    private IContainSettings settingsManager;
 
-    public void setArguments(String userToken, String userSecret, IRequestTweets tweetRequester,
+    public void setArguments(IContainSettings settingsManager, IRequestTweets tweetRequester,
 	    IManageTweetStorage tweetStorer) {
-	this.userToken = userToken;
-	this.userSecret = userSecret;
+	this.settingsManager = settingsManager;
 	this.tweetRequester = tweetRequester;
 	this.tweetStorer = tweetStorer;
     }
@@ -79,7 +78,6 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
 	byte[] tweetUserProfileImage = c.getBlob(c.getColumnIndex(TweetProvider.TWEET_RETWEETED_BY_PROFILE_PIC));
 
 	if (retweetCount <= 0 || retweetedByUsername == null || retweetedByUsername.length() <= 0) {
-	    tweetUserProfileImage = c.getBlob(c.getColumnIndex(TweetProvider.USER_PROFILE_PIC));
 	    tweetUserUsername = c.getString(c.getColumnIndex(TweetProvider.TWEET_USERNAME));
 	}
 
@@ -129,7 +127,11 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
 
     @Override
     public void onRefreshStarted(View arg0) {
-	new RequestAndStoreNewTweetsAsyncTask(userToken, userSecret, tweetStorer, tweetRequester, tweetRequester.getTweetMaxId(),
+	refresh();
+    }
+
+    public void refresh() {
+	new RequestAndStoreNewTweetsAsyncTask(settingsManager.getUserToken(), settingsManager.getUserTokenSecret(), tweetStorer, tweetRequester, tweetRequester.getTweetMaxId(),
 		tweetRequester.getTweetSinceId(), -1, tweetRequester.getNumberOfTweetsToRequest(), 1, false,
 		(OnRefreshTimelineComplete) this).execute();
     }

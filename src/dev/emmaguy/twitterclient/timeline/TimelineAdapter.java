@@ -1,14 +1,8 @@
 package dev.emmaguy.twitterclient.timeline;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +10,16 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import dev.emmaguy.twitterclient.R;
+import com.squareup.picasso.Picasso;
 
+import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.db.TweetProvider;
-import dev.emmaguy.twitterclient.ui.DownloadImageTask;
 import dev.emmaguy.twitterclient.ui.TweetDateFormatter;
 import dev.emmaguy.twitterclient.ui.ViewHolder;
 
 public class TimelineAdapter extends CursorAdapter {
     private LayoutInflater inflater;
-    private static final List<Long> recentlyRequestedProfilePics = new ArrayList<Long>();
-    
+
     public TimelineAdapter(Context context, Cursor tweetsCursor) {
 	super(context, tweetsCursor, true);
 
@@ -60,41 +53,28 @@ public class TimelineAdapter extends CursorAdapter {
 	String tweetText = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_TEXT));
 	String tweetCreatedAt = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_CREATED_AT));
 	String tweetUserUsername = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_USERNAME));
-	String tweetUserProfileUrl = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_PROFILE_PIC_URL));
-	byte[] tweetUserProfileImage = cursor.getBlob(cursor.getColumnIndex(TweetProvider.USER_PROFILE_PIC));	
+	String tweetUserProfileUrl = cursor.getString(cursor.getColumnIndex(TweetProvider.TWEET_PROFILE_PIC_URL));	
 	long tweetUserUserId = cursor.getLong(cursor.getColumnIndex(TweetProvider.TWEET_USER_ID));
 	
 	String retweetedByUserUrl = cursor
 		.getString(cursor.getColumnIndex(TweetProvider.TWEET_RETWEET_PROFILE_PIC_URL));
 	
 	if (retweetCount == 0) {
-	    constructTweetWithNoRetweetNumber(context.getContentResolver(), holder, tweetText, tweetCreatedAt, tweetUserUsername, tweetUserUserId, tweetUserProfileUrl, tweetUserProfileImage);
+	    constructTweetWithNoRetweetNumber(context, holder, tweetText, tweetCreatedAt, tweetUserUsername, tweetUserUserId, tweetUserProfileUrl);
 	} else {
 	    if (retweetedByUsername == null || retweetedByUsername.length() <= 0) {
-		constructTweetWithRetweetNumber(context.getContentResolver(), holder, tweetText, tweetCreatedAt, retweetCount, tweetUserUsername, tweetUserUserId, tweetUserProfileUrl, tweetUserProfileImage);
+		constructTweetWithRetweetNumber(context, holder, tweetText, tweetCreatedAt, retweetCount, tweetUserUsername, tweetUserUserId, tweetUserProfileUrl);
 	    } else {
 
 		long retweetedByUserId = cursor.getLong(cursor.getColumnIndex(TweetProvider.TWEET_RETWEETED_BY_USER_ID));
-		byte[] retweetedByImage = cursor.getBlob(cursor.getColumnIndex(TweetProvider.TWEET_RETWEETED_BY_PROFILE_PIC));
 		
-		constructTweetWithRetweetNumberAndUsername(context.getContentResolver(), holder, tweetText, tweetCreatedAt, retweetedByUsername, retweetedByUserId, retweetedByUserUrl, retweetedByImage, retweetCount, tweetUserUsername, tweetUserUserId, tweetUserProfileUrl, tweetUserProfileImage);
+		constructTweetWithRetweetNumberAndUsername(context, context.getContentResolver(), holder, tweetText, tweetCreatedAt, retweetedByUsername, retweetedByUserId, retweetedByUserUrl, retweetCount, tweetUserUsername, tweetUserUserId, tweetUserProfileUrl);
 	    }
 	}
     }
     
-    private void setOrRetrieveProfilePicture(ContentResolver contentResolver, long userId, String url, String username, byte[] image,
-	    ImageView imageViewToUpdate) {
-	if (image == null || image.length == 0) {
-
-	    if (!recentlyRequestedProfilePics.contains(userId)) {
-		recentlyRequestedProfilePics.add(userId);
-		Log.d("ScrollLock", "No user image for user: " + username + " starting async task");
-		new DownloadImageTask(userId, contentResolver).execute(url);
-	    }
-	} else {
-	    Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
-	    imageViewToUpdate.setImageBitmap(bmp);
-	}
+    private void setOrRetrieveProfilePicture(Context c, String url, ImageView imageViewToUpdate) {
+	Picasso.with(c).load(url).into(imageViewToUpdate);
     }
 
     private void setTweet(ViewHolder holder, String tweetText, String username, String tweetCreatedAt) {
@@ -103,15 +83,13 @@ public class TimelineAdapter extends CursorAdapter {
 	holder.CreatedAt.setText(new TweetDateFormatter().getFormattedDateTime(tweetCreatedAt));
     }
 
-    private void constructTweetWithRetweetNumberAndUsername(ContentResolver contentResolver, ViewHolder holder, String tweetText, String tweetCreatedAt, String retweetedByUsername, long retweetedByUserId, String retweetedByUserUrl, byte[] retweetedByImage, int retweetCount, String tweetUserUsername, long tweetUserUserId, String tweetUserProfileUrl, byte[] tweetUserProfileImage) {
+    private void constructTweetWithRetweetNumberAndUsername(Context c, ContentResolver contentResolver, ViewHolder holder, String tweetText, String tweetCreatedAt, String retweetedByUsername, long retweetedByUserId, String retweetedByUserUrl, int retweetCount, String tweetUserUsername, long tweetUserUserId, String tweetUserProfileUrl) {
 	holder.RetweetInfo.setVisibility(View.VISIBLE);
 	holder.ProfilePictureSmall.setVisibility(View.VISIBLE);
 
 	setTweet(holder, tweetText, retweetedByUsername, tweetCreatedAt);
-	setOrRetrieveProfilePicture(contentResolver, retweetedByUserId, retweetedByUserUrl, retweetedByUsername, retweetedByImage,
-		holder.ProfilePicture);
-	setOrRetrieveProfilePicture(contentResolver, tweetUserUserId, tweetUserProfileUrl, tweetUserUsername, tweetUserProfileImage,
-		holder.ProfilePictureSmall);
+	setOrRetrieveProfilePicture(c, retweetedByUserUrl, holder.ProfilePicture);
+	setOrRetrieveProfilePicture(c, tweetUserProfileUrl, holder.ProfilePictureSmall);
 
 	int otherRetweetersCount = retweetCount - 1;
 	if (otherRetweetersCount > 0) {
@@ -121,21 +99,20 @@ public class TimelineAdapter extends CursorAdapter {
 	}
     }
 
-    private void constructTweetWithRetweetNumber(ContentResolver contentResolver, ViewHolder holder, String tweetText, String tweetCreatedAt, int retweetCount, String tweetUserUsername, long tweetUserUserId, String tweetUserProfileUrl, byte[] tweetUserProfileImage) {
+    private void constructTweetWithRetweetNumber(Context c, ViewHolder holder, String tweetText, String tweetCreatedAt, int retweetCount, String tweetUserUsername, long tweetUserUserId, String tweetUserProfileUrl) {
+	holder.ProfilePictureSmall.setVisibility(View.GONE);
 	holder.RetweetInfo.setVisibility(View.VISIBLE);
 	holder.RetweetInfo.setText("Retweets: " + retweetCount);
 
-	holder.ProfilePictureSmall.setVisibility(View.GONE);
-
 	setTweet(holder, tweetText, tweetUserUsername,  tweetCreatedAt);
-	setOrRetrieveProfilePicture(contentResolver, tweetUserUserId, tweetUserProfileUrl, tweetUserUsername, tweetUserProfileImage, holder.ProfilePicture);
+	setOrRetrieveProfilePicture(c, tweetUserProfileUrl, holder.ProfilePicture);
     }
 
-    private void constructTweetWithNoRetweetNumber(ContentResolver contentResolver, ViewHolder holder, String tweetText, String tweetCreatedAt, String tweetUserUsername, long tweetUserUserId, String tweetUserProfileUrl, byte[] tweetUserProfileImage) {
+    private void constructTweetWithNoRetweetNumber(Context c, ViewHolder holder, String tweetText, String tweetCreatedAt, String tweetUserUsername, long tweetUserUserId, String tweetUserProfileUrl) {
 	holder.RetweetInfo.setVisibility(View.GONE);
 	holder.ProfilePictureSmall.setVisibility(View.GONE);
 
 	setTweet(holder, tweetText, tweetUserUsername, tweetCreatedAt);
-	setOrRetrieveProfilePicture(contentResolver, tweetUserUserId, tweetUserProfileUrl, tweetUserUsername, tweetUserProfileImage, holder.ProfilePicture);
+	setOrRetrieveProfilePicture(c, tweetUserProfileUrl, holder.ProfilePicture);
     }
 }

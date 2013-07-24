@@ -70,8 +70,7 @@ public class RequestAndStoreNewTweetsAsyncTask extends AsyncTask<Void, Void, Voi
     protected void onPostExecute(Void v) {
 	TimelineUpdate update = tweetRequester.getTimelineUpdate();
 	if (!update.hasTweets()) {
-	    Log.i("xx", "no tweets, setting maxid to: " + newestTweetIdFromLastRequest);
-	    tweetRequester.setTweetMaxId(newestTweetIdFromLastRequest);
+	    refreshComplete();
 	    return;
 	}
 
@@ -95,6 +94,12 @@ public class RequestAndStoreNewTweetsAsyncTask extends AsyncTask<Void, Void, Voi
 	    return;
 	}
 
+	refreshComplete();
+    }
+
+    public void refreshComplete() {
+	Log.i("xx", "no tweets, setting maxid to: " + newestTweetIdFromLastRequest);
+	tweetRequester.setTweetMaxId(newestTweetIdFromLastRequest);
 	onRefreshTimelineComplete.refreshComplete();
     }
 }
