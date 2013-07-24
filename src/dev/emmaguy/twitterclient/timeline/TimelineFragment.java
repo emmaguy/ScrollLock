@@ -5,7 +5,6 @@ import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefres
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -69,24 +68,22 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
     @Override
     public void onItemClick(AdapterView<?> adapterView, View arg1, int i, long arg3) {
 	Cursor c = ((Cursor) adapterView.getAdapter().getItem(i));
-	final String tweetText = c.getString(c.getColumnIndex(TweetProvider.TWEET_TEXT));
 
+	String avatarUrl = c.getString(c.getColumnIndex(TweetProvider.TWEET_RETWEET_PROFILE_PIC_URL));
+	String tweetText = c.getString(c.getColumnIndex(TweetProvider.TWEET_TEXT));
 	String retweetedByUsername = c.getString(c.getColumnIndex(TweetProvider.TWEET_RETWEETED_BY_USERNAME));
-	int retweetCount = c.getInt(c.getColumnIndex(TweetProvider.TWEET_RETWEET_COUNT));
-
 	String tweetUserUsername = c.getString(c.getColumnIndex(TweetProvider.TWEET_RETWEETED_BY_USERNAME));
-	byte[] tweetUserProfileImage = c.getBlob(c.getColumnIndex(TweetProvider.TWEET_RETWEETED_BY_PROFILE_PIC));
+	int retweetCount = c.getInt(c.getColumnIndex(TweetProvider.TWEET_RETWEET_COUNT));
 
 	if (retweetCount <= 0 || retweetedByUsername == null || retweetedByUsername.length() <= 0) {
 	    tweetUserUsername = c.getString(c.getColumnIndex(TweetProvider.TWEET_USERNAME));
+	    avatarUrl = c.getString(c.getColumnIndex(TweetProvider.TWEET_PROFILE_PIC_URL));
 	}
 
 	String tweetCreatedAt = c.getString(c.getColumnIndex(TweetProvider.TWEET_CREATED_AT));
 
 	TweetDetailsFragment tweetDetailsFragment = new TweetDetailsFragment();
-	tweetDetailsFragment.setTweet(tweetText,
-		BitmapFactory.decodeByteArray(tweetUserProfileImage, 0, tweetUserProfileImage.length), tweetCreatedAt,
-		tweetUserUsername);
+	tweetDetailsFragment.setTweet(tweetText, tweetCreatedAt, tweetUserUsername, avatarUrl);
 
 	// create the details fragment as a child so we can go back afterwards
 	FragmentTransaction transaction = (FragmentTransaction) getChildFragmentManager().beginTransaction();

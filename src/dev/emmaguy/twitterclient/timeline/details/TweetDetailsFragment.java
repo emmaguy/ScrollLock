@@ -6,7 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -23,6 +22,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
+import com.squareup.picasso.Picasso;
 
 import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.R.color;
@@ -32,16 +32,16 @@ import dev.emmaguy.twitterclient.ui.TweetDateFormatter;
 public class TweetDetailsFragment extends SherlockFragment {
     
     private String tweetText;
-    private Bitmap avatar;
     private String tweetCreatedAt;
     private String tweetUserUsername;
     private final TweetDateFormatter tweetDateFormatter = new TweetDateFormatter();
+    private String avatarUrl;
 
-    public void setTweet(String tweetText, Bitmap avatar, String tweetCreatedAt, String tweetUserUsername) {
+    public void setTweet(String tweetText, String tweetCreatedAt, String tweetUserUsername, String avatarUrl) {
 	this.tweetText = tweetText;
-	this.avatar = avatar;
 	this.tweetCreatedAt = tweetCreatedAt;
 	this.tweetUserUsername = tweetUserUsername;
+	this.avatarUrl = avatarUrl;
     }
     
     @Override
@@ -75,7 +75,7 @@ public class TweetDetailsFragment extends SherlockFragment {
 	timestampTextView.setText(tweetDateFormatter.getFormattedDateTime(tweetCreatedAt));
 	
 	ImageView avatarImageView = (ImageView) getActivity().findViewById(R.id.avatar_imageview);
-	avatarImageView.setImageBitmap(avatar);
+	Picasso.with(getActivity()).load(avatarUrl).into(avatarImageView);
 
 	initialiseWebView();
     }
