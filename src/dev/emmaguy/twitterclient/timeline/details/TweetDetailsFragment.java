@@ -21,7 +21,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.MenuItem;
 import com.squareup.picasso.Picasso;
 
 import dev.emmaguy.twitterclient.R;
@@ -48,17 +47,6 @@ public class TweetDetailsFragment extends SherlockFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	setHasOptionsMenu(true);
 	return inflater.inflate(R.layout.fragment_tweet_details, null);
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-//	switch (item.getItemId()) {
-//	case R.id.back_button:
-//	    getActivity().onBackPressed();
-	    return true;
-//	default:
-//	    return super.onOptionsItemSelected(item);
-//	}
     }
     
     @Override

@@ -19,7 +19,8 @@ import dev.emmaguy.twitterclient.authentication.SignInFragment;
 import dev.emmaguy.twitterclient.authentication.SignInFragment.OnSignInCompleteListener;
 import dev.emmaguy.twitterclient.timeline.TimelineFragment;
 
-public class MainActivity extends SherlockFragmentActivity implements OnSignInCompleteListener, IContainPullToRefreshAttacher {
+public class MainActivity extends SherlockFragmentActivity implements OnSignInCompleteListener,
+	IContainPullToRefreshAttacher {
 
     private IContainSettings settingsManager;
     private TimelinesViewPagerAdapter viewPagerAdapter;
@@ -32,7 +33,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 	super.onCreate(savedInstanceState);
 
 	setContentView(R.layout.activity_main);
-	
+
 	pullToRefreshHelper = new PullToRefreshAttacher(this);
 	viewPagerAdapter = new TimelinesViewPagerAdapter(getSupportFragmentManager(), this, settingsManager);
 
@@ -49,7 +50,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 
 	FragmentTransaction transaction = (FragmentTransaction) getSupportFragmentManager().beginTransaction();
 	transaction.replace(R.id.fragment_container, fragment);
-	transaction.addToBackStack(null);
 	transaction.commit();
     }
 
@@ -63,7 +63,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 		// if the user navigates away, ensure we are at the top of the
 		// backstack and are viewing the timeline, not a child fragment
 		ifTweetDetailsFragmentIsShowingMoveBackToTimeline();
-		
+
 		TimelineFragment t = (TimelineFragment) viewPagerAdapter.getRegisteredFragment(pager.getCurrentItem());
 		pullToRefreshHelper.setRefreshableView(t.getListView(), t);
 	    }
@@ -106,7 +106,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 	    break;
 	case R.id.settings_button:
 	    Intent intent = new Intent(this, AccountPreferencesActivity.class);
-	    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
+	    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	    startActivity(intent);
 	    break;
@@ -154,8 +154,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 
     @Override
     public void onSignInComplete() {
-	pager.setCurrentItem(TimelinesViewPagerAdapter.HOME_TIMELINE);
+	// remove signin fragment
 	
+	pager.setCurrentItem(TimelinesViewPagerAdapter.HOME_TIMELINE);
+
 	TimelineFragment t = (TimelineFragment) viewPagerAdapter.getRegisteredFragment(pager.getCurrentItem());
 	t.refresh();
     }
