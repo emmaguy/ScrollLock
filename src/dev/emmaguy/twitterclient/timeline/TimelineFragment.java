@@ -21,8 +21,10 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import dev.emmaguy.twitterclient.IContainSettings;
 import dev.emmaguy.twitterclient.R;
+import dev.emmaguy.twitterclient.SettingsManager;
 import dev.emmaguy.twitterclient.db.IManageTweetStorage;
 import dev.emmaguy.twitterclient.db.TweetProvider;
+import dev.emmaguy.twitterclient.db.TweetStorer;
 import dev.emmaguy.twitterclient.timeline.details.TweetDetailsFragment;
 import dev.emmaguy.twitterclient.ui.IContainPullToRefreshAttacher;
 import dev.emmaguy.twitterclient.ui.ViewHolder;
@@ -35,11 +37,19 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
     private PullToRefreshAttacher pullToRefreshAttacher;
     private IContainSettings settingsManager;
 
-    public void setArguments(IContainSettings settingsManager, IRequestTweets tweetRequester,
-	    IManageTweetStorage tweetStorer) {
-	this.settingsManager = settingsManager;
-	this.tweetRequester = tweetRequester;
-	this.tweetStorer = tweetStorer;
+    private static final String FRAGMENT_POSITION = "position";
+    public static final int HOME_TIMELINE = 0;
+    public static final int MENTIONS_TIMELINE = 1;
+    public static final int DIRECTS_TIMELINE = 2;
+
+    public static TimelineFragment newInstance(int position) {
+	TimelineFragment t = new TimelineFragment();
+
+	Bundle args = new Bundle();
+	args.putInt(FRAGMENT_POSITION, position);
+	t.setArguments(args);
+
+	return t;
     }
 
     @Override
@@ -48,10 +58,36 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
 
 	setHasOptionsMenu(true);
     }
-
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	final View v = inflater.inflate(R.layout.fragment_timeline, null);
+
+	int position = getArguments().getInt(FRAGMENT_POSITION, -1);
+	switch (position) {
+
+	case HOME_TIMELINE:
+	    this.settingsManager = new SettingsManager(getActivity());
+	    this.tweetRequester = new HomeTimelineTweetRequester(settingsManager);
+	    this.tweetStorer = new TweetStorer(getActivity().getContentResolver(), getActivity()
+		    .getSupportLoaderManager(), new TimelineAdapter(getActivity(), null),
+		    TweetProvider.TWEET_HOME_TIMELINE_URI, getActivity());
+            break;
+	case MENTIONS_TIMELINE:
+	    this.settingsManager = new SettingsManager(getActivity());
+	    this.tweetRequester = new MentionsTimelineTweetRequester(settingsManager);
+	    this.tweetStorer = new TweetStorer(getActivity().getContentResolver(), getActivity()
+		    .getSupportLoaderManager(), new TimelineAdapter(getActivity(), null),
+		    TweetProvider.TWEET_MENTIONS_TIMELINE_URI, getActivity());
+            break;
+	case DIRECTS_TIMELINE:
+	    this.settingsManager = new SettingsManager(getActivity());
+	    this.tweetRequester = new DMsTimelineTweetRequester(settingsManager);
+	    this.tweetStorer = new TweetStorer(getActivity().getContentResolver(), getActivity()
+		    .getSupportLoaderManager(), new TimelineAdapter(getActivity(), null),
+		    TweetProvider.TWEET_DMS_TIMELINE_URI, getActivity());
+            break;
+	}
 
 	listView = ((ListView) v.findViewById(R.id.timeline_listview));
 	listView.setAdapter(tweetStorer.getAdapter());
@@ -60,7 +96,7 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
 
 	return v;
     }
-    
+
     public ListView getListView() {
 	return listView;
     }
@@ -128,9 +164,9 @@ public class TimelineFragment extends SherlockFragment implements OnItemClickLis
     }
 
     public void refresh() {
-	new RequestAndStoreNewTweetsAsyncTask(settingsManager.getUserToken(), settingsManager.getUserTokenSecret(), tweetStorer, tweetRequester, tweetRequester.getTweetMaxId(),
-		tweetRequester.getTweetSinceId(), -1, tweetRequester.getNumberOfTweetsToRequest(), 1, false,
-		(OnRefreshTimelineComplete) this).execute();
+	new RequestAndStoreNewTweetsAsyncTask(settingsManager.getUserToken(), settingsManager.getUserTokenSecret(),
+		tweetStorer, tweetRequester, tweetRequester.getTweetMaxId(), tweetRequester.getTweetSinceId(), -1,
+		tweetRequester.getNumberOfTweetsToRequest(), 1, false, (OnRefreshTimelineComplete) this).execute();
     }
 
     @Override

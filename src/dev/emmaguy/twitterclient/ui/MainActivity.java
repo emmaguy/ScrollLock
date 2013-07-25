@@ -35,7 +35,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 	setContentView(R.layout.activity_main);
 
 	pullToRefreshHelper = new PullToRefreshAttacher(this);
-	viewPagerAdapter = new TimelinesViewPagerAdapter(getSupportFragmentManager(), this, settingsManager);
+	viewPagerAdapter = new TimelinesViewPagerAdapter(getSupportFragmentManager());
 
 	initialiseActionBar();
 	initialiseViewPager();
@@ -70,6 +70,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 	};
 
 	pager = (ViewPager) findViewById(R.id.pager);
+	pager.setOffscreenPageLimit(viewPagerAdapter.getCount());
 	pager.setOnPageChangeListener(viewPagerListener);
 	pager.setAdapter(viewPagerAdapter);
     }
@@ -93,13 +94,13 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
     public boolean onOptionsItemSelected(final MenuItem menuItem) {
 	switch (menuItem.getItemId()) {
 	case R.id.home_timeline_button:
-	    pager.setCurrentItem(TimelinesViewPagerAdapter.HOME_TIMELINE);
+	    pager.setCurrentItem(TimelineFragment.HOME_TIMELINE);
 	    break;
 	case R.id.mentions_button:
-	    pager.setCurrentItem(TimelinesViewPagerAdapter.MENTIONS_TIMELINE);
+	    pager.setCurrentItem(TimelineFragment.MENTIONS_TIMELINE);
 	    break;
 	case R.id.dms_button:
-	    pager.setCurrentItem(TimelinesViewPagerAdapter.DIRECTS_TIMELINE);
+	    pager.setCurrentItem(TimelineFragment.DIRECTS_TIMELINE);
 	    break;
 	case R.id.back_button:
 	    ifTweetDetailsFragmentIsShowingMoveBackToTimeline();
@@ -132,13 +133,13 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 	menu.findItem(R.id.back_button).setVisible(f.isShowingTweetDetailsFragment());
 
 	switch (pager.getCurrentItem()) {
-	case TimelinesViewPagerAdapter.HOME_TIMELINE:
+	case TimelineFragment.HOME_TIMELINE:
 	    menu.findItem(R.id.home_timeline_button).setIcon(R.drawable.home_selected);
 	    break;
-	case TimelinesViewPagerAdapter.MENTIONS_TIMELINE:
+	case TimelineFragment.MENTIONS_TIMELINE:
 	    menu.findItem(R.id.mentions_button).setIcon(R.drawable.mentions_selected);
 	    break;
-	case TimelinesViewPagerAdapter.DIRECTS_TIMELINE:
+	case TimelineFragment.DIRECTS_TIMELINE:
 	    menu.findItem(R.id.dms_button).setIcon(R.drawable.message_selected);
 	    break;
 	}
@@ -156,7 +157,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
     public void onSignInComplete() {
 	// remove signin fragment
 	
-	pager.setCurrentItem(TimelinesViewPagerAdapter.HOME_TIMELINE);
+	pager.setCurrentItem(TimelineFragment.HOME_TIMELINE);
 
 	TimelineFragment t = (TimelineFragment) viewPagerAdapter.getRegisteredFragment(pager.getCurrentItem());
 	t.refresh();
