@@ -152,7 +152,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 
     @Override
     public void onSignInComplete() {
-	// remove signin fragment
+	// remove SignInFragment
+	FragmentTransaction transaction = (FragmentTransaction) getSupportFragmentManager().beginTransaction();
+	transaction.remove(getSupportFragmentManager().findFragmentById(R.id.fragment_container));
+	transaction.commit();
 	
 	pager.setCurrentItem(TimelineFragment.HOME_TIMELINE);
 

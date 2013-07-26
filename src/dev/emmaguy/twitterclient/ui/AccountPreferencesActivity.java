@@ -15,6 +15,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 import dev.emmaguy.twitterclient.IContainSettings;
 import dev.emmaguy.twitterclient.R;
 import dev.emmaguy.twitterclient.SettingsManager;
@@ -61,6 +62,11 @@ public class AccountPreferencesActivity extends PreferenceActivity implements On
 	    
 	    ListPreference themePreference = (ListPreference) findPreference("theme_preference");
 	    setOnThemeChangeListener(themePreference);
+	    
+	    PreferenceScreen screen = (PreferenceScreen) findPreference("authentication_preferencescreen");
+	    if (screen != null) {
+		initAuthenticationPreferences(screen);
+	    }
 	}
 
 	updateAccountHeader();
@@ -93,7 +99,14 @@ public class AccountPreferencesActivity extends PreferenceActivity implements On
 	    updateAccountHeader();
 	    
 	    ListPreference themePreference = (ListPreference) findPreference("theme_preference");
-	    setOnThemeChangeListener(themePreference);
+	    if(themePreference != null) {
+		setOnThemeChangeListener(themePreference);
+	    }
+	    
+	    PreferenceScreen screen = (PreferenceScreen) findPreference("authentication_preferencescreen");
+	    if (screen != null) {
+		initAuthenticationPreferences(screen);
+	    }
 	}
 
 	@Override
@@ -136,5 +149,16 @@ public class AccountPreferencesActivity extends PreferenceActivity implements On
 	    settingsManager.setTheme((String)value);
 	    return true;
 	}});
+    }
+    
+    private static void initAuthenticationPreferences(PreferenceScreen screen) {
+	screen.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+	    
+	    @Override
+	    public boolean onPreferenceClick(Preference preference) {
+		settingsManager.clearUserData();
+		return false;
+	    }
+	});
     }
 }
