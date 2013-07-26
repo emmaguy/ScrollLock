@@ -77,10 +77,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 
     private void initialiseActionBar() {
 	final ActionBar actionBar = getSupportActionBar();
-	actionBar.setDisplayShowHomeEnabled(false);
 	actionBar.setDisplayShowTitleEnabled(false);
 	actionBar.setDisplayShowCustomEnabled(true);
 	actionBar.setDisplayHomeAsUpEnabled(false);
+	actionBar.setDisplayShowHomeEnabled(false);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 	case R.id.dms_button:
 	    pager.setCurrentItem(TimelineFragment.DIRECTS_TIMELINE);
 	    break;
-	case R.id.back_button:
+	case android.R.id.home:
 	    ifTweetDetailsFragmentIsShowingMoveBackToTimeline();
 	    break;
 	case R.id.settings_button:
@@ -121,6 +121,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 	TimelineFragment t = (TimelineFragment) viewPagerAdapter.getRegisteredFragment(pager.getCurrentItem());
 	if (t.isShowingTweetDetailsFragment()) {
 	    t.getChildFragmentManager().popBackStackImmediate();
+	    initialiseActionBar();
 	    return true;
 	}
 	return false;
@@ -128,10 +129,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnSignInCo
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
-	TimelineFragment f = (TimelineFragment) viewPagerAdapter.getRegisteredFragment(pager.getCurrentItem());
-	menu.findItem(R.id.back_button).setVisible(f.isShowingTweetDetailsFragment());
-
 	switch (pager.getCurrentItem()) {
 	case TimelineFragment.HOME_TIMELINE:
 	    menu.findItem(R.id.home_timeline_button).setIcon(R.drawable.home_selected);

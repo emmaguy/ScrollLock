@@ -46,6 +46,9 @@ public class TweetDetailsFragment extends SherlockFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	setHasOptionsMenu(true);
+	getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	getSherlockActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
+	
 	return inflater.inflate(R.layout.fragment_tweet_details, null);
     }
     

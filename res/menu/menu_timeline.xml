@@ -2,10 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/back_button"
-        android:showAsAction="always|withText"
-        android:title="@string/back"/>
-    <item
         android:id="@+id/home_timeline_button"
         android:icon="@drawable/home"
         android:showAsAction="always|withText"
